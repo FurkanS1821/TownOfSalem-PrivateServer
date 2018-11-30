@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Login
 {
@@ -9,20 +8,26 @@ namespace TownOfSalem_Networking.Client.Login
         public string Password;
         public string SteamId;
 
-        public SteamLinkAccount(string username, string password, string steamId) : base(MessageType.SteamLinkAccount)
+        public SteamLinkAccount(byte[] data) : base(data)
         {
-            Username = username;
-            Password = password;
-            SteamId = steamId;
-        }
+            try
+            {
+                var index = 1;
+                var usernameLength = data[index++];
+                var passwordLength = data[index++];
 
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)Encoding.UTF8.GetByteCount(Username));
-            writer.Write((byte)Encoding.UTF8.GetByteCount(Password));
-            writer.Write(Encoding.UTF8.GetBytes(Username));
-            writer.Write(Encoding.UTF8.GetBytes(Password));
-            writer.Write(Encoding.UTF8.GetBytes(SteamId));
+                Username = BytesToString(data, index, usernameLength);
+                index += usernameLength;
+
+                Password = BytesToString(data, index, passwordLength);
+                index += passwordLength;
+
+                SteamId = BytesToString(data, index);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

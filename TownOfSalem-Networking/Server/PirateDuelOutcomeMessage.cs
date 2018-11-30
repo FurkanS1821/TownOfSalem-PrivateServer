@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,17 +7,17 @@ namespace TownOfSalem_Networking.Server
         public readonly PirateDuelAttack Attack;
         public readonly PirateDuelDefense Defense;
 
-        public PirateDuelOutcomeMessage(byte[] data) : base(data)
+        public PirateDuelOutcomeMessage(PirateDuelAttack attack, PirateDuelDefense defense)
+            : base(MessageType.PirateDuelOutcome)
         {
-            try
-            {
-                Attack = (PirateDuelAttack)data[1];
-                Defense = (PirateDuelDefense)data[2];
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Attack = attack;
+            Defense = defense;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)Attack);
+            writer.Write((byte)Defense);
         }
     }
 }

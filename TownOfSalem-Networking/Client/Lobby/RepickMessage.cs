@@ -2,7 +2,7 @@
 {
     public class RepickMessage : BaseMessage
     {
-        public RepickMessage() : base(MessageType.Repick)
+        public RepickMessage(byte[] data) : base(data)
         {
         }
     }

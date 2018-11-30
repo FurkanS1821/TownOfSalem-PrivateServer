@@ -2,7 +2,7 @@
 {
     public class ExecutionerConvertedMessage : BaseMessage
     {
-        public ExecutionerConvertedMessage(byte[] data) : base(data)
+        public ExecutionerConvertedMessage() : base(MessageType.ExecutionerConverted)
         {
         }
     }

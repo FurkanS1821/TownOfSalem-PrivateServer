@@ -2,7 +2,7 @@
 {
     public class OneDayBeforeStalemateMessage : BaseMessage
     {
-        public OneDayBeforeStalemateMessage(byte[] data) : base(data)
+        public OneDayBeforeStalemateMessage() : base(MessageType.OneDayBeforeStalemate)
         {
         }
     }

@@ -2,7 +2,7 @@
 {
     public class PayPalCCSaleCompleteMessage : BaseMessage
     {
-        public PayPalCCSaleCompleteMessage(byte[] data) : base(data)
+        public PayPalCCSaleCompleteMessage() : base(MessageType._UNUSED_PayPalCCSaleComplete)
         {
         }
     }

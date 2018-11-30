@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +7,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly string Username;
 
-        public PartyInvitePowerNotificationMessage(byte[] data) : base(data)
+        public PartyInvitePowerNotificationMessage(string username) : base(MessageType.PartyInvitePowerNotification)
         {
-            try
-            {
-                Username = BytesToString(data, 1);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Username = username;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Username));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +7,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly string Question;
 
-        public CaptchaQuestion(byte[] data) : base(data)
+        public CaptchaQuestion(string question) : base(MessageType.CaptchaQuestion)
         {
-            try
-            {
-                Question = BytesToString(data, 1);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Question = question;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Question));
         }
     }
 }

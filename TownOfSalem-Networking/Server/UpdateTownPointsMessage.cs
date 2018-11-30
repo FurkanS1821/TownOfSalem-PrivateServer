@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +7,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int TownPoints;
 
-        public UpdateTownPointsMessage(byte[] data) : base(data)
+        public UpdateTownPointsMessage(int townPoints) : base(MessageType.UpdateTownPoints)
         {
-            try
-            {
-                int.TryParse(BytesToString(data, 1), out TownPoints);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            TownPoints = townPoints;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(TownPoints.ToString()));
         }
     }
 }

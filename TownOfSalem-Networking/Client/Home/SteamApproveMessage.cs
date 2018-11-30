@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Home
 {
@@ -7,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Home
     {
         public string OrderId;
 
-        public SteamApproveMessage(string orderId) : base(MessageType.SteamApprove)
+        public SteamApproveMessage(byte[] data) : base(data)
         {
-            OrderId = orderId;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(OrderId));
+            try
+            {
+                OrderId = BytesToString(data, 1);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

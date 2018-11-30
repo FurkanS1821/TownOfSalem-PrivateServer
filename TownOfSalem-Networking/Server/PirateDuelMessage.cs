@@ -2,7 +2,7 @@
 {
     public class PirateDuelMessage : BaseMessage
     {
-        public PirateDuelMessage(byte[] data) : base(data)
+        public PirateDuelMessage() : base(MessageType.PirateDuel)
         {
         }
     }

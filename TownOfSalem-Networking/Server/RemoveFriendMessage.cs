@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +7,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int AccountId;
 
-        public RemoveFriendMessage(byte[] data) : base(data)
+        public RemoveFriendMessage(int accountId) : base(MessageType.RemoveFriend)
         {
-            try
-            {
-                AccountId = int.Parse(BytesToString(data, 1));
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            AccountId = accountId;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(AccountId.ToString()));
         }
     }
 }

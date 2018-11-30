@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Lobby
 {
@@ -7,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Lobby
     {
         public string Username;
 
-        public PartyGiveInvitePrivilegesMessage(string username) : base(MessageType.PartyGiveInvitePrivileges)
+        public PartyGiveInvitePrivilegesMessage(byte[] data) : base(data)
         {
-            Username = username;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(Username));
+            try
+            {
+                Username = BytesToString(data, 1);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

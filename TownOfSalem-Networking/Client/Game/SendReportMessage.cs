@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Game
 {
@@ -9,18 +8,18 @@ namespace TownOfSalem_Networking.Client.Game
         public int Reason;
         public string Description;
 
-        public SendReportMessage(int position, int reason, string description) : base(MessageType.SendReport)
+        public SendReportMessage(byte[] data) : base(data)
         {
-            Position = position;
-            Reason = reason;
-            Description = description;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)(Position + 1));
-            writer.Write((byte)(Reason + 2));
-            writer.Write(Encoding.UTF8.GetBytes(Description));
+            try
+            {
+                Position = data[1] - 1;
+                Reason = data[2] - 2;
+                Description = BytesToString(data, 3);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

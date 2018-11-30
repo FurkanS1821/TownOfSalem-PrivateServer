@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly NameChangeResultCode Result;
 
-        public NameChangeResultMessage(byte[] data) : base(data)
+        public NameChangeResultMessage(NameChangeResultCode result) : base(MessageType.NameChangeResult)
         {
-            try
-            {
-                Result = (NameChangeResultCode)Convert.ToByte(data[1]);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Result = result;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)Result);
         }
     }
 }

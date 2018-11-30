@@ -2,11 +2,11 @@
 
 namespace TownOfSalem_Networking.Server
 {
-    public class TrackerNightAbilityMessage : BaseMessage
+    public class PlagueSpreadMessage : BaseMessage
     {
         public readonly int Position;
 
-        public TrackerNightAbilityMessage(int position) : base(MessageType.TrackerNightAbility)
+        public PlagueSpreadMessage(int position) : base(MessageType.PlagueSpread)
         {
             Position = position;
         }

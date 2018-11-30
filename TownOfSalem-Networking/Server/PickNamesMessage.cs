@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,17 +7,16 @@ namespace TownOfSalem_Networking.Server
         public readonly int PlayerCount;
         public readonly int GameMode;
 
-        public PickNamesMessage(byte[] data) : base(data)
+        public PickNamesMessage(int playerCount, int gameMode) : base(MessageType.PickNames)
         {
-            try
-            {
-                PlayerCount = data[1] - 1;
-                GameMode = data[2] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            PlayerCount = playerCount;
+            GameMode = gameMode;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(PlayerCount + 1));
+            writer.Write((byte)(GameMode + 1));
         }
     }
 }

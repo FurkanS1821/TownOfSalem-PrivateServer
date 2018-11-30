@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,19 +8,21 @@ namespace TownOfSalem_Networking.Server
     {
         public List<int> Backgrounds = new List<int>();
 
-        public PurchasedBackgroundsMessage(byte[] data) : base(data)
+        public PurchasedBackgroundsMessage(List<int> backgrounds) : base(MessageType.PurchasedBackgrounds)
         {
-            try
+            Backgrounds = backgrounds;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < Backgrounds.Count; i++)
             {
-                var str = BytesToString(data, 1);
-                foreach (var s in str.Split(','))
+                writer.Write(Encoding.UTF8.GetBytes(Backgrounds[i].ToString()));
+
+                if (i < Backgrounds.Count - 1)
                 {
-                    Backgrounds.Add(int.Parse(s));
+                    writer.Write(',');
                 }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
             }
         }
     }

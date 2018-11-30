@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,18 +8,17 @@ namespace TownOfSalem_Networking.Server
         public readonly string From;
         public readonly string Message;
 
-        public PartyChatMessage(byte[] data) : base(data)
+        public PartyChatMessage(string from, string message) : base(MessageType.PartyChatMessage)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split('*');
-                From = strArray[0];
-                Message = strArray[1];
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            From = from;
+            Message = message;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(From));
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(Message));
         }
     }
 }

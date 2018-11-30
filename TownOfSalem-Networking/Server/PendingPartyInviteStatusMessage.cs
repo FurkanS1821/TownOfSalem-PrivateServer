@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,23 +8,18 @@ namespace TownOfSalem_Networking.Server
         public readonly PartyMemberInviteStatus Status;
         public readonly string Username;
 
-        public PendingPartyInviteStatusMessage(byte[] data) : base(data)
+        public PendingPartyInviteStatusMessage(PartyMemberInviteStatus status, string username)
+            : base(MessageType.PendingPartyInviteStatus)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split('*');
-                Username = strArray[0];
-                if (strArray.Length <= 0)
-                {
-                    return;
-                }
+            Status = status;
+            Username = username;
+        }
 
-                Status = (PartyMemberInviteStatus)strArray[1][0];
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Username));
+            writer.Write('*');
+            writer.Write((byte)Status);
         }
     }
 }

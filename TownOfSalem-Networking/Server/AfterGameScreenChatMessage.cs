@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,17 +8,16 @@ namespace TownOfSalem_Networking.Server
         public readonly int Position;
         public readonly string Message;
 
-        public AfterGameScreenChatMessage(byte[] data) : base(data)
+        public AfterGameScreenChatMessage(int position, string message) : base(MessageType.AfterGameScreenChat)
         {
-            try
-            {
-                Position = Convert.ToInt32(data[1]) - 1;
-                Message = BytesToString(data, 2);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Position = position;
+            Message = message;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Position + 1));
+            writer.Write(Encoding.UTF8.GetBytes(Message));
         }
     }
 }

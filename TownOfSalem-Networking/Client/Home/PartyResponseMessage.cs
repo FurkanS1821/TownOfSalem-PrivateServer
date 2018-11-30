@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Home
 {
@@ -8,16 +7,17 @@ namespace TownOfSalem_Networking.Client.Home
         public PartyResponse Response;
         public int PartyId;
 
-        public PartyResponseMessage(PartyResponse response, int partyId) : base(MessageType.PartyResponse)
+        public PartyResponseMessage(byte[] data) : base(data)
         {
-            Response = response;
-            PartyId = partyId;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)Response);
-            writer.Write(Encoding.UTF8.GetBytes(PartyId.ToString()));
+            try
+            {
+                Response = (PartyResponse)data[1];
+                PartyId = Convert.ToInt32(BytesToString(data, 2));
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

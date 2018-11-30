@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,17 +7,16 @@ namespace TownOfSalem_Networking.Server
         public readonly int GuiltyVoteCount;
         public readonly int InnocentVoteCount;
 
-        public TrialNotGuiltyMessage(byte[] data) : base(data)
+        public TrialNotGuiltyMessage(int guiltyVoteCount, int innocentVoteCount) : base(MessageType.TrialNotGuilty)
         {
-            try
-            {
-                GuiltyVoteCount = Convert.ToInt32(data[1]) - 1;
-                InnocentVoteCount = Convert.ToInt32(data[2]) - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            GuiltyVoteCount = guiltyVoteCount;
+            InnocentVoteCount = innocentVoteCount;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(GuiltyVoteCount + 1));
+            writer.Write((byte)(InnocentVoteCount + 1));
         }
     }
 }

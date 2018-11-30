@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 using TownOfSalem_Logic;
 
 namespace TownOfSalem_Networking.Client.Game
@@ -7,14 +7,16 @@ namespace TownOfSalem_Networking.Client.Game
     {
         public PotionMasterPotionType Potion;
 
-        public PotionChosenMessage(PotionMasterPotionType potionType) : base(MessageType.PotionChosen)
+        public PotionChosenMessage(byte[] data) : base(data)
         {
-            Potion = potionType;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)Potion);
+            try
+            {
+                Potion = (PotionMasterPotionType)data[1];
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

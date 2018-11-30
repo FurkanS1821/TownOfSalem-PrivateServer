@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly bool CanConvert;
 
-        public VampiresCanConvertMessage(byte[] data) : base(data)
+        public VampiresCanConvertMessage(bool canConvert) : base(MessageType.VampiresCanConvert)
         {
-            try
-            {
-                CanConvert = GetBoolValue(Convert.ToByte(data[1]));
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            CanConvert = canConvert;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(CanConvert ? 2 : 0));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,29 +7,17 @@ namespace TownOfSalem_Networking.Server
         public readonly bool HasNecronomicon;
         public readonly int NightsUntilNecronomicon;
 
-        public HasNecronomiconMessage(byte[] data) : base(data)
+        public HasNecronomiconMessage(bool hasNecronomicon, int nightsUntilNecronomicon)
+            : base(MessageType.HasNecronomicon)
         {
-            try
-            {
-                if (data[1] == 1)
-                {
-                    HasNecronomicon = true;
-                }
-                else
-                {
-                    if (data[1] != 2)
-                    {
-                        return;
-                    }
+            HasNecronomicon = hasNecronomicon;
+            NightsUntilNecronomicon = nightsUntilNecronomicon;
+        }
 
-                    HasNecronomicon = false;
-                    NightsUntilNecronomicon = data[2];
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(HasNecronomicon ? 1 : 2));
+            writer.Write((byte)NightsUntilNecronomicon);
         }
     }
 }

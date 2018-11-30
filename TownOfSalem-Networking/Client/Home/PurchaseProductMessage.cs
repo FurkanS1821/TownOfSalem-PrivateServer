@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Home
 {
@@ -8,17 +7,18 @@ namespace TownOfSalem_Networking.Client.Home
         public string ProductId;
         public int Quantity;
 
-        public PurchaseProductMessage(string productId, int quantity) : base(MessageType.PurchaseProduct)
+        public PurchaseProductMessage(byte[] data) : base(data)
         {
-            ProductId = productId;
-            Quantity = quantity;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(ProductId));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Quantity.ToString()));
+            try
+            {
+                var lines = BytesToString(data, 1).Split(new[] {','}, 2);
+                ProductId = lines[0];
+                Quantity = Convert.ToInt32(lines[1]);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

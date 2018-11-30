@@ -1,68 +1,34 @@
-﻿using System.IO;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 
 namespace TownOfSalem_Networking.Client.Global
 {
     public class RegisterAccountMessage : BaseMessage
     {
-        protected InternalJson _data;
+        public InternalJson Data;
 
-        public RegisterAccountMessage(string username, string password, string email, string referFriendName)
-            : base(MessageType.RegisterAccount)
+        public RegisterAccountMessage(byte[] data) : base(data)
         {
-            _isEncrypted = true;
-            _data = new InternalJson
-            {
-                UserName = username,
-                Password = password,
-                Email = email,
-                Referer = referFriendName
-            };
+            var jsonString = BytesToString(data, 1);
+            Data = JsonConvert.DeserializeObject<InternalJson>(jsonString);
         }
 
-        public RegisterAccountMessage(string username, string password, string email, string referFriendName,
-            string facebookId, string facebookToken) : this(username, password, email, referFriendName)
+        [JsonObject]
+        public class InternalJson
         {
-            _data.FacebookId = facebookId;
-            _data.FacebookToken = facebookToken;
-        }
-
-        public RegisterAccountMessage(string username, string password, string email, string referFriendName,
-            string steamId) : this(username, password, email, referFriendName)
-        {
-            _data.SteamId = steamId;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(_data.ToJson().ToCharArray());
-        }
-
-        protected class InternalJson
-        {
+            [JsonProperty("username")]
             public string UserName;
+            [JsonProperty("password")]
             public string Password;
+            [JsonProperty("email")]
             public string Email;
+            [JsonProperty("referer")]
             public string Referer;
+            [JsonProperty("facebook_id")]
             public string FacebookId;
+            [JsonProperty("facebook_token")]
             public string FacebookToken;
+            [JsonProperty("steam_id")]
             public string SteamId;
-
-            public string ToJson()
-            {
-                var json = new JObject
-                {
-                    {"username", UserName},
-                    {"password", Password},
-                    {"email", Email},
-                    {"referer", Referer},
-                    {"facebook_id", FacebookId},
-                    {"facebook_token", FacebookToken},
-                    {"steam_id", SteamId}
-                };
-
-                return json.ToString();
-            }
         }
     }
 }

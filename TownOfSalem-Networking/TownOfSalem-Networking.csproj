@@ -277,7 +277,7 @@
     <Compile Include="Server\PickNamesMessage.cs" />
     <Compile Include="Server\PirateDuelMessage.cs" />
     <Compile Include="Server\PirateDuelOutcomeMessage.cs" />
-    <Compile Include="Server\PlaugeSpreadMessage.cs" />
+    <Compile Include="Server\PlagueSpreadMessage.cs" />
     <Compile Include="Server\PlayerStatisticsMessage.cs" />
     <Compile Include="Server\PotionMasterPotionsMessage.cs" />
     <Compile Include="Server\PresentPromotionMessage.cs" />

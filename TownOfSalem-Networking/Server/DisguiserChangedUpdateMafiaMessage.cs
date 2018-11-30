@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,17 +7,17 @@ namespace TownOfSalem_Networking.Server
         public readonly int Position;
         public readonly int PreviousPosition;
 
-        public DisguiserChangedUpdateMafiaMessage(byte[] data) : base(data)
+        public DisguiserChangedUpdateMafiaMessage(int position, int previousPosition)
+            : base(MessageType._UNUSED_DisguiserChangedUpdateMafia)
         {
-            try
-            {
-                Position = Convert.ToInt32(data[1]) - 1;
-                PreviousPosition = Convert.ToInt32(data[2]) - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Position = position;
+            PreviousPosition = previousPosition;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Position + 1));
+            writer.Write((byte)(PreviousPosition + 1));
         }
     }
 }

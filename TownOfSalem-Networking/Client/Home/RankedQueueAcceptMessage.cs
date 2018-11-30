@@ -2,8 +2,7 @@
 {
     public class RankedQueueAcceptMessage : BaseMessage
     {
-        public RankedQueueAcceptMessage()
-            : base(MessageType.RankedQueueAccept)
+        public RankedQueueAcceptMessage(byte[] data) : base(data)
         {
         }
     }

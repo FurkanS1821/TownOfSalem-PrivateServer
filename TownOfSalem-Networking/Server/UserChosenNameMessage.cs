@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,18 +9,19 @@ namespace TownOfSalem_Networking.Server
         public readonly int Position;
         public readonly string PlayerName;
 
-        public UserChosenNameMessage(byte[] data) : base(data)
+        public UserChosenNameMessage(int stringTableId, int position, string playerName)
+            : base(MessageType.UserChosenName)
         {
-            try
-            {
-                StringTableId = data[1] - 1;
-                Position = data[2] - 1;
-                PlayerName = BytesToString(data, 3);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            StringTableId = stringTableId;
+            Position = position;
+            PlayerName = playerName;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(StringTableId + 1));
+            writer.Write((byte)(Position + 1));
+            writer.Write(Encoding.UTF8.GetBytes(PlayerName));
         }
     }
 }

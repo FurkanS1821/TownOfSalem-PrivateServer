@@ -2,7 +2,7 @@
 {
     public class StartDefenseMessage : BaseMessage
     {
-        public StartDefenseMessage(byte[] data) : base(data)
+        public StartDefenseMessage() : base(MessageType.StartDefense)
         {
         }
     }

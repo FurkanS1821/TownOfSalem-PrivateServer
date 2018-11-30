@@ -1,7 +1,5 @@
-﻿
-
-
-using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -9,25 +7,16 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly PartyInvite PartyInvite;
 
-        public PartyInviteNotificationMessage(byte[] data) : base(data)
+        public PartyInviteNotificationMessage(PartyInvite partyInvite) : base(MessageType.PartyInviteNotification)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split('*');
-                PartyInvite = new PartyInvite();
-                if (strArray.Length <= 1)
-                {
-                    return;
-                }
+            PartyInvite = partyInvite;
+        }
 
-                int.TryParse(strArray[0], out PartyInvite.PartyId);
-                PartyInvite.HostUsername = strArray[1];
-                PartyInvite.IsValid = true;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(PartyInvite.PartyId.ToString()));
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(PartyInvite.HostUsername));
         }
     }
 }

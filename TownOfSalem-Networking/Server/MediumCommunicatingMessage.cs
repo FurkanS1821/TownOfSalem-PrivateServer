@@ -2,7 +2,7 @@
 {
     public class MediumCommunicatingMessage : BaseMessage
     {
-        public MediumCommunicatingMessage(byte[] data) : base(data)
+        public MediumCommunicatingMessage() : base(MessageType.MediumCommunicating)
         {
         }
     }

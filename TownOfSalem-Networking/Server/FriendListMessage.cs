@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,30 +8,29 @@ namespace TownOfSalem_Networking.Server
     {
         public List<Friend> Friends = new List<Friend>();
 
-        public FriendListMessage(byte[] data) : base(data)
+        public FriendListMessage(List<Friend> friends) : base(MessageType.FriendList)
         {
-            try
-            {
-                if (data.Length <= 1)
-                {
-                    return;
-                }
+            Friends = friends;
+        }
 
-                var str1 = BytesToString(data, 1);
-                foreach (var str2 in str1.Split('*'))
-                {
-                    var strArray = str2.Split(',');
-                    Friends.Add(new Friend(
-                        strArray[0],
-                        int.Parse(strArray[1]),
-                        (ActivityStatus)strArray[2][0],
-                        Convert.ToBoolean(int.Parse(strArray[3]) - 1)
-                    ));
-                }
-            }
-            catch (Exception ex)
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < Friends.Count; i++)
             {
-                ThrowNetworkMessageFormatException(ex);
+                var friend = Friends[i];
+
+                writer.Write(Encoding.UTF8.GetBytes(friend.UserName));
+                writer.Write(',');
+                writer.Write(Encoding.UTF8.GetBytes(friend.AccountId.ToString()));
+                writer.Write(',');
+                writer.Write((byte)friend.Status);
+                writer.Write(',');
+                writer.Write((byte)(friend.OwnsCoven ? 3 : 0));
+
+                if (i < Friends.Count - 1)
+                {
+                    writer.Write('*');
+                }
             }
         }
     }

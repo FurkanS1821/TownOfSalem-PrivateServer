@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,18 +8,17 @@ namespace TownOfSalem_Networking.Server
         public readonly string OldUsername;
         public readonly string NewUsername;
 
-        public FriendsNewUsernameMessage(byte[] data) : base(data)
+        public FriendsNewUsernameMessage(string oldUsername, string newUsername) : base(MessageType.FriendsNewUsername)
         {
-            try
-            {
-                var strArray = BytesToString(data).Split('*');
-                OldUsername = strArray[0];
-                NewUsername = strArray[1];
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            OldUsername = oldUsername;
+            NewUsername = newUsername;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(OldUsername));
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(NewUsername));
         }
     }
 }

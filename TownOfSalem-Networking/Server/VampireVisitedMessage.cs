@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int Position;
 
-        public VampireVisitedMessage(byte[] data) : base(data)
+        public VampireVisitedMessage(int position) : base(MessageType.VampireVisitedMessage)
         {
-            try
-            {
-                Position = Convert.ToInt32(data[1]) - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Position = position;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Position + 1));
         }
     }
 }

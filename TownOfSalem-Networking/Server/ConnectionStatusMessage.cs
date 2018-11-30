@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,27 +8,19 @@ namespace TownOfSalem_Networking.Server
         public readonly int Status;
         public readonly int SuspensionTime;
 
-        public ConnectionStatusMessage(byte[] data) : base(data)
+        public ConnectionStatusMessage(int status, int suspensionTime) : base(MessageType.ConnectionStatus)
         {
-            try
-            {
-                Status = Convert.ToInt32(data[1]) - 1;
-                if (Status != 7)
-                {
-                    return;
-                }
+            Status = status;
+            SuspensionTime = suspensionTime;
+        }
 
-                var s = BytesToString(data, 2);
-                if (string.IsNullOrEmpty(s) || int.TryParse(s, out SuspensionTime))
-                {
-                    return;
-                }
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Status + 1));
 
-                SuspensionTime = 0;
-            }
-            catch (Exception ex)
+            if (Status == 7)
             {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write(Encoding.UTF8.GetBytes(SuspensionTime.ToString()));
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace TownOfSalem_Networking.Client.Game
 {
@@ -7,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Game
     {
         public string DeathNote;
 
-        public SendJailorDeathNoteMessage(string deathNote) : base(MessageType.JailorDeathNote)
+        public SendJailorDeathNoteMessage(byte[] data) : base(data)
         {
-            DeathNote = deathNote;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Convert.ToByte(DeathNote));
+            try
+            {
+                DeathNote = Convert.ToString(data[1]);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

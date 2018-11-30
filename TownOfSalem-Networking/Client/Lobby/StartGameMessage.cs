@@ -2,7 +2,7 @@
 {
     public class StartGameMessage : BaseMessage
     {
-        public StartGameMessage() : base(MessageType.LobbyStartGame)
+        public StartGameMessage(byte[] data) : base(data)
         {
         }
     }

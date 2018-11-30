@@ -1,52 +1,37 @@
-﻿using System.IO;
-using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace TownOfSalem_Networking.Client.Login
 {
     public class LoginFacebookMessage : BaseMessage
     {
-        private InternalJson _data;
+        public InternalJson Data;
 
-        public LoginFacebookMessage(string facebookId, string facebookToken, LoginType type, Platform platformId,
-            int buildId) : base(MessageType.Login)
+        public LoginFacebookMessage(byte[] data) : base(data)
         {
-            _isEncrypted = true;
-            _data = new InternalJson
+            try
             {
-                FacebookId = facebookId,
-                FacebookToken = facebookToken,
-                Type = (int)type,
-                Platform = (int)platformId,
-                BuildId = buildId
-            };
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(_data.ToJson().ToCharArray());
-        }
-
-        private class InternalJson
-        {
-            public string FacebookId;
-            public string FacebookToken;
-            public int Type;
-            public int Platform;
-            public int BuildId;
-
-            public string ToJson()
-            {
-                var json = new JObject
-                {
-                    {"facebook_id", FacebookId},
-                    {"facebook_token", FacebookToken},
-                    {"type", Type},
-                    {"platform", Platform},
-                    {"build_id", BuildId}
-                };
-
-                return json.ToString();
+                var jsonString = BytesToString(data, 1);
+                Data = JsonConvert.DeserializeObject<InternalJson>(jsonString);
             }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
+        }
+
+        public class InternalJson
+        {
+            [JsonProperty("facebook_id")]
+            public string FacebookId;
+            [JsonProperty("facebook_token")]
+            public string FacebookToken;
+            [JsonProperty("type")]
+            public int Type;
+            [JsonProperty("platform")]
+            public int Platform;
+            [JsonProperty("build_id")]
+            public int BuildId;
         }
     }
 }

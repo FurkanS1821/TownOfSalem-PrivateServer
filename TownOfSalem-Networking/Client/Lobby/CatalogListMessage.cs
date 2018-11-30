@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Lobby
 {
@@ -6,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Lobby
     {
         public int CatalogIndex;
 
-        public CatalogListMessage(int catalogIndex) : base(MessageType.CatalogList)
+        public CatalogListMessage(byte[] data) : base(data)
         {
-            CatalogIndex = catalogIndex;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)CatalogIndex);
+            try
+            {
+                CatalogIndex = data[1];
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

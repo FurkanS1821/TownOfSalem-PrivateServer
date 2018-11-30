@@ -2,7 +2,7 @@
 {
     public class FBAchievementShareMessage : BaseMessage
     {
-        public FBAchievementShareMessage() : base(MessageType.FBAchievementShare)
+        public FBAchievementShareMessage(byte[] data) : base(data)
         {
         }
     }

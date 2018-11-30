@@ -2,7 +2,7 @@
 {
     public class StartJudgementMessage : BaseMessage
     {
-        public StartJudgementMessage(byte[] data) : base(data)
+        public StartJudgementMessage() : base(MessageType.StartJudgement)
         {
         }
     }

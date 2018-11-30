@@ -2,7 +2,7 @@
 {
     public class UserJoinTooFastMessage : BaseMessage
     {
-        public UserJoinTooFastMessage(byte[] data) : base(data)
+        public UserJoinTooFastMessage() : base(MessageType.UserJoinTooFast)
         {
         }
     }

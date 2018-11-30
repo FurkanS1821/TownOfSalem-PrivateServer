@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly RegistrationFailure Reason;
 
-        public RegistrationFailureMessage(byte[] data) : base(data)
+        public RegistrationFailureMessage(RegistrationFailure reason) : base(MessageType.RegistrationFailure)
         {
-            try
-            {
-                Reason = (RegistrationFailure)Convert.ToInt32(data[1]);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Reason = reason;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)Reason);
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TownOfSalem_Networking.Client.Global
 {
@@ -8,20 +7,20 @@ namespace TownOfSalem_Networking.Client.Global
     {
         public List<int> Tips;
 
-        public TutorialProgressMessage(List<int> tips) : base(MessageType.TutorialProgress)
+        public TutorialProgressMessage(byte[] data) : base(data)
         {
-            Tips = tips;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            for (var index = 0; index < Tips.Count; ++index)
+            try
             {
-                writer.Write(Encoding.UTF8.GetBytes(Tips[index].ToString()));
-                if (index != Tips.Count - 1)
+                Tips = new List<int>();
+                var lines = BytesToString(data, 1).Split('*');
+                foreach (var line in lines)
                 {
-                    writer.Write('*');
+                    Tips.Add(Convert.ToInt32(line));
                 }
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
             }
         }
     }

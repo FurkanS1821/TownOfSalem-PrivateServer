@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int Achievement;
 
-        public EarnedAchievementMessage(byte[] data) : base(data)
+        public EarnedAchievementMessage(int achievement) : base(MessageType.EarnedAchievement)
         {
-            try
-            {
-                Achievement = Convert.ToInt32(data[1]) - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Achievement = achievement;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Achievement + 1));
         }
     }
 }

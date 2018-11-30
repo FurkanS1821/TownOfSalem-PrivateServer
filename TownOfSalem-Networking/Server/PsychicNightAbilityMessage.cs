@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,20 +8,19 @@ namespace TownOfSalem_Networking.Server
         public readonly int Type;
         public readonly List<int> Positions;
 
-        public PsychicNightAbilityMessage(byte[] data) : base(data)
+        public PsychicNightAbilityMessage(int type, List<int> positions) : base(MessageType.PsychicNightAbility)
         {
-            try
+            Type = type;
+            Positions = positions;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)Type);
+
+            foreach (var position in Positions)
             {
-                Type = data[1];
-                Positions = new List<int>(data.Length - 2);
-                for (var i = 2; i < data.Length; ++i)
-                {
-                    Positions.Add(data[i] - 1);
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(position + 1));
             }
         }
     }

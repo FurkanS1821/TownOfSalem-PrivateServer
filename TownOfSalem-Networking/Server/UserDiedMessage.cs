@@ -2,7 +2,7 @@
 {
     public class UserDiedMessage : BaseMessage
     {
-        public UserDiedMessage(byte[] data) : base(data)
+        public UserDiedMessage() : base(MessageType.UserDied)
         {
         }
     }

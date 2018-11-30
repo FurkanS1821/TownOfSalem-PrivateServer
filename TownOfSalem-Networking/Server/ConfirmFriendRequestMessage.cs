@@ -1,36 +1,38 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class ConfirmFriendRequestMessage : BaseMessage
     {
-        public readonly int AccountID;
+        public readonly int AccountId;
         public readonly ActivityStatus Status;
         public readonly bool Success;
         public readonly bool OwnsCoven;
 
-        public ConfirmFriendRequestMessage(byte[] data) : base(data)
+        public ConfirmFriendRequestMessage(int accountId, bool success, ActivityStatus status, bool ownsCoven)
+            : base(MessageType.ConfirmFriendRequest)
         {
-            try
+            AccountId = accountId;
+
+            // ReSharper disable once AssignmentInConditionalExpression
+            if (Success = success)
             {
-                var strArray = BytesToString(data, 1).Split('*');
-                int.TryParse(strArray[0], out AccountID);
-                if (strArray.Length < 3)
-                {
-                    Success = false;
-                    Status = ActivityStatus.Offline;
-                    OwnsCoven = false;
-                }
-                else
-                {
-                    Success = true;
-                    Status = (ActivityStatus)strArray[1][0];
-                    OwnsCoven = GetBoolValue(Convert.ToByte(strArray[2][0]));
-                }
+                Status = status;
+                OwnsCoven = ownsCoven;
             }
-            catch (Exception ex)
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(AccountId.ToString()));
+
+            if (Success)
             {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write('*');
+                writer.Write((byte)Status);
+                writer.Write('*');
+                writer.Write((byte)(OwnsCoven ? 2 : 0));
             }
         }
     }

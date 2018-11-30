@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,26 +7,22 @@ namespace TownOfSalem_Networking.Server
     {
         public UserStatistics Statistics;
 
-        public UserStatisticsMessage(byte[] data) : base(data)
+        public UserStatisticsMessage(UserStatistics statistics) : base(MessageType.UserStatistics)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split('*');
-                Statistics = new UserStatistics
-                {
-                    GamesPlayed = int.Parse(strArray[0]),
-                    GamesWon = int.Parse(strArray[1]),
-                    GamesDrawn = int.Parse(strArray[2]),
-                    GamesDisconnected = int.Parse(strArray[3]),
-                    FriendsReferred = int.Parse(strArray[4])
-                };
+            Statistics = statistics;
+        }
 
-                Statistics.GamesLost = Statistics.GamesPlayed - (Statistics.GamesWon + Statistics.GamesDrawn);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Statistics.GamesPlayed.ToString()));
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(Statistics.GamesWon.ToString()));
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(Statistics.GamesDrawn.ToString()));
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(Statistics.GamesDisconnected.ToString()));
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(Statistics.FriendsReferred.ToString()));
         }
     }
 }

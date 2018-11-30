@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,18 +8,19 @@ namespace TownOfSalem_Networking.Server
         public readonly int NightsUntilAttackAvailable;
         public readonly int NightsUntilInvestigateAvailable;
 
-        public PotionMasterPotionsMessage(byte[] data) : base(data)
+        public PotionMasterPotionsMessage(int nightsUntilHealAvailable, int nightsUntilAttackAvailable,
+            int nightsUntilInvestigateAvailable) : base(MessageType.PotionMasterPotions)
         {
-            try
-            {
-                NightsUntilHealAvailable = data[1] - 1;
-                NightsUntilAttackAvailable = data[2] - 1;
-                NightsUntilInvestigateAvailable = data[3] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            NightsUntilHealAvailable = nightsUntilHealAvailable;
+            NightsUntilAttackAvailable = nightsUntilAttackAvailable;
+            NightsUntilInvestigateAvailable = nightsUntilInvestigateAvailable;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(NightsUntilHealAvailable + 1));
+            writer.Write((byte)(NightsUntilAttackAvailable + 1));
+            writer.Write((byte)(NightsUntilInvestigateAvailable + 1));
         }
     }
 }

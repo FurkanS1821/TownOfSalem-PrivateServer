@@ -2,7 +2,7 @@
 {
     public class StartNightTransitionMessage : BaseMessage
     {
-        public StartNightTransitionMessage(byte[] data) : base(data)
+        public StartNightTransitionMessage() : base(MessageType.StartNightTransition)
         {
         }
     }

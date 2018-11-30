@@ -1,27 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class AfterGameScreenUserInfoMessage : BaseMessage
     {
-        public readonly Dictionary<int, EndGamePartyMemberStatus> UserState =
-            new Dictionary<int, EndGamePartyMemberStatus>();
+        public readonly Dictionary<int, EndGamePartyMemberStatus> UserStates;
 
-        public AfterGameScreenUserInfoMessage(byte[] data) : base(data)
+        public AfterGameScreenUserInfoMessage(Dictionary<int, EndGamePartyMemberStatus> userStates)
+            : base(MessageType.AfterGameScreenUserInfo)
         {
-            try
+            UserStates = userStates;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < UserStates.Count; i++)
             {
-                var index = 1;
-                while (index < data.Length)
+                var userState = UserStates.ElementAt(i);
+                writer.Write((byte)(userState.Key + 1));
+                writer.Write(',');
+                writer.Write((byte)userState.Value);
+
+                if (i < UserStates.Count - 1)
                 {
-                    UserState.Add(data[index] - 1, (EndGamePartyMemberStatus) data[index + 2]);
-                    index += 4;
+                    writer.Write(Encoding.UTF8.GetBytes("**"));
                 }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
             }
         }
     }

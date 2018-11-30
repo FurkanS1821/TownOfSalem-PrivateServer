@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,17 +7,16 @@ namespace TownOfSalem_Networking.Server
         public readonly int Position;
         public readonly int RoleId;
 
-        public AmnesiacConvertedToMafiaOrWitch(byte[] data) : base(data)
+        public AmnesiacConvertedToMafiaOrWitch(int position, int roleId) : base(MessageType.AmnesiacConvertedToMafiaOrWitch)
         {
-            try
-            {
-                Position = data[1] - 1;
-                RoleId = data[1] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Position = position;
+            RoleId = roleId;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Position + 1));
+            writer.Write((byte)(RoleId + 1));
         }
     }
 }

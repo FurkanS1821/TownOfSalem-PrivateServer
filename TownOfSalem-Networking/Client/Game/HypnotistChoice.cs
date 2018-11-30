@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Game
 {
@@ -6,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Game
     {
         public int Choice;
 
-        public HypnotistChoiceMessage(int choice) : base(MessageType.HypnotistChoice)
+        public HypnotistChoiceMessage(byte[] data) : base(data)
         {
-            Choice = choice;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Choice.ToString());
+            try
+            {
+                Choice = int.Parse(BytesToString(data, 1));
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

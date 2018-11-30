@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int NewHostPosition;
 
-        public AssignNewHostMessage(byte[] data) : base(data)
+        public AssignNewHostMessage(int newHostPosition) : base(MessageType.AssignNewHost)
         {
-            try
-            {
-                NewHostPosition = data[1] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            NewHostPosition = newHostPosition;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(NewHostPosition + 1));
         }
     }
 }

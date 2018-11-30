@@ -1,21 +1,19 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
     public class RegistrationResultMessage : BaseMessage
     {
-        public readonly RegistrationStatus Status = RegistrationStatus.Failed;
+        public readonly RegistrationStatus Status;
 
-        public RegistrationResultMessage(byte[] data) : base(data)
+        public RegistrationResultMessage(RegistrationStatus status) : base(MessageType.RegistrationResult)
         {
-            try
-            {
-                Status = (RegistrationStatus)(data[1] - 1);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Status = status;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Status + 1));
         }
     }
 }

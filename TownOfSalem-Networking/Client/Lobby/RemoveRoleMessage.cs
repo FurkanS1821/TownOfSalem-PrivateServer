@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Lobby
 {
@@ -6,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Lobby
     {
         public int RoleIndex;
 
-        public RemoveRoleMessage(int roleIndex) : base(MessageType.RemoveRole)
+        public RemoveRoleMessage(byte[] data) : base(data)
         {
-            RoleIndex = roleIndex;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)(RoleIndex + 1));
+            try
+            {
+                RoleIndex = data[1] - 1;
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

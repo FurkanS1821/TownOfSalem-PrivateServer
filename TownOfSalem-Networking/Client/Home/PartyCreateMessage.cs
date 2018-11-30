@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 
 namespace TownOfSalem_Networking.Client.Home
 {
@@ -8,15 +6,16 @@ namespace TownOfSalem_Networking.Client.Home
     {
         public int GameBrand;
 
-        public PartyCreateMessage() : base(MessageType.PartyCreate)
+        public PartyCreateMessage(byte[] data) : base(data)
         {
-            GameBrand = Convert.ToInt32(GlobalServiceLocator.UserService.CurrentBrand);
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            Debug.Write($"Sending party create request to server (CharCode equivalents): 31 & GameBrand: {GameBrand + 1}");
-            writer.Write((byte)(GameBrand + 1));
+            try
+            {
+                GameBrand = data[1] - 1;
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

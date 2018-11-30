@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,19 +9,21 @@ namespace TownOfSalem_Networking.Server
         public readonly int TownPoints;
         public readonly int MeritPoints;
 
-        public UserInformationMessage(byte[] data) : base(data)
+        public UserInformationMessage(string username, int townPoints, int meritPoints)
+            : base(MessageType.UserInformation)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split('*');
-                Username = strArray[0];
-                TownPoints = int.Parse(strArray[1]);
-                MeritPoints = int.Parse(strArray[2]);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Username = username;
+            TownPoints = townPoints;
+            MeritPoints = meritPoints;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Username));
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(TownPoints.ToString()));
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(MeritPoints.ToString()));
         }
     }
 }

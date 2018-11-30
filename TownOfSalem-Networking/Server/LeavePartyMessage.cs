@@ -2,7 +2,7 @@
 {
     public class LeavePartyMessage : BaseMessage
     {
-        public LeavePartyMessage(byte[] data) : base(data)
+        public LeavePartyMessage() : base(MessageType.LeaveParty)
         {
         }
     }

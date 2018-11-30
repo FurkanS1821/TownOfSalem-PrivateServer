@@ -2,7 +2,7 @@
 {
     public class BeingJailedMessage : BaseMessage
     {
-        public BeingJailedMessage(byte[] data) : base(data)
+        public BeingJailedMessage() : base(MessageType.BeingJailed)
         {
         }
     }

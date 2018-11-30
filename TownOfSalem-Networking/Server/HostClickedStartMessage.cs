@@ -2,7 +2,7 @@
 {
     public class HostClickedStartMessage : BaseMessage
     {
-        public HostClickedStartMessage(byte[] data) : base(data)
+        public HostClickedStartMessage() : base(MessageType.HostClickedStart)
         {
         }
     }

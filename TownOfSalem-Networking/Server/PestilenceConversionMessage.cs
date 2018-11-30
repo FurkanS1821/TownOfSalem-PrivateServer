@@ -2,7 +2,7 @@
 {
     public class PestilenceConversionMessage : BaseMessage
     {
-        public PestilenceConversionMessage(byte[] data) : base(data)
+        public PestilenceConversionMessage() : base(MessageType.PestilenceConversion)
         {
         }
     }

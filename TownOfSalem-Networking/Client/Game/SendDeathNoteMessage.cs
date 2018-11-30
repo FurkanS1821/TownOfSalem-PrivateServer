@@ -1,20 +1,21 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Game
 {
     public class SendDeathNoteMessage : BaseMessage
     {
-        public string DeathNode;
+        public string DeathNote;
 
-        public SendDeathNoteMessage(string deathNote) : base(MessageType.SendDeathNote)
+        public SendDeathNoteMessage(byte[] data) : base(data)
         {
-            DeathNode = deathNote;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(DeathNode));
+            try
+            {
+                DeathNote = BytesToString(data, 1);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Global
 {
@@ -6,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Global
     {
         public AFKStatus Status;
 
-        public AFKMessage(AFKStatus status) : base(MessageType.AwayFromKeyboard)
+        public AFKMessage(byte[] data) : base(data)
         {
-            Status = status;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)Status);
+            try
+            {
+                Status = (AFKStatus)data[1];
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

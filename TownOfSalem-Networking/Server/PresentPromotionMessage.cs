@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Globalization;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -10,21 +12,27 @@ namespace TownOfSalem_Networking.Server
         public readonly int DurationSeconds;
         public readonly string ProductId;
 
-        public PresentPromotionMessage(byte[] data) : base(data)
+        public PresentPromotionMessage(int promotionId, int promotionInstanceId, float discount, int durationSeconds,
+            string productId) : base(MessageType.PresentPromotion)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split(',');
-                PromotionId = int.Parse(strArray[0]);
-                PromotionInstanceId = int.Parse(strArray[1]);
-                Discount = float.Parse(strArray[2]);
-                DurationSeconds = int.Parse(strArray[3]);
-                ProductId = strArray[4];
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            PromotionId = promotionId;
+            PromotionInstanceId = promotionInstanceId;
+            Discount = discount;
+            DurationSeconds = durationSeconds;
+            ProductId = productId;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(PromotionId.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(PromotionInstanceId.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(Discount.ToString(CultureInfo.InvariantCulture)));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(DurationSeconds.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(ProductId));
         }
     }
 }

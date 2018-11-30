@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public LoginStatus Status;
 
-        public LoginResultMessage(byte[] data) : base(data)
+        public LoginResultMessage(LoginStatus status) : base(MessageType.LoginResult)
         {
-            try
-            {
-                Status = (LoginStatus)(data[1] - 1);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Status = status;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Status + 1));
         }
     }
 }

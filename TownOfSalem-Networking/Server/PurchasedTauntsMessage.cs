@@ -1,29 +1,33 @@
-﻿
-
-
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class PurchasedTauntsMessage : BaseMessage
     {
-        public Dictionary<int, int> Taunts = new Dictionary<int, int>();
+        public Dictionary<int, int> Taunts;
 
-        public PurchasedTauntsMessage(byte[] data) : base(data)
+        public PurchasedTauntsMessage(Dictionary<int, int> taunts) : base(MessageType.PurchasedTaunts)
         {
-            try
+            Taunts = taunts;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < Taunts.Count; i++)
             {
-                var str1 = BytesToString(data, 1);
-                foreach (var str2 in str1.Split(','))
+                var taunt = Taunts.ElementAt(i);
+
+                writer.Write(Encoding.UTF8.GetBytes(taunt.Key.ToString()));
+                writer.Write('*');
+                writer.Write(Encoding.UTF8.GetBytes(taunt.Value.ToString()));
+
+                if (i < Taunts.Count - 1)
                 {
-                    var strArray = str2.Split('*');
-                    Taunts.Add(int.Parse(strArray[0]), int.Parse(strArray[1]));
+                    writer.Write(',');
                 }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
             }
         }
     }

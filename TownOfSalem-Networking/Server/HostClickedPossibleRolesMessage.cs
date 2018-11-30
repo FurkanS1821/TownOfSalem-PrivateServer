@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int Selected;
 
-        public HostClickedPossibleRolesMessage(byte[] data) : base(data)
+        public HostClickedPossibleRolesMessage(int selected) : base(MessageType.HostClickedPossibleRoles)
         {
-            try
-            {
-                Selected = data[1];
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Selected = selected;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Selected));
         }
     }
 }

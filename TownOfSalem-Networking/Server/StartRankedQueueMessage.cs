@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,15 +8,16 @@ namespace TownOfSalem_Networking.Server
         public readonly int IsRequeue;
         public readonly int SecondsUntilQueue;
 
-        public StartRankedQueueMessage(byte[] data) : base(data)
+        public StartRankedQueueMessage(int isRequeue, int secondsUntilQueue) : base(MessageType.StartRankedQueue)
         {
-            if (data.Length < 3)
-            {
-                return;
-            }
+            IsRequeue = isRequeue;
+            SecondsUntilQueue = secondsUntilQueue;
+        }
 
-            IsRequeue = Convert.ToInt32(data[1]) - 1;
-            int.TryParse(BytesToString(data, 2), out SecondsUntilQueue);
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(IsRequeue + 1));
+            writer.Write(Encoding.UTF8.GetBytes(SecondsUntilQueue.ToString()));
         }
     }
 }

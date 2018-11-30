@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Login
 {
@@ -11,27 +10,34 @@ namespace TownOfSalem_Networking.Client.Login
         public string ReferFriendName;
         public string SteamAuthTicket;
 
-        public SteamCreateAccountMessage(string username, string password, string email, string referFriendName,
-            string steamAuthTicket) : base(MessageType.SteamCreateAccount)
+        public SteamCreateAccountMessage(byte[] data) : base(data)
         {
-            Username = username;
-            Password = password;
-            Email = email;
-            ReferFriendName = referFriendName;
-            SteamAuthTicket = steamAuthTicket;
-        }
+            try
+            {
+                var index = 1;
+                var usernameLength = data[index++];
+                var passwordLength = data[index++];
+                var emailLength = data[index++];
+                var referFriendLength = data[index++];
 
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)Encoding.UTF8.GetByteCount(Username));
-            writer.Write((byte)Encoding.UTF8.GetByteCount(Password));
-            writer.Write((byte)Encoding.UTF8.GetByteCount(Email));
-            writer.Write((byte)Encoding.UTF8.GetByteCount(ReferFriendName));
-            writer.Write(Encoding.UTF8.GetBytes(Username));
-            writer.Write(Encoding.UTF8.GetBytes(Password));
-            writer.Write(Encoding.UTF8.GetBytes(Email));
-            writer.Write(Encoding.UTF8.GetBytes(ReferFriendName));
-            writer.Write(Encoding.UTF8.GetBytes(SteamAuthTicket));
+                Username = BytesToString(data, index, usernameLength);
+                index += usernameLength;
+
+                Password = BytesToString(data, index, passwordLength);
+                index += passwordLength;
+
+                Email = BytesToString(data, index, emailLength);
+                index += emailLength;
+
+                ReferFriendName = BytesToString(data, index, referFriendLength);
+                index += referFriendLength;
+
+                SteamAuthTicket = BytesToString(data, index);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

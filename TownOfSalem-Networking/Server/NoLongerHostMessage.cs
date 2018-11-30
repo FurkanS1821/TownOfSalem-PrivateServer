@@ -2,7 +2,7 @@
 {
     public class NoLongerHostMessage : BaseMessage
     {
-        public NoLongerHostMessage(byte[] data) : base(data)
+        public NoLongerHostMessage() : base(MessageType.NoLongerHost)
         {
         }
     }

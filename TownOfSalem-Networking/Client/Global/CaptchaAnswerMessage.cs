@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Global
 {
@@ -7,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Global
     {
         public string Answer;
 
-        public CaptchaAnswerMessage(string answer) : base(MessageType.CaptchaAnswer)
+        public CaptchaAnswerMessage(byte[] data) : base(data)
         {
-            Answer = answer.Trim();
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(Answer));
+            try
+            {
+                Answer = BytesToString(data, 1);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class MafiaPromotedMessage : BaseMessage
     {
-        public MafiaPromotedMessage(byte[] data) : base(data)
+        public MafiaPromotedMessage() : base(MessageType.MafiaPromoted)
         {
         }
     }

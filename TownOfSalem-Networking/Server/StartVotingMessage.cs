@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int TimeRemainingSeconds;
 
-        public StartVotingMessage(byte[] data) : base(data)
+        public StartVotingMessage(int timeRemainingSeconds) : base(MessageType.StartVoting)
         {
-            try
-            {
-                TimeRemainingSeconds = Convert.ToByte(data[1]);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            TimeRemainingSeconds = timeRemainingSeconds;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)TimeRemainingSeconds);
         }
     }
 }

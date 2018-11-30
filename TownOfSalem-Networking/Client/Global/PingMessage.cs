@@ -2,7 +2,7 @@
 {
     public class PingMessage : BaseMessage
     {
-        public PingMessage() : base(MessageType.Ping)
+        public PingMessage(byte[] data) : base(data)
         {
         }
     }

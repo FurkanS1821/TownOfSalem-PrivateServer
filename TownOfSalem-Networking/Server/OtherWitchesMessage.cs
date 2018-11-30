@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,22 +7,18 @@ namespace TownOfSalem_Networking.Server
         public readonly int[] Positions;
         public readonly int[] Roles;
 
-        public OtherWitchesMessage(byte[] data) : base(data)
+        public OtherWitchesMessage(int[] positions, int[] roles) : base(MessageType.OtherWitches)
         {
-            try
+            Positions = positions;
+            Roles = roles;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < Positions.Length; i++)
             {
-                var length = (data.Length - 1) / 2;
-                Positions = new int[length];
-                Roles = new int[length];
-                for (var i = 0; i < length; ++i)
-                {
-                    Positions[i] = Convert.ToInt32(data[1 + i * 2]) - 1;
-                    Roles[i] = Convert.ToInt32(data[2 + i * 2]) - 1;
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(Positions[i] + 1));
+                writer.Write((byte)(Roles[i] + 1));
             }
         }
     }

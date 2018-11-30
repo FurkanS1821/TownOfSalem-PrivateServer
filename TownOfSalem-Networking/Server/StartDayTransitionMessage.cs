@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
     public class StartDayTransitionMessage : BaseMessage
     {
-        public readonly List<int> DeadPositions = new List<int>();
+        public readonly List<int> DeadPositions;
 
-        public StartDayTransitionMessage(byte[] data) : base(data)
+        public StartDayTransitionMessage(List<int> deadPositions) : base(MessageType.StartDayTransition)
         {
-            try
+            DeadPositions = deadPositions;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            foreach (var dead in DeadPositions)
             {
-                for (var i = 1; i < data.Length; ++i)
-                {
-                    DeadPositions.Add(data[i] - 1);
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(dead + 1));
             }
         }
     }

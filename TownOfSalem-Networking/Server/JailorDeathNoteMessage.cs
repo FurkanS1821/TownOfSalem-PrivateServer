@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,18 +8,18 @@ namespace TownOfSalem_Networking.Server
         public readonly bool HasLastWill;
         public readonly int Choice;
 
-        public JailorDeathNoteMessage(byte[] data) : base(data)
+        public JailorDeathNoteMessage(int position, bool hasLastWill, int choice) : base(MessageType.JailorDeathNote)
         {
-            try
-            {
-                Position = data[1] - 1;
-                HasLastWill = GetBoolValue(data[2]);
-                Choice = data[3] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Position = position;
+            HasLastWill = hasLastWill;
+            Choice = choice;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Position + 1));
+            writer.Write((byte)(HasLastWill ? 2 : 0));
+            writer.Write((byte)(Choice + 1));
         }
     }
 }

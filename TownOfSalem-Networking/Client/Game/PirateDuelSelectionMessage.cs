@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Game
 {
@@ -6,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Game
     {
         public int Selection;
 
-        public PirateDuelSelectionMessage(int selection) : base(MessageType.PirateDuelSelection)
+        public PirateDuelSelectionMessage(byte[] data) : base(data)
         {
-            Selection = selection;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)Selection);
+            try
+            {
+                Selection = data[1];
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

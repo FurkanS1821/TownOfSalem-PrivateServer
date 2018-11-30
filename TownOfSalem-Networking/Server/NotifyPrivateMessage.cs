@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,17 +7,16 @@ namespace TownOfSalem_Networking.Server
         public readonly int FromPosition;
         public readonly int ToPosition;
 
-        public NotifyPrivateMessage(byte[] data) : base(data)
+        public NotifyPrivateMessage(int fromPosition, int toPosition) : base(MessageType.NotifyPrivateMessage)
         {
-            try
-            {
-                FromPosition = data[1] - 1;
-                ToPosition = data[2] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            FromPosition = fromPosition;
+            ToPosition = toPosition;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(FromPosition + 1));
+            writer.Write((byte)(ToPosition + 1));
         }
     }
 }

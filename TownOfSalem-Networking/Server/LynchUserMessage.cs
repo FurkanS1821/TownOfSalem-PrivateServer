@@ -2,7 +2,7 @@
 {
     public class LynchUserMessage : BaseMessage
     {
-        public LynchUserMessage(byte[] data) : base(data)
+        public LynchUserMessage() : base(MessageType.LynchUser)
         {
         }
     }

@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
     public class JesterCompletedGoalMessage : BaseMessage
     {
-        public readonly List<int> GuiltyVotePositions = new List<int>();
+        public readonly List<int> GuiltyVotePositions;
 
-        public JesterCompletedGoalMessage(byte[] data) : base(data)
+        public JesterCompletedGoalMessage(List<int> guiltyVotePositions) : base(MessageType.JesterCompletedGoal)
         {
-            try
+            GuiltyVotePositions = guiltyVotePositions;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            foreach (var guiltyVote in GuiltyVotePositions)
             {
-                for (var index = 1; index < data.Length; ++index) GuiltyVotePositions.Add(data[index] - 1);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(guiltyVote + 1));
             }
         }
     }

@@ -2,8 +2,7 @@
 {
     public class RequestCauldronStatusMessage : BaseMessage
     {
-        public RequestCauldronStatusMessage()
-            : base(MessageType.RequestCauldronStatus)
+        public RequestCauldronStatusMessage(byte[] data) : base(data)
         {
         }
     }

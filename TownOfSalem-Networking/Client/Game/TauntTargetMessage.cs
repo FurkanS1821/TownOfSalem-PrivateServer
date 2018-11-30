@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Game
 {
@@ -8,18 +8,18 @@ namespace TownOfSalem_Networking.Client.Game
         public int SubTarget;
         public int TauntId;
 
-        public TauntTargetMessage(int position, int subTarget, int tauntId) : base(MessageType.TauntTarget)
+        public TauntTargetMessage(byte[] data) : base(data)
         {
-            Position = position;
-            SubTarget = subTarget;
-            TauntId = tauntId;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)(Position + 1));
-            writer.Write((byte)(SubTarget + 1));
-            writer.Write((byte)(TauntId + 1));
+            try
+            {
+                Position = data[1] - 1;
+                SubTarget = data[2] - 1;
+                TauntId = data[3] - 1;
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

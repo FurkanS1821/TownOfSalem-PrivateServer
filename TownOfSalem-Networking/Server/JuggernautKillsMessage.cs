@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int Kills;
 
-        public JuggernautKillsMessage(byte[] data) : base(data)
+        public JuggernautKillsMessage(int kills) : base(MessageType.JuggernautKills)
         {
-            try
-            {
-                Kills = data[1] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Kills = kills;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Kills + 1));
         }
     }
 }

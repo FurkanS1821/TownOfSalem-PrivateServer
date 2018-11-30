@@ -1,37 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class ActiveSpecialEventsMessage : BaseMessage
     {
-        public List<SpecialEvent> SpecialEvents = new List<SpecialEvent>();
+        public List<SpecialEvent> SpecialEvents;
 
-        public ActiveSpecialEventsMessage(byte[] data) : base(data)
+        public ActiveSpecialEventsMessage(List<SpecialEvent> specialEvents) : base(MessageType.ActiveSpecialEvents)
         {
-            try
+            SpecialEvents = specialEvents;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < SpecialEvents.Count; i++)
             {
-                SpecialEvents.Clear();
-                var str1 = BytesToString(data, 1);
-                var chArray1 = new[] {'*'};
-                foreach (var str2 in str1.Split(chArray1))
+                var specialEvent = SpecialEvents[i];
+
+                writer.Write(Encoding.UTF8.GetBytes(specialEvent.Type.ToString()));
+                writer.Write(',');
+                writer.Write(Encoding.UTF8.GetBytes(specialEvent.Data));
+                writer.Write(',');
+                writer.Write(Encoding.UTF8.GetBytes(specialEvent.StartTime.ToString()));
+                writer.Write(',');
+                writer.Write(Encoding.UTF8.GetBytes(specialEvent.EndTime.ToString()));
+
+                if (i < SpecialEvents.Count - 1)
                 {
-                    var chArray2 = new[] {','};
-                    var strArray = str2.Split(chArray2);
-                    if (strArray.Length == 4)
-                    {
-                        SpecialEvents.Add(new SpecialEvent(
-                            int.Parse(strArray[0]),
-                            strArray[1],
-                            int.Parse(strArray[2]),
-                            int.Parse(strArray[3])
-                        ));
-                    }
+                    writer.Write('*');
                 }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
             }
         }
     }

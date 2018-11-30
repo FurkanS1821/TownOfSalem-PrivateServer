@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Game
 {
@@ -6,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Game
     {
         public int TargetPosition;
 
-        public MafiaTargetMessage(int targetPosition) : base(MessageType.MafiaTarget)
+        public MafiaTargetMessage(byte[] data) : base(data)
         {
-            TargetPosition = targetPosition;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)(TargetPosition + 1));
+            try
+            {
+                TargetPosition = data[1] - 1;
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

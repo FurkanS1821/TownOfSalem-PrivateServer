@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Global
 {
@@ -8,17 +7,18 @@ namespace TownOfSalem_Networking.Client.Global
         public int AccountId;
         public string Name;
 
-        public FriendConfirmMessage(int accountId, string name) : base(MessageType.FriendConfirm)
+        public FriendConfirmMessage(byte[] data) : base(data)
         {
-            AccountId = accountId;
-            Name = name;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(Name));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(AccountId.ToString()));
+            try
+            {
+                var lines = BytesToString(data, 1).Split(new[] {'*'}, 2);
+                Name = lines[0];
+                AccountId = Convert.ToInt32(lines[1]);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class KickedFromPartyMessage : BaseMessage
     {
-        public KickedFromPartyMessage(byte[] data) : base(data)
+        public KickedFromPartyMessage() : base(MessageType.KickedMeFromParty)
         {
         }
     }

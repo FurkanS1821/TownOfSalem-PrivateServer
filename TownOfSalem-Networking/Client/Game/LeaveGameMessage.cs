@@ -2,9 +2,8 @@
 {
     public class LeaveGameMessage : BaseMessage
     {
-        public LeaveGameMessage() : base(MessageType.LeaveGame)
+        public LeaveGameMessage(byte[] data) : base(data)
         {
-
         }
     }
 }

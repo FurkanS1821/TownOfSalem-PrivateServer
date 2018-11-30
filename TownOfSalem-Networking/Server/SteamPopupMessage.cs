@@ -2,7 +2,7 @@
 {
     public class SteamPopupMessage : BaseMessage
     {
-        public SteamPopupMessage(byte[] data) : base(data)
+        public SteamPopupMessage() : base(MessageType.SteamPopup)
         {
         }
     }

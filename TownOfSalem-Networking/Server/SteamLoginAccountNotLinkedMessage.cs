@@ -2,7 +2,7 @@
 {
     public class SteamLoginAccountNotLinkedMessage : BaseMessage
     {
-        public SteamLoginAccountNotLinkedMessage(byte[] data) : base(data)
+        public SteamLoginAccountNotLinkedMessage() : base(MessageType.SteamLoginAccountNotLinked)
         {
         }
     }

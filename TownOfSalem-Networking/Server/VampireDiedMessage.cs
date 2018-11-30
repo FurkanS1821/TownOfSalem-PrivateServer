@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,22 +7,22 @@ namespace TownOfSalem_Networking.Server
         public readonly int DeadPosition;
         public readonly int? YoungestPosition;
 
-        public VampireDiedMessage(byte[] data) : base(data)
+        public VampireDiedMessage(int deadPosition, int? youngestPosition) : base(MessageType.VampireDied)
         {
-            try
-            {
-                DeadPosition = data[1] - 1;
-                if (data.Length < 3)
-                {
-                    return;
-                }
+            DeadPosition = deadPosition;
+            YoungestPosition = youngestPosition;
+        }
 
-                YoungestPosition = data[2] - 1;
-            }
-            catch (Exception ex)
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(DeadPosition + 1));
+
+            if (!YoungestPosition.HasValue)
             {
-                ThrowNetworkMessageFormatException(ex);
+                return;
             }
+
+            writer.Write((byte)(YoungestPosition + 1));
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class MediumTalkingToUsMessage : BaseMessage
     {
-        public MediumTalkingToUsMessage(byte[] data) : base(data)
+        public MediumTalkingToUsMessage() : base(MessageType.MediumTalkingToUs)
         {
         }
     }

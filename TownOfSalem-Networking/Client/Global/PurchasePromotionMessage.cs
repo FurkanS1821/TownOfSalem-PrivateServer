@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Global
 {
@@ -7,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Global
     {
         public int PromotionInstanceId;
 
-        public PurchasePromotionMessage(int promotionInstanceId) : base(MessageType.PurchasePromotion)
+        public PurchasePromotionMessage(byte[] data) : base(data)
         {
-            PromotionInstanceId = promotionInstanceId;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(PromotionInstanceId.ToString()));
+            try
+            {
+                PromotionInstanceId = Convert.ToInt32(BytesToString(data, 1));
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

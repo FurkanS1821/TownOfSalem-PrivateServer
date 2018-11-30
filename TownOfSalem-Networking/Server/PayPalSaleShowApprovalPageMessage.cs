@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +7,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly string Url;
 
-        public PayPalSaleShowApprovalPageMessage(byte[] data) : base(data)
+        public PayPalSaleShowApprovalPageMessage(string url) : base(0) // todo
         {
-            try
-            {
-                Url = BytesToString(data, 1);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Url = url;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Url));
         }
     }
 }

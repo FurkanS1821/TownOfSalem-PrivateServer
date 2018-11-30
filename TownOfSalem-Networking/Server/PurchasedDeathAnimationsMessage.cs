@@ -1,25 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class PurchasedDeathAnimationsMessage : BaseMessage
     {
-        public List<int> DeathAnimations = new List<int>();
+        public List<int> DeathAnimations;
 
-        public PurchasedDeathAnimationsMessage(byte[] data) : base(data)
+        public PurchasedDeathAnimationsMessage(List<int> deathAnimations) : base(MessageType.PurchasedDeathAnimations)
         {
-            try
+            DeathAnimations = deathAnimations;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < DeathAnimations.Count; i++)
             {
-                var str = BytesToString(data, 1);
-                foreach (var s in str.Split(','))
+                writer.Write(Encoding.UTF8.GetBytes(DeathAnimations[i].ToString()));
+
+                if (i < DeathAnimations.Count - 1)
                 {
-                    DeathAnimations.Add(int.Parse(s));
+                    writer.Write(',');
                 }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
             }
         }
     }

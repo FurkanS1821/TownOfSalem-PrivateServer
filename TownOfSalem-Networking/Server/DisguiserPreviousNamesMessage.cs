@@ -2,7 +2,7 @@
 {
     public class DisguiserPreviousNamesMessage : BaseMessage
     {
-        public DisguiserPreviousNamesMessage(byte[] data) : base(data)
+        public DisguiserPreviousNamesMessage() : base(MessageType._UNUSED_DISGUISER_PREVIOUS_NAMES)
         {
         }
     }

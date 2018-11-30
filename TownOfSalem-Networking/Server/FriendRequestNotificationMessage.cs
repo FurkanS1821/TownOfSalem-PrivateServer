@@ -1,26 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class FriendRequestNotificationMessage : BaseMessage
     {
-        public List<FriendRequest> Notifications = new List<FriendRequest>();
+        public List<FriendRequest> Notifications;
 
-        public FriendRequestNotificationMessage(byte[] data) : base(data)
+        public FriendRequestNotificationMessage(List<FriendRequest> notifications)
+            : base(MessageType.FriendRequestNotification)
         {
-            try
+            Notifications = notifications;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < Notifications.Count; i++)
             {
-                var str1 = BytesToString(data, 1);
-                foreach (var str2 in str1.Split('*'))
+                var notification = Notifications[i];
+
+                writer.Write(Encoding.UTF8.GetBytes(notification.UserName));
+                writer.Write(',');
+                writer.Write(Encoding.UTF8.GetBytes(notification.AccountId.ToString()));
+
+                if (i < Notifications.Count - 1)
                 {
-                    var strArray = str2.Split(',');
-                    Notifications.Add(new FriendRequest(strArray[0], int.Parse(strArray[1])));
+                    writer.Write('*');
                 }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
             }
         }
     }

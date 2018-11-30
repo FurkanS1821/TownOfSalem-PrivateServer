@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,16 +8,14 @@ namespace TownOfSalem_Networking.Server
         private const byte NAME_AVAILABLE = 1;
         private const byte NAME_UNAVAILABLE = 2;
 
-        public CheckUsernameResultMessage(byte[] data) : base(data)
+        public CheckUsernameResultMessage(bool isAvailable) : base(MessageType.CheckUsernameResult)
         {
-            try
-            {
-                IsAvailable = Convert.ToByte(data[1]) == 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            IsAvailable = isAvailable;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(IsAvailable ? NAME_AVAILABLE : NAME_UNAVAILABLE);
         }
     }
 }

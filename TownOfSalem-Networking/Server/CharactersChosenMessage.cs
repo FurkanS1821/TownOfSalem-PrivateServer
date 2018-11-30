@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
     public class CharactersChosenMessage : BaseMessage
     {
-        public readonly Dictionary<int, int> Characters = new Dictionary<int, int>();
+        public readonly Dictionary<int, int> Characters;
 
-        public CharactersChosenMessage(byte[] data) : base(data)
+        public CharactersChosenMessage(Dictionary<int, int> characters) : base(MessageType.CharactersChosen)
         {
-            try
+            Characters = characters;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            foreach (var character in Characters)
             {
-                var index = 1;
-                while (index < data.Length)
-                {
-                    Characters.Add(data[index] - 1, data[index + 1] - 1);
-                    index += 2;
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(character.Key + 1));
+                writer.Write((byte)(character.Value + 1));
             }
         }
     }

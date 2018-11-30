@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,18 +8,19 @@ namespace TownOfSalem_Networking.Server
         public readonly int TargetPosition;
         public readonly int VoteCount;
 
-        public UserCanceledVoteMessage(byte[] data) : base(data)
+        public UserCanceledVoteMessage(int sourcePosition, int targetPosition, int voteCount)
+            : base(MessageType.UserCanceledVote)
         {
-            try
-            {
-                SourcePosition = Convert.ToInt32(data[1]) - 1;
-                TargetPosition = Convert.ToInt32(data[2]) - 1;
-                VoteCount = Convert.ToInt32(data[3]);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            SourcePosition = sourcePosition;
+            TargetPosition = targetPosition;
+            VoteCount = voteCount;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(SourcePosition + 1));
+            writer.Write((byte)(TargetPosition + 1));
+            writer.Write((byte)VoteCount);
         }
     }
 }

@@ -1,20 +1,12 @@
-﻿using System.IO;
-using System.Text;
-
-namespace TownOfSalem_Networking.Client.Home
+﻿namespace TownOfSalem_Networking.Client.Home
 {
     public class PartyMessage : BaseMessage
     {
         public string Message;
 
-        public PartyMessage(string message) : base(MessageType.PartyMessage)
+        public PartyMessage(byte[] data) : base(data)
         {
-            Message = message;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(Message));
+            Message = BytesToString(data, 1);
         }
     }
 }

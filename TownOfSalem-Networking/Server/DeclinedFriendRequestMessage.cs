@@ -2,7 +2,7 @@
 {
     public class DeclinedFriendRequestMessage : BaseMessage
     {
-        public DeclinedFriendRequestMessage(byte[] data) : base(data)
+        public DeclinedFriendRequestMessage() : base(MessageType.DeclinedFriendRequest)
         {
         }
     }

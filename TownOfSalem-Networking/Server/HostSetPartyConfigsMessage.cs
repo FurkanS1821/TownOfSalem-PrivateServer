@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,18 +8,18 @@ namespace TownOfSalem_Networking.Server
         public readonly int GameMode;
         public readonly int Result;
 
-        public HostSetPartyConfigsMessage(byte[] data) : base(data)
+        public HostSetPartyConfigsMessage(int brand, int gameMode, int result) : base(MessageType.HostSetPartyConfigs)
         {
-            try
-            {
-                Brand = data[1] - 1;
-                GameMode = data[2] - 1;
-                Result = data[3] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Brand = brand;
+            GameMode = gameMode;
+            Result = result;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Brand + 1));
+            writer.Write((byte)(GameMode + 1));
+            writer.Write((byte)(Result + 1));
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class GuardianAngelPromotedMessage : BaseMessage
     {
-        public GuardianAngelPromotedMessage(byte[] data) : base(data)
+        public GuardianAngelPromotedMessage() : base(MessageType.GuardianAngelPromoted)
         {
         }
     }

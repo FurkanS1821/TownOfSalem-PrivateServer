@@ -2,7 +2,7 @@
 {
     public class SteamFirstLoginMessage : BaseMessage
     {
-        public SteamFirstLoginMessage(byte[] data) : base(data)
+        public SteamFirstLoginMessage() : base(MessageType.SteamFirstLogin)
         {
         }
     }

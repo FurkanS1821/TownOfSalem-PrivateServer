@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace TownOfSalem_Networking.Server
@@ -14,42 +14,56 @@ namespace TownOfSalem_Networking.Server
         public readonly int EloChange;
         public readonly int MeritPointsAwarded;
 
-        public AfterGameScreenDataMessage(byte[] data) : base(data)
+        public AfterGameScreenDataMessage(List<EndGamePartyMemberInfo> playerList, int endGameTimeSeconds, int gameMode,
+            int winningGroup, EndGameResult gameResult, int eloChange, int meritPointsAwarded)
+            : base(MessageType.AfterGameScreenData)
         {
-            try
+            PlayerList = playerList;
+            EndGameTimeSeconds = endGameTimeSeconds;
+            GameMode = gameMode;
+            WinningGroup = winningGroup;
+            GameResult = gameResult;
+            EloChange = eloChange;
+            MeritPointsAwarded = meritPointsAwarded;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(EndGameTimeSeconds.ToString()));
+            writer.Write(',');
+            writer.Write((byte)GameMode);
+            writer.Write((byte)WinningGroup);
+            writer.Write((byte)(GameResult == EndGameResult.Win ? 2 : 0));
+            writer.Write((byte)(EloChange + 1));
+            writer.Write((byte)(MeritPointsAwarded + 1));
+
+            for (var i = 0; i < PlayerList.Count; i++)
             {
-                var num1 = Array.IndexOf<byte>(data, 44);
-                EndGameTimeSeconds = int.Parse(Encoding.UTF8.GetString(data, 1, num1 - 1));
-                GameMode = Convert.ToInt32(data[num1 + 1]);
-                WinningGroup = Convert.ToInt32(data[num1 + 2]);
-                GameResult = Convert.ToInt32(data[num1 + 3]) < 2 ? EndGameResult.Loss : EndGameResult.Win;
-                EloChange = Convert.ToInt32(data[num1 + 4]) - 1;
-                MeritPointsAwarded = Convert.ToInt32(data[num1 + 5]) - 1;
-                var num2 = Array.IndexOf<byte>(data, 40);
-                var str1 = Encoding.ASCII.GetString(data, num2 + 1, data.Length - num2 - 2);
-                var separator = new[] {"),("};
-                foreach (var str2 in str1.Split(separator, StringSplitOptions.None))
+                var partyMemberInfo = PlayerList[i];
+                writer.Write('(');
+                writer.Write(Encoding.UTF8.GetBytes(partyMemberInfo.OriginalName));
+                writer.Write(',');
+                writer.Write(Encoding.UTF8.GetBytes(partyMemberInfo.AccountName));
+                writer.Write(',');
+                writer.Write((byte)(partyMemberInfo.Position + 1));
+                writer.Write(',');
+
+                for (var j = 0; j < partyMemberInfo.Roles.Count; j++)
                 {
-                    var chArray = new[] {','};
-                    var strArray = str2.Split(chArray);
-                    var gamePartyMemberInfo = new EndGamePartyMemberInfo(
-                        strArray[0],
-                        strArray[1],
-                        strArray[2].ToCharArray()[0] - 1,
-                        EndGamePartyMemberStatus.Default
-                    );
+                    writer.Write((byte)(partyMemberInfo.Roles[i] + 1));
 
-                    for (var i = 3; i < strArray.Length; ++i)
+                    if (j < partyMemberInfo.Roles.Count - 1)
                     {
-                        gamePartyMemberInfo.Roles.Add(strArray[i].ToCharArray()[0] - 1);
+                        writer.Write(',');
                     }
-
-                    PlayerList.Add(gamePartyMemberInfo);
                 }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+
+                writer.Write(')');
+
+                if (i < PlayerList.Count - 1)
+                {
+                    writer.Write(',');
+                }
             }
         }
     }

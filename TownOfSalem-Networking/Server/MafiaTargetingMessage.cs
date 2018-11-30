@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,32 +6,19 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly FactionTargetInfo TargetInfo;
 
-        public MafiaTargetingMessage(byte[] data) : base(data)
+        public MafiaTargetingMessage(FactionTargetInfo targetInfo) : base(MessageType.MafiaTargeting)
         {
-            try
-            {
-                TargetInfo = new FactionTargetInfo
-                {
-                    Position = data[1] - 1,
-                    Role = data[2] - 1,
-                    Target = data[3] - 1,
-                    TargetBehavior = data[4]
-                };
+            TargetInfo = targetInfo;
+        }
 
-                if (data.Length > 5)
-                {
-                    TargetInfo.Info = data[5];
-                }
-
-                if (data.Length > 6)
-                {
-                    TargetInfo.AdditionalInfo = data[6];
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(TargetInfo.Position + 1));
+            writer.Write((byte)(TargetInfo.Role + 1));
+            writer.Write((byte)(TargetInfo.Target + 1));
+            writer.Write((byte)TargetInfo.TargetBehavior);
+            writer.Write((byte)TargetInfo.Info);
+            writer.Write((byte)TargetInfo.AdditionalInfo);
         }
     }
 }

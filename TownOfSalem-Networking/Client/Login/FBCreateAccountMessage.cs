@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Login
 {
@@ -10,24 +9,30 @@ namespace TownOfSalem_Networking.Client.Login
         public string Email;
         public string ReferFriendName;
 
-        public FBCreateAccountMessage(string username, string password, string email, string referFriendName)
-            : base(MessageType.FBCreateAccount)
+        public FBCreateAccountMessage(byte[] data) : base(data)
         {
-            Username = username;
-            Password = password;
-            Email = email;
-            ReferFriendName = referFriendName;
-        }
+            try
+            {
+                var index = 1;
+                var usernameLength = data[index++] - 1;
+                var passwordLength = data[index++] - 1;
+                var emailLength = data[index++] - 1;
 
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)(Encoding.UTF8.GetByteCount(Username) + 1));
-            writer.Write((byte)(Encoding.UTF8.GetByteCount(Password) + 1));
-            writer.Write((byte)(Encoding.UTF8.GetByteCount(Email) + 1));
-            writer.Write(Encoding.UTF8.GetBytes(Username));
-            writer.Write(Encoding.UTF8.GetBytes(Password));
-            writer.Write(Encoding.UTF8.GetBytes(Email));
-            writer.Write(Encoding.UTF8.GetBytes(ReferFriendName));
+                Username = BytesToString(data, index, usernameLength);
+                index += usernameLength;
+
+                Password = BytesToString(data, index, passwordLength);
+                index += passwordLength;
+
+                Email = BytesToString(data, index, emailLength);
+                index += emailLength;
+
+                ReferFriendName = BytesToString(data, index);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

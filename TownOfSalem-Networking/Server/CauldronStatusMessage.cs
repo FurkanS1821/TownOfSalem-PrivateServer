@@ -1,60 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class CauldronStatusMessage : BaseMessage
     {
-        public readonly List<int> AvailablePotions = new List<int>();
-        public readonly List<ProductItem> Awards = new List<ProductItem>();
+        public readonly List<int> AvailablePotions;
+        public readonly List<ProductItem> Awards;
         public readonly int CauldronType;
         public readonly int Progress;
         public readonly int ProgressTarget;
         public readonly bool IsCompleted;
         public readonly int CooldownSeconds;
 
-        public CauldronStatusMessage(byte[] data) : base(data)
+        public CauldronStatusMessage(List<int> availablePotions, List<ProductItem> awards, int cauldronType,
+            int progress, int progressTarget, bool isCompleted, int cooldownSeconds) : base(MessageType.CauldronStatus)
         {
-            try
+            AvailablePotions = availablePotions;
+            Awards = awards;
+            CauldronType = cauldronType;
+            Progress = progress;
+            ProgressTarget = progressTarget;
+            IsCompleted = isCompleted;
+            CooldownSeconds = cooldownSeconds;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(CauldronType.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(Progress.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(ProgressTarget.ToString()));
+            writer.Write(',');
+            writer.Write(IsCompleted);
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(CooldownSeconds.ToString()));
+            writer.Write(',');
+
+            for (var i = 0; i < AvailablePotions.Count; i++)
             {
-                var strArray1 = BytesToString(data, 1).Split(',');
-                CauldronType = int.Parse(strArray1[0]);
-                Progress = int.Parse(strArray1[1]);
-                ProgressTarget = int.Parse(strArray1[2]);
-                IsCompleted = Convert.ToBoolean(byte.Parse(strArray1[3]));
-                CooldownSeconds = int.Parse(strArray1[4]);
-                if (strArray1[5].Length > 0)
-                {
-                    var str = strArray1[5];
-                    foreach (var s in str.Split('*'))
-                    {
-                        AvailablePotions.Add(int.Parse(s));
-                    }
-                }
+                writer.Write(Encoding.UTF8.GetBytes(AvailablePotions[i].ToString()));
 
-                if (strArray1[6].Length <= 0)
+                if (i < AvailablePotions.Count - 1)
                 {
-                    return;
-                }
-
-                var str1 = strArray1[6];
-                foreach (var str2 in str1.Split('*'))
-                {
-                    var chArray2 = new[] {'|'};
-                    var strArray2 = str2.Split(chArray2);
-                    if (int.Parse(strArray2[0]) != 5)
-                    {
-                        Awards.Add(new ProductItem(
-                            int.Parse(strArray2[0]),
-                            int.Parse(strArray2[1]),
-                            int.Parse(strArray2[2])
-                        ));
-                    }
+                    writer.Write('*');
                 }
             }
-            catch (Exception ex)
+
+            writer.Write(',');
+
+            for (var i = 0; i < Awards.Count; i++)
             {
-                ThrowNetworkMessageFormatException(ex);
+                var award = Awards[i];
+
+                writer.Write(Encoding.UTF8.GetBytes(award.Type.ToString()));
+                writer.Write('|');
+                writer.Write(Encoding.UTF8.GetBytes(award.Id.ToString()));
+                writer.Write('|');
+                writer.Write(Encoding.UTF8.GetBytes(award.Quantity.ToString()));
+
+                if (i < Awards.Count - 1)
+                {
+                    writer.Write('*');
+                }
             }
         }
     }

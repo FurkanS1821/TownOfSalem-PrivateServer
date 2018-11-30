@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +7,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int Duration;
 
-        public RankedTimeoutDurationMessage(byte[] data) : base(data)
+        public RankedTimeoutDurationMessage(int duration) : base(MessageType.RankedTimeoutDuration)
         {
-            try
-            {
-                Duration = int.Parse(BytesToString(data, 1));
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Duration = duration;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Duration.ToString()));
         }
     }
 }

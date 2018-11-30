@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Friend
 {
@@ -7,16 +7,17 @@ namespace TownOfSalem_Networking.Client.Friend
         public int Brand;
         public int GameMode;
 
-        public HostSetPartyConfig(int brand, int gameMode) : base(MessageType.HostSetPartyConfig)
+        public HostSetPartyConfig(byte[] data) : base(data)
         {
-            Brand = brand;
-            GameMode = gameMode;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)(Brand + 1));
-            writer.Write((byte)(GameMode + 1));
+            try
+            {
+                Brand = data[1] - 1;
+                GameMode = data[2] - 1;
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

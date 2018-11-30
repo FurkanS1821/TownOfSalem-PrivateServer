@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,19 +9,21 @@ namespace TownOfSalem_Networking.Server
         public readonly int QuantityConsumed;
         public readonly int QuantityRemaining;
 
-        public AccountItemConsumedMessage(byte[] data) : base(data)
+        public AccountItemConsumedMessage(int accountItemId, int quantityConsumed, int quantityRemaining)
+            : base(MessageType.AccountItemConsumed)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split(',');
-                AccountItemId = int.Parse(strArray[0]);
-                QuantityConsumed = int.Parse(strArray[1]);
-                QuantityRemaining = int.Parse(strArray[2]);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            AccountItemId = accountItemId;
+            QuantityConsumed = quantityConsumed;
+            QuantityRemaining = quantityRemaining;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(AccountItemId.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(QuantityConsumed.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(QuantityRemaining.ToString()));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,36 +7,46 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly ProductPurchaseResult Result = new ProductPurchaseResult();
 
-        public ProductPurchaseResultMessage(byte[] data) : base(data)
+        public ProductPurchaseResultMessage(ProductPurchaseResult result) : base(MessageType.ProductPurchaseResult)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split(',');
-                int.TryParse(strArray[0], out Result.ProductId);
-                int.TryParse(strArray[1], out Result.Quantity);
-                Result.Source = (ProductPurchaseResult.ResultSource)int.Parse(strArray[2]);
-                int.TryParse(strArray[3], out Result.SourceData);
-                Result.Code = (ProductPurchaseResult.ResultCode)int.Parse(strArray[4]);
-                Result.Category = (ProductPurchaseResult.ResultCategory)int.Parse(strArray[5]);
-                if (Result.Code != ProductPurchaseResult.ResultCode.Eligible)
-                {
-                    return;
-                }
-                var index = 6;
-                while (index < strArray.Length)
-                {
-                    Result.Items.Add(new ProductItem(
-                        int.Parse(strArray[index]),
-                        int.Parse(strArray[index + 1]),
-                        int.Parse(strArray[index + 2])
-                    ));
+            Result = result;
+        }
 
-                    index += 3;
-                }
-            }
-            catch (Exception ex)
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Result.ProductId.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(Result.Quantity.ToString()));
+            writer.Write(',');
+            writer.Write((byte)Result.Source);
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(Result.SourceData.ToString()));
+            writer.Write(',');
+            writer.Write((byte)Result.Code);
+            writer.Write(',');
+            writer.Write((byte)Result.Category);
+
+            if (Result.Code != ProductPurchaseResult.ResultCode.Eligible)
             {
-                ThrowNetworkMessageFormatException(ex);
+                return;
+            }
+
+            writer.Write(',');
+
+            for (var i = 0; i < Result.Items.Count; i++)
+            {
+                var item = Result.Items[i];
+
+                writer.Write((byte)item.Type);
+                writer.Write(',');
+                writer.Write((byte)item.Id);
+                writer.Write(',');
+                writer.Write((byte)item.Quantity);
+
+                if (i < Result.Items.Count - 1)
+                {
+                    writer.Write(',');
+                }
             }
         }
     }

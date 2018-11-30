@@ -2,7 +2,7 @@
 {
     public class RankedQueueLeaveMessage : BaseMessage
     {
-        public RankedQueueLeaveMessage() : base(MessageType.RankedQueueLeave)
+        public RankedQueueLeaveMessage(byte[] data) : base(data)
         {
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int AbilityCount;
 
-        public HowManyAbilitiesLeftMessage(byte[] data) : base(data)
+        public HowManyAbilitiesLeftMessage(int abilityCount) : base(MessageType.HowManyAbilitiesLeft)
         {
-            try
-            {
-                AbilityCount = Convert.ToInt32(data[1]) - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            AbilityCount = abilityCount;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(AbilityCount + 1));
         }
     }
 }

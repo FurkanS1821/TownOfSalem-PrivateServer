@@ -2,7 +2,7 @@
 {
     public class YouHavePartyInvitePowerMessage : BaseMessage
     {
-        public YouHavePartyInvitePowerMessage(byte[] data) : base(data)
+        public YouHavePartyInvitePowerMessage() : base(MessageType.YouHavePartyInvitePower)
         {
         }
     }

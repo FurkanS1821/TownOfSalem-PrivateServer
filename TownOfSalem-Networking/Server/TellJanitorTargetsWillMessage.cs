@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,17 +8,16 @@ namespace TownOfSalem_Networking.Server
         public readonly int Position;
         public readonly string Will;
 
-        public TellJanitorTargetsWillMessage(byte[] data) : base(data)
+        public TellJanitorTargetsWillMessage(int position, string will) : base(MessageType.TellJanitorTargetsWill)
         {
-            try
-            {
-                Position = Convert.ToInt32(data[1]) - 1;
-                Will = BytesToString(data, 2);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Position = position;
+            Will = will;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Position + 1));
+            writer.Write(Encoding.UTF8.GetBytes(Will));
         }
     }
 }

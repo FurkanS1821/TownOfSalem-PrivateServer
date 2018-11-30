@@ -1,25 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class PurchasedPacksMessage : BaseMessage
     {
-        public readonly List<int> Packs = new List<int>();
+        public readonly List<int> Packs;
 
-        public PurchasedPacksMessage(byte[] data) : base(data)
+        public PurchasedPacksMessage(List<int> packs) : base(MessageType.PurchasedPacks)
         {
-            try
+            Packs = packs;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < Packs.Count; i++)
             {
-                var str = BytesToString(data, 1);
-                foreach (var s in str.Split(','))
+                writer.Write(Encoding.UTF8.GetBytes(Packs[i].ToString()));
+
+                if (i < Packs.Count - 1)
                 {
-                    Packs.Add(int.Parse(s));
+                    writer.Write(',');
                 }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
             }
         }
     }

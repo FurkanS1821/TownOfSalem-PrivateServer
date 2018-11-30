@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int WinningGroupId;
 
-        public FacebookShareWinMessage(byte[] data) : base(data)
+        public FacebookShareWinMessage(int winningGroupId) : base(MessageType.FacebookShareWin)
         {
-            try
-            {
-                WinningGroupId = Convert.ToInt32(data[1]);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            WinningGroupId = winningGroupId;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)WinningGroupId);
         }
     }
 }

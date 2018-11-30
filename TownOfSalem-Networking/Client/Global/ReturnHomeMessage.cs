@@ -2,8 +2,7 @@
 {
     public class ReturnHomeMessage : BaseMessage
     {
-        public ReturnHomeMessage()
-            : base(MessageType.ReturnHome)
+        public ReturnHomeMessage(byte[] data) : base(data)
         {
         }
     }

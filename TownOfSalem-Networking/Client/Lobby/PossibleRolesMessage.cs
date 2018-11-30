@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Lobby
 {
@@ -7,16 +7,17 @@ namespace TownOfSalem_Networking.Client.Lobby
         public int TargetIndex;
         public int ScrollIndex;
 
-        public PossibleRolesMessage(int targetIndex, int scrollIndex) : base(MessageType.PossibleRoles)
+        public PossibleRolesMessage(byte[] data) : base(data)
         {
-            TargetIndex = targetIndex;
-            ScrollIndex = scrollIndex;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)(TargetIndex + 1));
-            writer.Write((byte)(ScrollIndex + 1));
+            try
+            {
+                TargetIndex = data[1] - 1;
+                ScrollIndex = data[2] - 1;
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

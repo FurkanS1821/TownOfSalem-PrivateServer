@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Home
 {
@@ -7,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Home
     {
         public string RedeemCode;
 
-        public RedeemCodeMessage(string redeemCode) : base(MessageType.RedeemCode)
+        public RedeemCodeMessage(byte[] data) : base(data)
         {
-            RedeemCode = redeemCode;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(RedeemCode));
+            try
+            {
+                RedeemCode = BytesToString(data, 1);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

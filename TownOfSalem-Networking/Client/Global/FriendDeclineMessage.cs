@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Global
 {
@@ -7,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Global
     {
         public int AccountId;
 
-        public FriendDeclineMessage(int accountId) : base(MessageType.FriendDecline)
+        public FriendDeclineMessage(byte[] data) : base(data)
         {
-            AccountId = accountId;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(AccountId.ToString()));
+            try
+            {
+                AccountId = Convert.ToInt32(BytesToString(data, 1));
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

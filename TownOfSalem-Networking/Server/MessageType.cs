@@ -220,7 +220,7 @@
         AccountFlags = 0xDB,
         GhoulRotted = 0xDC,
         LoverTarget = 0xDD,
-        PlaugeSpread = 0xDE,
+        PlagueSpread = 0xDE,
         RivalTarget = 0xDF,
         RankedInfo = 0xE0,
         JailorDeathNote = 0xE1,

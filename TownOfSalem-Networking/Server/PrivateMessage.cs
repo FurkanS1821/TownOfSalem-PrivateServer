@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -9,26 +10,26 @@ namespace TownOfSalem_Networking.Server
         public readonly int Position2;
         public readonly string Message;
 
-        public PrivateMessage(byte[] data) : base(data)
+        public PrivateMessage(int sourceType, int position, int position2, string message)
+            : base(MessageType.PrivateMessage)
         {
-            try
+            SourceType = sourceType;
+            Position = position;
+            Position2 = position2;
+            Message = message;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)SourceType);
+            writer.Write((byte)(Position + 1));
+
+            if (SourceType == 3)
             {
-                SourceType = data[1];
-                Position = data[2] - 1;
-                if (SourceType == 3)
-                {
-                    Position2 = data[3] - 1;
-                    Message = BytesToString(data, 4);
-                }
-                else
-                {
-                    Message = BytesToString(data, 3);
-                }
+                writer.Write((byte)(Position2 + 1));
             }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+
+            writer.Write(Encoding.UTF8.GetBytes(Message));
         }
     }
 }

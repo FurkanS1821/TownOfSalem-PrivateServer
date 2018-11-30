@@ -2,7 +2,7 @@
 {
     public class SuccessfulAccountCreationMessage : BaseMessage
     {
-        public SuccessfulAccountCreationMessage(byte[] data) : base(data)
+        public SuccessfulAccountCreationMessage() : base(MessageType.SuccessfulAccountCreation)
         {
         }
     }

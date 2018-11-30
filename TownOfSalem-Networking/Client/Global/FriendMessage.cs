@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Global
 {
@@ -8,17 +7,18 @@ namespace TownOfSalem_Networking.Client.Global
         public string FriendName;
         public string Message;
 
-        public FriendMessage(string friendName, string message) : base(MessageType.FriendMessage)
+        public FriendMessage(byte[] data) : base(data)
         {
-            FriendName = friendName;
-            Message = message;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(FriendName));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(Message));
+            try
+            {
+                var lines = BytesToString(data, 1).Split(new[] {'*'}, 2);
+                FriendName = lines[0];
+                Message = lines[1];
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

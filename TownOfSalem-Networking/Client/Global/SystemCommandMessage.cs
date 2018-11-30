@@ -1,29 +1,24 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Global
 {
     public class SystemCommandMessage : BaseMessage
     {
-        protected int _command;
-        protected byte[] _arguments;
+        public int Command;
+        public byte[] Arguments;
 
-        public SystemCommandMessage(int command, string args = "") : base(MessageType.SystemCommand)
+        public SystemCommandMessage(byte[] data) : base(data)
         {
-            _command = command;
-            _arguments = Encoding.UTF8.GetBytes(args);
-        }
-
-        public SystemCommandMessage(int command, byte[] args) : base(MessageType.SystemCommand)
-        {
-            _command = command;
-            _arguments = args;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)_command);
-            writer.Write(_arguments);
+            try
+            {
+                Command = data[1];
+                Arguments = new byte[data.Length - 2];
+                Array.Copy(data, 2, Arguments, 0, data.Length - 2);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

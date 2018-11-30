@@ -1,42 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class PartyInviteFailedMessage : BaseMessage
     {
-        private Dictionary<string, PartyMemberInviteStatus> _lookup = new Dictionary<string, PartyMemberInviteStatus>
+        private Dictionary<PartyMemberInviteStatus, string> _lookup = new Dictionary<PartyMemberInviteStatus, string>
         {
-            {"1", PartyMemberInviteStatus.Locale},
-            {"3", PartyMemberInviteStatus.NoCoven}
+            {PartyMemberInviteStatus.Locale, "1"},
+            {PartyMemberInviteStatus.NoCoven, "3"}
         };
 
         public readonly PartyMemberInviteStatus Status;
         public readonly string Username;
 
-        public PartyInviteFailedMessage(byte[] data) : base(data)
+        public PartyInviteFailedMessage(PartyMemberInviteStatus status, string username)
+            : base(MessageType.PartyInviteFailed)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split('*');
-                Username = strArray[0];
-                if (strArray.Length <= 0)
-                {
-                    return;
-                }
+            Status = status;
+            Username = username;
+        }
 
-                Status = PartyMemberInviteStatus.Failed;
-                if (!_lookup.ContainsKey(strArray[1]))
-                {
-                    return;
-                }
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Username));
+            writer.Write('*');
 
-                Status = _lookup[strArray[1]];
-            }
-            catch (Exception ex)
+            if (!_lookup.ContainsKey(Status))
             {
-                ThrowNetworkMessageFormatException(ex);
+                return;
             }
+
+            writer.Write(Encoding.UTF8.GetBytes(_lookup[Status]));
         }
     }
 }

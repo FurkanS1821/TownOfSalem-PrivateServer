@@ -2,7 +2,7 @@
 {
     public class EnableShopButtonsMessage : BaseMessage
     {
-        public EnableShopButtonsMessage(byte[] data) : base(data)
+        public EnableShopButtonsMessage() : base(MessageType.EnableShopButtons)
         {
         }
     }

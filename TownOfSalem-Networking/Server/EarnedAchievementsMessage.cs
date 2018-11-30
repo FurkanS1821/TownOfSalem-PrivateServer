@@ -1,23 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class EarnedAchievementsMessage : BaseMessage
     {
-        public List<int> Achievements = new List<int>();
+        public List<int> Achievements;
 
-        public EarnedAchievementsMessage(byte[] data) : base(data)
+        public EarnedAchievementsMessage(List<int> achievements) : base(MessageType.EarnedAchievements)
         {
-            try
+            Achievements = achievements;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < Achievements.Count; i++)
             {
-                var str = BytesToString(data, 1);
-                var chArray = new char[1] {','};
-                foreach (var s in str.Split(chArray)) Achievements.Add(int.Parse(s));
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write(Encoding.UTF8.GetBytes(Achievements[i].ToString()));
+
+                if (i < Achievements.Count - 1)
+                {
+                    writer.Write(',');
+                }
             }
         }
     }

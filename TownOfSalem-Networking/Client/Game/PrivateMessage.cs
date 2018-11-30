@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Game
 {
@@ -8,16 +7,17 @@ namespace TownOfSalem_Networking.Client.Game
         public int ToPosition;
         public string Message;
 
-        public PrivateMessage(int toPosition, string message) : base(MessageType.PrivateMessage)
+        public PrivateMessage(byte[] data) : base(data)
         {
-            ToPosition = toPosition;
-            Message = message;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)(ToPosition + 1));
-            writer.Write(Encoding.UTF8.GetBytes(Message));
+            try
+            {
+                ToPosition = data[1] - 1;
+                Message = BytesToString(data, 2);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class VampirePromotedMessage : BaseMessage
     {
-        public VampirePromotedMessage(byte[] data) : base(data)
+        public VampirePromotedMessage() : base(MessageType.VampirePromoted)
         {
         }
     }

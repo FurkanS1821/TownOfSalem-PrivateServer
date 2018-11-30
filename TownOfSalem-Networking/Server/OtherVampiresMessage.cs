@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,21 +7,17 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly List<VampireInfo> Vampires = new List<VampireInfo>();
 
-        public OtherVampiresMessage(byte[] data) : base(data)
+        public OtherVampiresMessage(List<VampireInfo> vampires) : base(MessageType.OtherVampires)
         {
-            try
+            Vampires = vampires;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            foreach (var vampire in Vampires)
             {
-                var bytes = Encoding.ASCII.GetBytes(BytesToString(data, 1));
-                var num = 0;
-                while (num < bytes.Length)
-                {
-                    Vampires.Add(new VampireInfo(Convert.ToInt32(data[1]) - 1, GetBoolValue(Convert.ToByte(data[2]))));
-                    num += 2;
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(vampire.Position + 1));
+                writer.Write((byte)(vampire.IsYoungest ? 2 : 0));
             }
         }
     }

@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,24 +8,26 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly List<RoleLotInfo> RoleLots = new List<RoleLotInfo>();
 
-        public RoleLotsInfoMessage(byte[] data) : base(data)
+        public RoleLotsInfoMessage(List<RoleLotInfo> roleLots) : base(MessageType.RoleLotsInfo)
         {
-            try
+            RoleLots = roleLots;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < RoleLots.Count; i++)
             {
-                var str1 = BytesToString(data, 1);
-                foreach (var str2 in str1.Split('*'))
+                var roleLot = RoleLots[i];
+                writer.Write(Encoding.UTF8.GetBytes(roleLot.RoleId.ToString()));
+                writer.Write(',');
+                writer.Write(Encoding.UTF8.GetBytes(roleLot.TotalLots.ToString()));
+                writer.Write(',');
+                writer.Write(Encoding.UTF8.GetBytes(roleLot.Lots.ToString()));
+
+                if (i < RoleLots.Count - 1)
                 {
-                    var strArray = str2.Split(',');
-                    RoleLots.Add(new RoleLotInfo(
-                        int.Parse(strArray[0]),
-                        Convert.ToInt32(strArray[1]),
-                        Convert.ToInt32(strArray[2])
-                    ));
+                    writer.Write('*');
                 }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
             }
         }
     }

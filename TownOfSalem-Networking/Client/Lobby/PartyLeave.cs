@@ -2,8 +2,7 @@
 {
     public class PartyLeave : BaseMessage
     {
-        public PartyLeave()
-            : base(MessageType.PartyLeave)
+        public PartyLeave(byte[] data) : base(data)
         {
         }
     }

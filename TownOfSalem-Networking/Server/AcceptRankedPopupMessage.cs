@@ -2,7 +2,7 @@
 {
     public class AcceptRankedPopupMessage : BaseMessage
     {
-        public AcceptRankedPopupMessage(byte[] data) : base(data)
+        public AcceptRankedPopupMessage() : base(MessageType.AcceptRankedPopup)
         {
         }
     }

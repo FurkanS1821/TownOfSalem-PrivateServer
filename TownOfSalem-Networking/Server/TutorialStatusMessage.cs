@@ -1,25 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class TutorialStatusMessage : BaseMessage
     {
-        public List<int> TutorialStatus = new List<int>();
+        public List<int> TutorialStatus;
 
-        public TutorialStatusMessage(byte[] data) : base(data)
+        public TutorialStatusMessage(List<int> tutorialStatus) : base(MessageType.TutorialStatus)
         {
-            try
+            TutorialStatus = tutorialStatus;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            for (var i = 0; i < TutorialStatus.Count; i++)
             {
-                var str = BytesToString(data, 1);
-                foreach (var s in str.Split(','))
+                writer.Write(Encoding.UTF8.GetBytes(TutorialStatus[i].ToString()));
+
+                if (i < TutorialStatus.Count - 1)
                 {
-                    TutorialStatus.Add(int.Parse(s));
+                    writer.Write(',');
                 }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
             }
         }
     }

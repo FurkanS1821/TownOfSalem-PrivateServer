@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,31 +7,19 @@ namespace TownOfSalem_Networking.Server
         public readonly float TownPoints;
         public readonly float MeritPoints;
 
-        public CurrencyMultiplierMessage(byte[] data) : base(data)
+        public CurrencyMultiplierMessage(float townPoints, float meritPoints) : base(MessageType.CurrencyMultiplier)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split('*');
-                var dictionary = new Dictionary<int, int> {{1, 1}, {3, 1}};
-                foreach (var str1 in strArray)
-                {
-                    var str2 = str1.Substring(0, 1);
-                    var str3 = str1.Substring(1, 1);
-                    var int32_1 = Convert.ToInt32(str2);
-                    var int32_2 = Convert.ToInt32(str3);
-                    if (dictionary.ContainsKey(int32_1))
-                    {
-                        dictionary[int32_1] = int32_2;
-                    }
-                }
+            TownPoints = townPoints;
+            MeritPoints = meritPoints;
+        }
 
-                TownPoints = float.Parse(dictionary[1].ToString());
-                MeritPoints = float.Parse(dictionary[3].ToString());
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)1);
+            writer.Write((byte)TownPoints);
+            writer.Write('*');
+            writer.Write((byte)3);
+            writer.Write((byte)MeritPoints);
         }
     }
 }

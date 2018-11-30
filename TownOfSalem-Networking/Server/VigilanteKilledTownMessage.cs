@@ -2,7 +2,7 @@
 {
     public class VigilanteKilledTownMessage : BaseMessage
     {
-        public VigilanteKilledTownMessage(byte[] data) : base(data)
+        public VigilanteKilledTownMessage() : base(MessageType.VigilanteKilledTown)
         {
         }
     }

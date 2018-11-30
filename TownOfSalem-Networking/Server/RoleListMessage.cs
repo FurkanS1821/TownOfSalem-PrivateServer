@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
     public class RoleListMessage : BaseMessage
     {
-        public readonly List<int> Roles = new List<int>();
+        public readonly List<int> Roles;
 
-        public RoleListMessage(byte[] data) : base(data)
+        public RoleListMessage(List<int> roles) : base(MessageType.RoleList)
         {
-            try
+            Roles = roles;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            foreach (var role in Roles)
             {
-                foreach (int num in Encoding.ASCII.GetBytes(BytesToString(data, 1)))
-                {
-                    Roles.Add(num - 1);
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(role + 1));
             }
         }
     }

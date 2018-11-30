@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,17 +7,16 @@ namespace TownOfSalem_Networking.Server
         public readonly int Position;
         public readonly int Role;
 
-        public ResurrectionMessage(byte[] data) : base(data)
+        public ResurrectionMessage(int position, int role) : base(MessageType.Resurrection)
         {
-            try
-            {
-                Position = data[1] - 1;
-                Role = data[2] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Position = position;
+            Role = role;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Position + 1));
+            writer.Write((byte)(Role + 1));
         }
     }
 }

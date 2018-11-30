@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly PartyMemberInviteStatus Status;
 
-        public AcceptedPartyInviteMessage(byte[] data) : base(data)
+        public AcceptedPartyInviteMessage(PartyMemberInviteStatus status) : base(MessageType.AcceptedPartyInvite)
         {
-            try
-            {
-                Status = (PartyMemberInviteStatus) Convert.ToByte(data[1]);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Status = status;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)Status);
         }
     }
 }

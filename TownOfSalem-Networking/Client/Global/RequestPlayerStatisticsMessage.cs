@@ -2,8 +2,7 @@
 {
     public class RequestPlayerStatisticsMessage : BaseMessage
     {
-        public RequestPlayerStatisticsMessage()
-            : base(MessageType.RequestPlayerStatistics)
+        public RequestPlayerStatisticsMessage(byte[] data) : base(data)
         {
         }
     }

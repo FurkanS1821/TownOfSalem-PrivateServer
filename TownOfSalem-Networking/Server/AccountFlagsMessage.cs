@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,21 +6,40 @@ namespace TownOfSalem_Networking.Server
     {
         public UserAccountFlags Flags = new UserAccountFlags();
 
-        public AccountFlagsMessage(byte[] data) : base(data)
+        public AccountFlagsMessage(UserAccountFlags flags) : base(MessageType.AccountFlags)
         {
-            try
+            Flags = flags;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            byte flag = 0;
+            if (Flags.OwnsSteam)
             {
-                var num = Convert.ToInt32(data[1]) - 1;
-                Flags.OwnsSteam = (num & 1) > 0;
-                Flags.OwnsCoven = (num & 2) > 0;
-                Flags.OwnsWebPremium = (num & 4) > 0;
-                Flags.OwnsMobilePremium = (num & 8) > 0;
-                Flags.IsRestricted = (num & 16) > 0;
+                flag |= 1;
             }
-            catch (Exception ex)
+
+            if (Flags.OwnsCoven)
             {
-                ThrowNetworkMessageFormatException(ex);
+                flag |= 2;
             }
+
+            if (Flags.OwnsWebPremium)
+            {
+                flag |= 4;
+            }
+
+            if (Flags.OwnsMobilePremium)
+            {
+                flag |= 8;
+            }
+
+            if (Flags.IsRestricted)
+            {
+                flag |= 16;
+            }
+
+            writer.Write((byte)(flag + 1));
         }
     }
 }

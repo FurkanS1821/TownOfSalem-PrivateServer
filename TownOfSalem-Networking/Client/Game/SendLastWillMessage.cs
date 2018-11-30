@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Game
 {
@@ -7,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Game
     {
         public string LastWill;
 
-        public SendLastWillMessage(string lastWill) : base(MessageType.SendLastWill)
+        public SendLastWillMessage(byte[] data) : base(data)
         {
-            LastWill = lastWill;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(LastWill));
+            try
+            {
+                LastWill = BytesToString(data, 1);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

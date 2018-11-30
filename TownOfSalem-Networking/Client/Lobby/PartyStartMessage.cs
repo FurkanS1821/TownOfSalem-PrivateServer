@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Lobby
 {
@@ -6,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Lobby
     {
         public int GameMode;
 
-        public PartyStartMessage(int gameMode) : base(MessageType.PartyStart)
+        public PartyStartMessage(byte[] data) : base(data)
         {
-            GameMode = gameMode;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write((byte)GameMode);
+            try
+            {
+                GameMode = data[1];
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

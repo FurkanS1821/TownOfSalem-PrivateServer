@@ -2,7 +2,7 @@
 {
     public class FBWinShareMessage : BaseMessage
     {
-        public FBWinShareMessage() : base(MessageType.FBWinShare)
+        public FBWinShareMessage(byte[] data) : base(data)
         {
         }
     }

@@ -2,7 +2,7 @@
 {
     public class FirstDayTransitionMessage : BaseMessage
     {
-        public FirstDayTransitionMessage(byte[] data) : base(data)
+        public FirstDayTransitionMessage() : base(MessageType.FirstDayTransition)
         {
         }
     }

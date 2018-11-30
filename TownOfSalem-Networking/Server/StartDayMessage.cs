@@ -2,7 +2,7 @@
 {
     public class StartDayMessage : BaseMessage
     {
-        public StartDayMessage(byte[] data) : base(data)
+        public StartDayMessage() : base(MessageType.StartDay)
         {
         }
     }

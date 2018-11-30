@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,19 +9,24 @@ namespace TownOfSalem_Networking.Server
         public readonly bool HasLastWill;
         public readonly string WillText;
 
-        public TellLastWillMessage(byte[] data) : base(data)
+        public TellLastWillMessage(int position, bool hasLastWill, string willText) : base(MessageType.TellLastWill)
         {
-            try
+            Position = position;
+            HasLastWill = hasLastWill;
+            WillText = willText;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Position + 1));
+            writer.Write((byte)(HasLastWill ? 2 : 0));
+
+            if (!HasLastWill)
             {
-                Position = data[1] - 1;
-                HasLastWill = GetBoolValue(data[2]);
-                if (!HasLastWill) return;
-                WillText = BytesToString(data, 3).Replace('\r', '\n');
+                return;
             }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+
+            writer.Write(Encoding.UTF8.GetBytes(WillText));
         }
     }
 }

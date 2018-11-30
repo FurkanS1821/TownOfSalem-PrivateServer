@@ -2,7 +2,7 @@
 {
     public class MobilePlayAdMessage : BaseMessage
     {
-        public MobilePlayAdMessage(byte[] data) : base(data)
+        public MobilePlayAdMessage() : base(MessageType.MobilePlayAdMessage)
         {
         }
     }

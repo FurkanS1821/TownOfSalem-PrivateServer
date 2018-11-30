@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,22 +8,21 @@ namespace TownOfSalem_Networking.Server
         public readonly int AccountId;
         public readonly bool IsSelfMessage;
         public readonly string Message;
-        public readonly DateTime Timestamp;
 
-        public FriendMessage(byte[] data) : base(data)
+        public FriendMessage(int accountId, bool isSelfMessage, string message) : base(MessageType.FriendMessage)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split('*');
-                AccountId = int.Parse(strArray[0]);
-                IsSelfMessage = int.Parse(strArray[1]) == 1;
-                Message = strArray[2];
-                Timestamp = DateTime.Now;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            AccountId = accountId;
+            IsSelfMessage = isSelfMessage;
+            Message = message;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(AccountId.ToString()));
+            writer.Write('*');
+            writer.Write(IsSelfMessage);
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(Message));
         }
     }
 }

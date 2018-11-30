@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
     public class ActiveGameModesMessage : BaseMessage
     {
-        public List<int> ActiveModes = new List<int>();
+        public List<int> ActiveModes;
 
-        public ActiveGameModesMessage(byte[] data) : base(data)
+        public ActiveGameModesMessage(List<int> activeModes) : base(MessageType.ActiveGameModes)
         {
-            try
+            ActiveModes = activeModes;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            foreach (var num in ActiveModes)
             {
-                foreach (var num in Encoding.ASCII.GetBytes(BytesToString(data, 1)))
-                {
-                    ActiveModes.Add(Convert.ToInt32(num));
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)num);
             }
         }
     }

@@ -2,7 +2,7 @@
 {
     public class MafiosoPromotedMessage : BaseMessage
     {
-        public MafiosoPromotedMessage(byte[] data) : base(data)
+        public MafiosoPromotedMessage() : base(MessageType.MafiosoPromoted)
         {
         }
     }

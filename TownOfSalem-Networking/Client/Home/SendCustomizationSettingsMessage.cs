@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Home
 {
@@ -7,31 +6,31 @@ namespace TownOfSalem_Networking.Client.Home
     {
         public UserSelections Selections;
 
-        public SendCustomizationSettingsMessage(UserSelections selections) : base(MessageType.SendCustomizationSettings)
+        public SendCustomizationSettingsMessage(byte[] data) : base(data)
         {
-            Selections = selections;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(Selections.Character.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Selections.House.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Selections.Background.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Selections.Pet.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Selections.LobbyIcon.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Selections.DeathAnimation.ToString()));
-            writer.Write(',');
-            for (var i = 0; i < 3; i++)
+            try
             {
-                writer.Write(Encoding.UTF8.GetBytes(Selections.Scrolls[i].ToString()));
-                writer.Write(',');
+                var lines = BytesToString(data, 1).Split(new[] {','}, 10);
+                Selections = new UserSelections
+                {
+                    Character = Convert.ToInt32(lines[0]),
+                    House = Convert.ToInt32(lines[1]),
+                    Background = Convert.ToInt32(lines[2]),
+                    Pet = Convert.ToInt32(lines[3]),
+                    LobbyIcon = Convert.ToInt32(lines[4]),
+                    DeathAnimation = Convert.ToInt32(lines[5]),
+                    InGameName = lines[9]
+                };
+
+                for (var i = 6; i < 9; i++)
+                {
+                    Selections.Scrolls[i] = Convert.ToInt32(lines[i]);
+                }
             }
-            writer.Write(Encoding.UTF8.GetBytes(Selections.InGameName));
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

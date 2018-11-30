@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,24 +8,26 @@ namespace TownOfSalem_Networking.Server
         public readonly int LostPosition;
         public readonly int GainedPosition;
 
-        public CovenGotNecronomiconMessage(byte[] data) : base(data)
+        public CovenGotNecronomiconMessage(bool isFirstPossession, int lostPosition, int gainedPosition)
+            : base(MessageType.CovenGotNecronomicon)
         {
-            try
+            IsFirstPossession = isFirstPossession;
+            LostPosition = lostPosition;
+            GainedPosition = gainedPosition;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(IsFirstPossession);
+
+            if (IsFirstPossession)
             {
-                IsFirstPossession = data[1] == 1;
-                if (IsFirstPossession)
-                {
-                    GainedPosition = data[2] - 1;
-                }
-                else
-                {
-                    LostPosition = data[2] - 1;
-                    GainedPosition = data[3] - 1;
-                }
+                writer.Write((byte)(GainedPosition + 1));
             }
-            catch (Exception ex)
+            else
             {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(LostPosition + 1));
+                writer.Write((byte)(GainedPosition + 1));
             }
         }
     }

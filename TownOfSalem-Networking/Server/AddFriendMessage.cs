@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,22 +7,20 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly Friend Friend;
 
-        public AddFriendMessage(byte[] data) : base(data)
+        public AddFriendMessage(Friend friend) : base(MessageType.AddFriend)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split(',');
-                Friend = new Friend(
-                    strArray[0],
-                    int.Parse(strArray[1]),
-                    (ActivityStatus)Convert.ToInt32(strArray[2][0]),
-                    GetBoolValue(Convert.ToByte(strArray[3][0]))
-                );
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Friend = friend;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Friend.UserName));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(Friend.AccountId.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(((byte)Friend.Status).ToString()));
+            writer.Write(',');
+            writer.Write((byte)(Friend.OwnsCoven ? 2 : 0));
         }
     }
 }

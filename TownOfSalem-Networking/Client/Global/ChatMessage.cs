@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Global
 {
@@ -7,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Global
     {
         public string Message;
 
-        public ChatMessage(string message) : base(MessageType.ChatMessage)
+        public ChatMessage(byte[] data) : base(data)
         {
-            Message = message;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(Message));
+            try
+            {
+                Message = BytesToString(data, 1);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class PickHousesMessage : BaseMessage
     {
-        public PickHousesMessage(byte[] data) : base(data)
+        public PickHousesMessage() : base(MessageType._UNUSED_PICK_HOUSES)
         {
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,17 +7,16 @@ namespace TownOfSalem_Networking.Server
         public readonly int Position;
         public readonly int Role;
 
-        public AmnesiacPromotedToMafiaMessage(byte[] data) : base(data)
+        public AmnesiacPromotedToMafiaMessage(int position, int role) : base((MessageType)0) // :thinking: this one is
+        {                                                                                    // not in the enum
+            Position = position;
+            Role = role;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
         {
-            try
-            {
-                Position = Convert.ToInt32(data[1]) - 1;
-                Role = Convert.ToInt32(data[1]) - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            writer.Write((byte)(Position + 1));
+            writer.Write((byte)(Role + 1));
         }
     }
 }

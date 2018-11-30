@@ -2,7 +2,7 @@
 {
     public class StartFirstDayMessage : BaseMessage
     {
-        public StartFirstDayMessage(byte[] data) : base(data)
+        public StartFirstDayMessage() : base(MessageType.StartFirstDay)
         {
         }
     }

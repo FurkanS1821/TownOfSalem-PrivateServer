@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
     public class ServerFlagsMessage : BaseMessage
     {
-        public List<bool> Flags = new List<bool>();
+        public List<bool> Flags;
 
-        public ServerFlagsMessage(byte[] data) : base(data)
+        public ServerFlagsMessage(List<bool> flags) : base(MessageType.ServerFlags)
         {
-            try
+            Flags = flags;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            foreach (var flag in Flags)
             {
-                for (var i = 1; i < data.Length; ++i)
-                {
-                    var num = (int)data[i];
-                    Debug.Write($"Server Flag {i} : {num}");
-                    Flags.Add(num > 1);
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(flag ? 2 : 0));
             }
         }
     }

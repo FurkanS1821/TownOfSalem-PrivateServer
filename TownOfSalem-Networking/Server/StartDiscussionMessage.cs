@@ -2,7 +2,7 @@
 {
     public class StartDiscussionMessage : BaseMessage
     {
-        public StartDiscussionMessage(byte[] data) : base(data)
+        public StartDiscussionMessage() : base(MessageType.StartDiscussion)
         {
         }
     }

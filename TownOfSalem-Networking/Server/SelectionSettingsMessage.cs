@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,27 +7,33 @@ namespace TownOfSalem_Networking.Server
     {
         public UserSelections Selections;
 
-        public SelectionSettingsMessage(byte[] data) : base(data)
+        public SelectionSettingsMessage(UserSelections selections) : base(MessageType.SelectionSettings)
         {
-            try
+            Selections = selections;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(Selections.Character.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(Selections.House.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(Selections.Background.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(Selections.Pet.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(Selections.LobbyIcon.ToString()));
+            writer.Write(',');
+            writer.Write(Encoding.UTF8.GetBytes(Selections.DeathAnimation.ToString()));
+            writer.Write(',');
+
+            for (var i = 0; i < 3; i++)
             {
-                var strArray = BytesToString(data, 1).Split(',');
-                Selections = new UserSelections();
-                int.TryParse(strArray[0], out Selections.Character);
-                int.TryParse(strArray[1], out Selections.House);
-                int.TryParse(strArray[2], out Selections.Background);
-                int.TryParse(strArray[3], out Selections.Pet);
-                int.TryParse(strArray[4], out Selections.LobbyIcon);
-                int.TryParse(strArray[5], out Selections.DeathAnimation);
-                Selections.Scrolls[0] = int.Parse(strArray[6]);
-                Selections.Scrolls[1] = int.Parse(strArray[7]);
-                Selections.Scrolls[2] = int.Parse(strArray[8]);
-                Selections.InGameName = strArray[9];
+                writer.Write(Encoding.UTF8.GetBytes(Selections.Scrolls[i].ToString()));
+                writer.Write(',');
             }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+
+            writer.Write(Encoding.UTF8.GetBytes(Selections.InGameName));
         }
     }
 }

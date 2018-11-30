@@ -2,7 +2,7 @@
 {
     public class ExecutionerCompletedGoalMessage : BaseMessage
     {
-        public ExecutionerCompletedGoalMessage(byte[] data) : base(data)
+        public ExecutionerCompletedGoalMessage() : base(MessageType.ExecutionerCompletedGoal)
         {
         }
     }

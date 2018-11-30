@@ -2,7 +2,7 @@
 {
     public class TransporterNotificationMessage : BaseMessage
     {
-        public TransporterNotificationMessage(byte[] data) : base(data)
+        public TransporterNotificationMessage() : base(MessageType._UNUSED_TRANSPORTER_NOTIFICATION)
         {
         }
     }

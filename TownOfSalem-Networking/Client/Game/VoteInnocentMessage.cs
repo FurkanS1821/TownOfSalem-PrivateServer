@@ -2,8 +2,7 @@
 {
     public class VoteInnocentMessage : BaseMessage
     {
-        public VoteInnocentMessage()
-            : base(MessageType.VoteInnocent)
+        public VoteInnocentMessage(byte[] data) : base(data)
         {
         }
     }

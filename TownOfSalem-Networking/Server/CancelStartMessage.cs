@@ -2,7 +2,7 @@
 {
     public class CancelStartMessage : BaseMessage
     {
-        public CancelStartMessage(byte[] data) : base(data)
+        public CancelStartMessage() : base(MessageType.CancelStart)
         {
         }
     }

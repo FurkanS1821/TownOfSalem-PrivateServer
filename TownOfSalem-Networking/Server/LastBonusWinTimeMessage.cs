@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +7,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int LastBonusWinTime;
 
-        public LastBonusWinTimeMessage(byte[] data) : base(data)
+        public LastBonusWinTimeMessage(int lastBonusWinTime) : base(MessageType.LastBonusWinTime)
         {
-            try
-            {
-                LastBonusWinTime = int.Parse(BytesToString(data, 1));
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            LastBonusWinTime = lastBonusWinTime;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(LastBonusWinTime.ToString()));
         }
     }
 }

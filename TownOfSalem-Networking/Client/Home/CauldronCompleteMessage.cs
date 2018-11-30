@@ -2,8 +2,7 @@
 {
     public class CauldronCompleteMessage : BaseMessage
     {
-        public CauldronCompleteMessage()
-            : base(MessageType.CauldronComplete)
+        public CauldronCompleteMessage(byte[] data) : base(data)
         {
         }
     }

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Home
 {
@@ -7,14 +6,16 @@ namespace TownOfSalem_Networking.Client.Home
     {
         public string Username;
 
-        public NameChangeMessage(string username) : base(MessageType.NameChange)
+        public NameChangeMessage(byte[] data) : base(data)
         {
-            Username = username.Trim();
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(Username));
+            try
+            {
+                Username = BytesToString(data, 1);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

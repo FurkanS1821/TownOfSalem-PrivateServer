@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int VotesNeeded;
 
-        public VotedRepickHostMessage(byte[] data) : base(data)
+        public VotedRepickHostMessage(int votesNeeded) : base(MessageType.VotedRepickHost)
         {
-            try
-            {
-                VotesNeeded = data[1] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            VotesNeeded = votesNeeded;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(VotesNeeded + 1));
         }
     }
 }

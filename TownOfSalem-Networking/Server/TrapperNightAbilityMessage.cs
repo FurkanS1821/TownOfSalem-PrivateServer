@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int RoleId;
 
-        public TrapperNightAbilityMessage(byte[] data) : base(data)
+        public TrapperNightAbilityMessage(int roleId) : base(MessageType.TrapperNightAbility)
         {
-            try
-            {
-                RoleId = data[1] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            RoleId = roleId;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(RoleId + 1));
         }
     }
 }

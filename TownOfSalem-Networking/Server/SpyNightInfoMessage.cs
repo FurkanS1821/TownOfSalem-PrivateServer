@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,19 +6,16 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int[] SpyMessageIds;
 
-        public SpyNightInfoMessage(byte[] data) : base(data)
+        public SpyNightInfoMessage(int[] spyMessageIds) : base(MessageType.SpyNightInfo)
         {
-            try
+            SpyMessageIds = spyMessageIds;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            foreach (var messageId in SpyMessageIds)
             {
-                SpyMessageIds = new int[data.Length - 1];
-                for (var i = 1; i < data.Length; ++i)
-                {
-                    SpyMessageIds[i - 1] = data[i] - 1;
-                }
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(messageId + 1));
             }
         }
     }

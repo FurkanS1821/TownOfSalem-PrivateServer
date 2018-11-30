@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,22 +8,21 @@ namespace TownOfSalem_Networking.Server
         public readonly int Position;
         public readonly int? TargetPosition;
 
-        public RoleAndPositionMessage(byte[] data) : base(data)
+        public RoleAndPositionMessage(int roleId, int position, int? targetPosition) : base(MessageType.RoleAndPosition)
         {
-            try
-            {
-                RoleId = Convert.ToByte(data[1]) - 1;
-                Position = Convert.ToByte(data[2]) - 1;
-                if (data.Length != 4)
-                {
-                    return;
-                }
+            RoleId = roleId;
+            Position = position;
+            TargetPosition = targetPosition;
+        }
 
-                TargetPosition = Convert.ToByte(data[3]) - 1;
-            }
-            catch (Exception ex)
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(RoleId + 1));
+            writer.Write((byte)(Position + 1));
+
+            if (TargetPosition.HasValue)
             {
-                ThrowNetworkMessageFormatException(ex);
+                writer.Write((byte)(TargetPosition + 1));
             }
         }
     }

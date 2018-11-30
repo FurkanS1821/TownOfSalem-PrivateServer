@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public int LobbyType;
 
-        public CreatePartyLobbyMessage(byte[] data) : base(data)
+        public CreatePartyLobbyMessage(int lobbyType) : base(MessageType.CreatePartyLobby)
         {
-            try
-            {
-                LobbyType = data[1];
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            LobbyType = lobbyType;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)LobbyType);
         }
     }
 }

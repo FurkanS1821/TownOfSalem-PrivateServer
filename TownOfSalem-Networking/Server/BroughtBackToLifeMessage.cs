@@ -2,7 +2,7 @@
 {
     public class BroughtBackToLifeMessage : BaseMessage
     {
-        public BroughtBackToLifeMessage(byte[] data) : base(data)
+        public BroughtBackToLifeMessage() : base(MessageType.BroughtBackToLife)
         {
         }
     }

@@ -2,7 +2,7 @@
 {
     public class SetHostMessage : BaseMessage
     {
-        public SetHostMessage(byte[] data) : base(data)
+        public SetHostMessage() : base(MessageType.SetHost)
         {
         }
     }

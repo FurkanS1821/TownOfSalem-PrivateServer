@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,29 +6,24 @@ namespace TownOfSalem_Networking.Server
     {
         public UserSettings Settings;
 
-        public SettingsInformationMessage(byte[] data) : base(data)
+        public SettingsInformationMessage(UserSettings settings) : base(MessageType.SettingsInformation)
         {
-            try
-            {
-                Settings = new UserSettings
-                {
-                    ChatFilterEnabled = GetBoolValue(data[1]),
-                    MusicMuted = GetBoolValue(data[2]),
-                    SoundEffectsMuted = GetBoolValue(data[3]),
-                    HideCustomizationsEnabled = !GetBoolValue(data[4]),
-                    ClassicSkinsOnlyEnabled = GetBoolValue(data[5]),
-                    HidePetsEnabled = !GetBoolValue(data[6]),
-                    SoundEffectsVolume = (data[7] - 1) / 100f,
-                    MusicVolume = (data[8] - 1) / 100f,
-                    QueueLanguage = data[9] - 1,
-                    UILanguage = data[10] - 1,
-                    TutorialBehavior = data[11] - 1
-                };
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Settings = settings;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Settings.ChatFilterEnabled ? 2 : 0));
+            writer.Write((byte)(Settings.MusicMuted ? 2 : 0));
+            writer.Write((byte)(Settings.SoundEffectsMuted ? 2 : 0));
+            writer.Write((byte)(Settings.HideCustomizationsEnabled ? 0 : 2));
+            writer.Write((byte)(Settings.ClassicSkinsOnlyEnabled ? 2 : 0));
+            writer.Write((byte)(Settings.HidePetsEnabled ? 0 : 2));
+            writer.Write((byte)(Settings.SoundEffectsVolume * 100 + 1));
+            writer.Write((byte)(Settings.MusicVolume * 100 + 1));
+            writer.Write((byte)(Settings.QueueLanguage + 1));
+            writer.Write((byte)(Settings.UILanguage + 1));
+            writer.Write((byte)(Settings.TutorialBehavior + 1));
         }
     }
 }

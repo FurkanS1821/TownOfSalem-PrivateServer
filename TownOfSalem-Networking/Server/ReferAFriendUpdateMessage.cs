@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,28 +8,22 @@ namespace TownOfSalem_Networking.Server
         public readonly int AwardType;
         public readonly int TownPointsAwarded;
 
-        public ReferAFriendUpdateMessage(byte[] data) : base(data)
+        public ReferAFriendUpdateMessage(int awardType, int townPointsAwarded) : base(MessageType.ReferAFriendUpdate)
         {
-            try
-            {
-                AwardType = data[1];
-                if (AwardType >= 5)
-                {
-                    return;
-                }
+            AwardType = awardType;
+            TownPointsAwarded = townPointsAwarded;
+        }
 
-                var s = BytesToString(data, 2);
-                if (string.IsNullOrEmpty(s))
-                {
-                    return;
-                }
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)AwardType);
 
-                int.TryParse(s, out TownPointsAwarded);
-            }
-            catch (Exception ex)
+            if (AwardType >= 5)
             {
-                ThrowNetworkMessageFormatException(ex);
+                return;
             }
+
+            writer.Write(Encoding.UTF8.GetBytes(TownPointsAwarded.ToString()));
         }
     }
 }

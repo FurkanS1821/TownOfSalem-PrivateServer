@@ -2,7 +2,7 @@
 {
     public class DoNotSpamMessage : BaseMessage
     {
-        public DoNotSpamMessage(byte[] data) : base(data)
+        public DoNotSpamMessage() : base(MessageType.DoNotSpam)
         {
         }
     }

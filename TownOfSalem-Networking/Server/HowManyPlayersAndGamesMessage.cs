@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -7,18 +8,17 @@ namespace TownOfSalem_Networking.Server
         public readonly int PlayerCount;
         public readonly int GameCount;
 
-        public HowManyPlayersAndGamesMessage(byte[] data) : base(data)
+        public HowManyPlayersAndGamesMessage(int playerCount, int gameCount) : base(MessageType.HowManyPlayersAndGames)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split('*');
-                PlayerCount = int.Parse(strArray[0]);
-                GameCount = int.Parse(strArray[1]);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            PlayerCount = playerCount;
+            GameCount = gameCount;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(PlayerCount.ToString()));
+            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(GameCount.ToString()));
         }
     }
 }

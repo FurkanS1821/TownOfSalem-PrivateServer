@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,18 +8,19 @@ namespace TownOfSalem_Networking.Server
         public readonly bool ShouldUseAccountName;
         public readonly int Position;
 
-        public UserLeftGameMessage(byte[] data) : base(data)
+        public UserLeftGameMessage(bool shouldRemoveFromLobby, bool shouldUseAccountName, int position)
+            : base(MessageType.UserLeftGame)
         {
-            try
-            {
-                ShouldRemoveFromLobby = GetBoolValue(data[1]);
-                ShouldUseAccountName = GetBoolValue(data[2]);
-                Position = data[3] - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            ShouldRemoveFromLobby = shouldRemoveFromLobby;
+            ShouldUseAccountName = shouldUseAccountName;
+            Position = position;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(ShouldRemoveFromLobby ? 2 : 0));
+            writer.Write((byte)(ShouldUseAccountName ? 2 : 0));
+            writer.Write((byte)(Position + 1));
         }
     }
 }

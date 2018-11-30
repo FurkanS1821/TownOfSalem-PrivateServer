@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int Role;
 
-        public TellTownAmnesiacChangedRoleMessage(byte[] data) : base(data)
+        public TellTownAmnesiacChangedRoleMessage(int role) : base(MessageType.TellTownAmnesiacChangedRole)
         {
-            try
-            {
-                Role = Convert.ToInt32(data[1]) - 1;
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Role = role;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Role + 1));
         }
     }
 }

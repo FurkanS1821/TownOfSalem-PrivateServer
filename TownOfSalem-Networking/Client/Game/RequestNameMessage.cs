@@ -1,20 +1,21 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
 
 namespace TownOfSalem_Networking.Client.Game
 {
     public class RequestNameMessage : BaseMessage
     {
-        private string _name;
+        public string Name;
 
-        public RequestNameMessage(string name) : base(MessageType.RequestName)
+        public RequestNameMessage(byte[] data) : base(data)
         {
-            _name = name;
-        }
-
-        protected override void SerializeData(BinaryWriter writer)
-        {
-            writer.Write(Encoding.UTF8.GetBytes(_name));
+            try
+            {
+                Name = BytesToString(data, 1);
+            }
+            catch (Exception ex)
+            {
+                ThrowNetworkMessageFormatException(ex);
+            }
         }
     }
 }

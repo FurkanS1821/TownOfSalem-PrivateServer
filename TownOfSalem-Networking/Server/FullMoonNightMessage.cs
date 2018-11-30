@@ -2,7 +2,7 @@
 {
     public class FullMoonNightMessage : BaseMessage
     {
-        public FullMoonNightMessage(byte[] data) : base(data)
+        public FullMoonNightMessage() : base(MessageType.FullMoonNight)
         {
         }
     }

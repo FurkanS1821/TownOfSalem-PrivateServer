@@ -2,7 +2,7 @@
 {
     public class YouArePartyHostMessage : BaseMessage
     {
-        public YouArePartyHostMessage(byte[] data) : base(data)
+        public YouArePartyHostMessage() : base(MessageType.YouArePartyHost)
         {
         }
     }

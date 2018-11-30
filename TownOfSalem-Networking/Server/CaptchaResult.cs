@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -6,16 +6,14 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly bool Status;
 
-        public CaptchaResult(byte[] data) : base(data)
+        public CaptchaResult(bool status) : base(MessageType.CaptchaResult)
         {
-            try
-            {
-                Status = GetBoolValue(data[1]);
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            Status = status;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(Status ? 2 : 0));
         }
     }
 }

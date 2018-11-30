@@ -1,26 +1,29 @@
-﻿using System;
+﻿using System.IO;
+using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class FriendUpdateMessage : BaseMessage
     {
-        public readonly int AccountID;
+        public readonly int AccountId;
         public readonly ActivityStatus Status;
         public readonly bool OwnsCoven;
 
-        public FriendUpdateMessage(byte[] data) : base(data)
+        public FriendUpdateMessage(int accountId, ActivityStatus status, bool ownsCoven)
+            : base(MessageType.FriendUpdate)
         {
-            try
-            {
-                var strArray = BytesToString(data, 1).Split('*');
-                int.TryParse(strArray[0], out AccountID);
-                Status = (ActivityStatus)strArray[1][0];
-                OwnsCoven = GetBoolValue(Convert.ToByte(strArray[2][0]));
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            AccountId = accountId;
+            Status = status;
+            OwnsCoven = ownsCoven;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(AccountId.ToString()));
+            writer.Write('*');
+            writer.Write((byte)Status);
+            writer.Write('*');
+            writer.Write((byte)(OwnsCoven ? 2 : 0));
         }
     }
 }

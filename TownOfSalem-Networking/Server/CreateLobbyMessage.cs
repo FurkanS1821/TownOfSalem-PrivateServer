@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -8,18 +7,16 @@ namespace TownOfSalem_Networking.Server
         public readonly bool IsHost;
         public readonly int GameModeId;
 
-        public CreateLobbyMessage(byte[] data) : base(data)
+        public CreateLobbyMessage(bool isHost, int gameModeId) : base(MessageType.CreateLobby)
         {
-            try
-            {
-                var bytes = Encoding.ASCII.GetBytes(BytesToString(data, 1));
-                IsHost = GetBoolValue(bytes[0]);
-                GameModeId = bytes[1];
-            }
-            catch (Exception ex)
-            {
-                ThrowNetworkMessageFormatException(ex);
-            }
+            IsHost = isHost;
+            GameModeId = gameModeId;
+        }
+
+        protected override void SerializeData(BinaryWriter writer)
+        {
+            writer.Write((byte)(IsHost ? 2 : 0));
+            writer.Write((byte)GameModeId);
         }
     }
 }
