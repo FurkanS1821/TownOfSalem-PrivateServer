@@ -1,4 +1,5 @@
 ﻿using System;
+using TownOfSalem_Networking.Structs;
 
 namespace TownOfSalem_Networking.Client.Home
 {

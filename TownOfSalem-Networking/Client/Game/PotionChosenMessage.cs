@@ -1,5 +1,5 @@
 ﻿using System;
-using TownOfSalem_Logic;
+using TownOfSalem_Networking.Enums;
 
 namespace TownOfSalem_Networking.Client.Game
 {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using TownOfSalem_Networking.Structs;
 
 namespace TownOfSalem_Networking.Server
 {

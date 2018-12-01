@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text;
+using TownOfSalem_Networking.Enums;
 
 namespace TownOfSalem_Networking.Server
 {

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using TownOfSalem_Networking.Structs;
 
 namespace TownOfSalem_Networking.Server
 {

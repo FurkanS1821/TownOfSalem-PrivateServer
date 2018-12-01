@@ -1,4 +1,5 @@
 ﻿using System;
+using TownOfSalem_Networking.Enums;
 
 namespace TownOfSalem_Networking.Client.Home
 {

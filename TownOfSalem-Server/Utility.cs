@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TownOfSalem_Logic.Enums;
 
 namespace TownOfSalem_Logic
 {
