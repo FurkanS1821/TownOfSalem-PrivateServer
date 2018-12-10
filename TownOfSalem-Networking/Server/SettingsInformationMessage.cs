@@ -14,12 +14,12 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write((byte)(Settings.ChatFilterEnabled ? 2 : 0));
-            writer.Write((byte)(Settings.MusicMuted ? 2 : 0));
-            writer.Write((byte)(Settings.SoundEffectsMuted ? 2 : 0));
-            writer.Write((byte)(Settings.HideCustomizationsEnabled ? 0 : 2));
-            writer.Write((byte)(Settings.ClassicSkinsOnlyEnabled ? 2 : 0));
-            writer.Write((byte)(Settings.HidePetsEnabled ? 0 : 2));
+            writer.Write((byte)(Settings.ChatFilterEnabled ? 2 : 1));
+            writer.Write((byte)(Settings.MusicMuted ? 2 : 1));
+            writer.Write((byte)(Settings.SoundEffectsMuted ? 2 : 1));
+            writer.Write((byte)(Settings.HideCustomizationsEnabled ? 1 : 2));
+            writer.Write((byte)(Settings.ClassicSkinsOnlyEnabled ? 2 : 1));
+            writer.Write((byte)(Settings.HidePetsEnabled ? 1 : 2));
             writer.Write((byte)(Settings.SoundEffectsVolume * 100 + 1));
             writer.Write((byte)(Settings.MusicVolume * 100 + 1));
             writer.Write((byte)(Settings.QueueLanguage + 1));

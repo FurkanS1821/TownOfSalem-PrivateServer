@@ -33,8 +33,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSharp-easy-RSA-PEM">
+      <HintPath>..\..\CSharp-easy-RSA-PEM\CSharp-easy-RSA-PEM\CSharp-easy-RSA-PEM\bin\Release\CSharp-easy-RSA-PEM.dll</HintPath>
+    </Reference>
+    <Reference Include="DerConverter, Version=3.0.0.81, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DerConverter.3.0.0.81\lib\net471\DerConverter.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PemUtils, Version=3.0.0.81, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PemUtils.3.0.0.81\lib\net471\PemUtils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,18 +55,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
     <Compile Include="Constants\GameModes.cs" />
+    <Compile Include="Enums\DisconnectReason.cs" />
     <Compile Include="Enums\Gender.cs" />
+    <Compile Include="Enums\Role.cs" />
+    <Compile Include="INetworkService.cs" />
+    <Compile Include="ISocketService.cs" />
+    <Compile Include="PacketHandler.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="UserData\PlayerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roles.cs" />
+    <Compile Include="TCPSocketService.cs" />
+    <Compile Include="Test.cs" />
+    <Compile Include="TOSNetworkService.cs" />
+    <Compile Include="UserData\UserData.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TownOfSalem-Networking\TownOfSalem-Networking.csproj">
+      <Project>{6ffc70cc-4796-4247-b442-097c64baa948}</Project>
+      <Name>TownOfSalem-Networking</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

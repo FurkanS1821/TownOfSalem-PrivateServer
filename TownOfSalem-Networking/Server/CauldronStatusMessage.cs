@@ -35,7 +35,7 @@ namespace TownOfSalem_Networking.Server
             writer.Write(',');
             writer.Write(Encoding.UTF8.GetBytes(ProgressTarget.ToString()));
             writer.Write(',');
-            writer.Write(IsCompleted);
+            writer.Write(Encoding.UTF8.GetBytes(IsCompleted ? "1" : "0"));
             writer.Write(',');
             writer.Write(Encoding.UTF8.GetBytes(CooldownSeconds.ToString()));
             writer.Write(',');

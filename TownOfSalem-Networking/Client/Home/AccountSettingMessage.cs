@@ -12,8 +12,8 @@ namespace TownOfSalem_Networking.Client.Home
         {
             try
             {
-                SettingType = (UserSettings.Type)(data[1] - 1u);
-                SettingValue = (byte)(data[2] - 1u);
+                SettingType = (UserSettings.Type)(data[1] - 1);
+                SettingValue = (byte)(data[2] - 1);
             }
             catch (Exception ex)
             {

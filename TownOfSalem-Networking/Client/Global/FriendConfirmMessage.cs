@@ -11,7 +11,7 @@ namespace TownOfSalem_Networking.Client.Global
         {
             try
             {
-                var lines = BytesToString(data, 1).Split(new[] {'*'}, 2);
+                var lines = BytesToString(data, 1).Split('*');
                 Name = lines[0];
                 AccountId = Convert.ToInt32(lines[1]);
             }

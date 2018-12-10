@@ -15,7 +15,7 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write((byte)(IsHost ? 2 : 0));
+            writer.Write((byte)(IsHost ? 2 : 1));
             writer.Write((byte)GameModeId);
         }
     }

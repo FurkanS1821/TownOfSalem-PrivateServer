@@ -2,11 +2,11 @@
 {
     public struct UserStatistics
     {
-        public int GamesPlayed;
-        public int GamesWon;
-        public int GamesLost => GamesPlayed - (GamesWon + GamesDrawn);
-        public int GamesDrawn;
-        public int GamesDisconnected;
-        public int FriendsReferred;
+        public int GamesPlayed { get; set; }
+        public int GamesWon { get; set; }
+        public int GamesLost { get; set; }
+        public int GamesDrawn { get; set; }
+        public int GamesDisconnected { get; set; }
+        public int FriendsReferred { get; set; }
     }
 }

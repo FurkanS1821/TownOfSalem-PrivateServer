@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace TownOfSalem_Networking.Client.Login
 {
@@ -18,13 +19,13 @@ namespace TownOfSalem_Networking.Client.Login
                 var passwordLength = data[index++] - 1;
                 var emailLength = data[index++] - 1;
 
-                Username = BytesToString(data, index, usernameLength);
+                Username = Encoding.UTF8.GetString(data, index, usernameLength);
                 index += usernameLength;
 
-                Password = BytesToString(data, index, passwordLength);
+                Password = Encoding.UTF8.GetString(data, index, passwordLength);
                 index += passwordLength;
 
-                Email = BytesToString(data, index, emailLength);
+                Email = Encoding.UTF8.GetString(data, index, emailLength);
                 index += emailLength;
 
                 ReferFriendName = BytesToString(data, index);

@@ -231,5 +231,6 @@
         LoginResult = 0xE6,
         CaptchaQuestion = 0xE7,
         CaptchaResult = 0xE8,
+        ReferralCodes = 0xE9
     }
 }

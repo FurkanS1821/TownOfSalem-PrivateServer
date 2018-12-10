@@ -17,7 +17,7 @@ namespace TownOfSalem_Networking.Server
             foreach (var vampire in Vampires)
             {
                 writer.Write((byte)(vampire.Position + 1));
-                writer.Write((byte)(vampire.IsYoungest ? 2 : 0));
+                writer.Write((byte)(vampire.IsYoungest ? 2 : 1));
             }
         }
     }

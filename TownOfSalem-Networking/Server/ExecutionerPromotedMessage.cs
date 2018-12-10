@@ -2,7 +2,7 @@
 {
     public class ExecutionerPromotedMessage : BaseMessage
     {
-        public ExecutionerPromotedMessage() : base(0) // todo
+        public ExecutionerPromotedMessage() : base(MessageType.ExecutionerConverted)
         {
         }
     }

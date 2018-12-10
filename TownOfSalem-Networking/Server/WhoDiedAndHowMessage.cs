@@ -23,7 +23,7 @@ namespace TownOfSalem_Networking.Server
         {
             writer.Write((byte)(Position + 1));
             writer.Write((byte)(Role + 1));
-            writer.Write((byte)(WasLynched ? 2 : 0));
+            writer.Write((byte)(WasLynched ? 2 : 1));
 
             foreach (var how in How)
             {

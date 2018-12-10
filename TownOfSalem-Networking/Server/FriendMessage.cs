@@ -20,7 +20,7 @@ namespace TownOfSalem_Networking.Server
         {
             writer.Write(Encoding.UTF8.GetBytes(AccountId.ToString()));
             writer.Write('*');
-            writer.Write(IsSelfMessage);
+            writer.Write((byte)(IsSelfMessage ? 1 : 2));
             writer.Write('*');
             writer.Write(Encoding.UTF8.GetBytes(Message));
         }

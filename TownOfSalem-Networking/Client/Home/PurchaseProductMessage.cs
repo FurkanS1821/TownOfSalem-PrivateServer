@@ -11,7 +11,7 @@ namespace TownOfSalem_Networking.Client.Home
         {
             try
             {
-                var lines = BytesToString(data, 1).Split(new[] {','}, 2);
+                var lines = BytesToString(data, 1).Split(',');
                 ProductId = lines[0];
                 Quantity = Convert.ToInt32(lines[1]);
             }

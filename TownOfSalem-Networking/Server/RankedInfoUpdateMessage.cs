@@ -31,7 +31,7 @@ namespace TownOfSalem_Networking.Server
             writer.Write(',');
             writer.Write(Encoding.UTF8.GetBytes(RankedInfo.SeasonNumber.ToString()));
             writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes((RankedInfo.IsOffseason ? 1 : 0).ToString()));
+            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.IsOffSeason ? "1" : "0"));
             writer.Write(',');
             writer.Write(Encoding.UTF8.GetBytes(RankedInfo.PlacementGamesRequired.ToString()));
             writer.Write(',');

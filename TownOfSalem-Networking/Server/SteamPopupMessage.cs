@@ -1,4 +1,4 @@
-﻿namespace TownOfSalem_Networking.Server
+﻿    namespace TownOfSalem_Networking.Server
 {
     public class SteamPopupMessage : BaseMessage
     {

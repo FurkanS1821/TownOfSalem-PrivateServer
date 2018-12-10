@@ -1,53 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TownOfSalem_Networking.Client.Login
 {
     public class RequestLoadHomePage : BaseMessage
     {
-        private LoginType _loginType;
-        private string _username;
-        private string _password;
-        private int _flags;
-        private int _buildId;
-        private Platform _platform;
+        public LoginType LoginType;
+        public string Username;
+        public string SteamId;
+        public string PasswordEncrypted;
+        public int Flags;
+        public int BuildId;
+        public Platform Platform;
 
         public RequestLoadHomePage(byte[] data) : base(data)
         {
             try
             {
-                var index = 1;
-                _loginType = (LoginType)data[index++];
-                _flags = data[index++] - 1;
-                _platform = (Platform)data[index++];
+                LoginType = (LoginType)data[1];
+                Flags = data[2] - 1;
+                Platform = (Platform)data[3];
 
-                var buildBytes = new List<byte>();
-                while (true)
+                var str = BytesToString(data, 4).Split('\u001E');
+                var index = 0;
+                BuildId = Convert.ToInt32(str[index++]);
+                Username = str[index++];
+
+                if (Platform == Platform.STEAM)
                 {
-                    if (data[index] == 30)
-                    {
-                        index++;
-                        break;
-                    }
-
-                    buildBytes.Add(data[index++]);
+                    SteamId = str[index++];
                 }
-                _buildId = Convert.ToInt32(BytesToString(buildBytes.ToArray()));
 
-                var usernameBytes = new List<byte>();
-                while (true)
-                {
-                    if (data[index] == 30)
-                    {
-                        index++;
-                        break;
-                    }
-
-                    usernameBytes.Add(data[index++]);
-                }
-                _username = BytesToString(usernameBytes.ToArray());
-
-                _password = Crypto.PrivateKeyDecrypt(BytesToString(data, index));
+                PasswordEncrypted = str[index];
             }
             catch (Exception ex)
             {

@@ -1,187 +1,190 @@
 ﻿using System.Collections.Generic;
+using TownOfSalem_Logic.Enums;
 
 namespace TownOfSalem_Logic.Constants
 {
     public static class GameModes
     {
-        public static List<Roles> ClassicMode = new List<Roles>
+        public static readonly List<Role> ClassicMode = new List<Role>
         {
-            Roles.Sheriff,
-            Roles.Doctor,
-            Roles.Investigator,
-            Roles.Jailor,
-            Roles.Medium,
-            Roles.Godfather,
-            Roles.Framer,
-            Roles.Executioner,
-            Roles.Escort,
-            Roles.Mafioso,
-            Roles.Lookout,
-            Roles.SerialKiller,
-            Roles.TownKilling,
-            Roles.Jester,
-            Roles.RandomTown
+            Role.Sheriff,
+            Role.Doctor,
+            Role.Investigator,
+            Role.Jailor,
+            Role.Medium,
+            Role.Godfather,
+            Role.Framer,
+            Role.Executioner,
+            Role.Escort,
+            Role.Mafioso,
+            Role.Lookout,
+            Role.SerialKiller,
+            Role.TownKilling,
+            Role.Jester,
+            Role.RandomTown
         };
 
-        public static List<Roles> Ranked = new List<Roles>
+        public static readonly List<Role> Ranked = new List<Role>
         {
-            Roles.Jailor,
-            Roles.TownInvestigative,
-            Roles.TownInvestigative,
-            Roles.TownProtective,
-            Roles.TownKilling,
-            Roles.TownSupport,
-            Roles.RandomTown,
-            Roles.RandomTown,
-            Roles.RandomTown,
-            Roles.Godfather,
-            Roles.Mafioso,
-            Roles.RandomMafia,
-            Roles.RandomMafia,
-            Roles.NeutralEvil,
-            Roles.NeutralKilling
+            Role.Jailor,
+            Role.TownInvestigative,
+            Role.TownInvestigative,
+            Role.TownProtective,
+            Role.TownKilling,
+            Role.TownSupport,
+            Role.RandomTown,
+            Role.RandomTown,
+            Role.RandomTown,
+            Role.Godfather,
+            Role.Mafioso,
+            Role.RandomMafia,
+            Role.RandomMafia,
+            Role.NeutralEvil,
+            Role.NeutralKilling
         };
 
-        public static List<Roles> AllAny = new List<Roles>();
+        public static readonly List<Role> AllAny = new List<Role>();
+        public static readonly List<Role> CovenAllAny = new List<Role>();
 
-        public static List<Roles> Rainbow = new List<Roles>
+        public static readonly List<Role> Rainbow = new List<Role>
         {
-            Roles.Godfather,
-            Roles.Arsonist,
-            Roles.Survivor,
-            Roles.Jailor,
-            Roles.Amnesiac,
-            Roles.SerialKiller,
-            Roles.Witch,
-            Roles.AllRandom,
-            Roles.Witch,
-            Roles.SerialKiller,
-            Roles.Amnesiac,
-            Roles.Veteran,
-            Roles.Survivor,
-            Roles.Arsonist,
-            Roles.Mafioso
+            Role.Godfather,
+            Role.Arsonist,
+            Role.Survivor,
+            Role.Jailor,
+            Role.Amnesiac,
+            Role.SerialKiller,
+            Role.Witch,
+            Role.Any,
+            Role.Witch,
+            Role.SerialKiller,
+            Role.Amnesiac,
+            Role.Veteran,
+            Role.Survivor,
+            Role.Arsonist,
+            Role.Mafioso
         };
 
-        public static List<Roles> DraculasPalace = new List<Roles>
+        public static readonly List<Role> DraculasPalace = new List<Role>
         {
-            Roles.Doctor,
-            Roles.Lookout,
-            Roles.Lookout,
-            Roles.Jailor,
-            Roles.Vigilante,
-            Roles.TownProtective,
-            Roles.TownSupport,
-            Roles.TownSupport,
-            Roles.VampireHunter,
-            Roles.Jester,
-            Roles.Witch,
-            Roles.Vampire,
-            Roles.Vampire,
-            Roles.Vampire,
-            Roles.Vampire
+            Role.Doctor,
+            Role.Lookout,
+            Role.Lookout,
+            Role.Jailor,
+            Role.Vigilante,
+            Role.TownProtective,
+            Role.TownSupport,
+            Role.TownSupport,
+            Role.VampireHunter,
+            Role.Jester,
+            Role.Witch,
+            Role.Vampire,
+            Role.Vampire,
+            Role.Vampire,
+            Role.Vampire
         };
 
-        public static List<Roles> CovenClassic = new List<Roles>
+        public static readonly List<Role> CovenClassic = new List<Role>
         {
-            Roles.Sheriff,
-            Roles.Lookout,
-            Roles.Psychic,
-            Roles.Jailor,
-            Roles.TownProtectiveCoven,
-            Roles.CovenLeader,
-            Roles.PotionMaster,
-            Roles.Executioner,
-            Roles.RandomCoven,
-            Roles.Medusa,
-            Roles.RandomTownCoven,
-            Roles.Plaguebearer,
-            Roles.RandomTownCoven,
-            Roles.Pirate,
-            Roles.RandomTownCoven
+            Role.Sheriff,
+            Role.Lookout,
+            Role.Psychic,
+            Role.Jailor,
+            Role.CovenTownProtective,
+            Role.CovenLeader,
+            Role.PotionMaster,
+            Role.Executioner,
+            Role.CovenRandomCoven,
+            Role.Medusa,
+            Role.CovenRandomTown,
+            Role.Plaguebearer,
+            Role.CovenRandomTown,
+            Role.Pirate,
+            Role.CovenRandomTown
         };
 
-        public static List<Roles> CovenRanked = new List<Roles>
+        public static readonly List<Role> CovenRanked = new List<Role>
         {
-            Roles.Jailor,
-            Roles.TownInvestigativeCoven,
-            Roles.TownInvestigativeCoven,
-            Roles.TownSupport,
-            Roles.TownProtectiveCoven,
-            Roles.TownKilling,
-            Roles.RandomTownCoven,
-            Roles.RandomTownCoven,
-            Roles.RandomTownCoven,
-            Roles.CovenLeader,
-            Roles.Medusa,
-            Roles.RandomCoven,
-            Roles.RandomCoven,
-            Roles.NeutralKillingCoven,
-            Roles.NeutralEvil
+            Role.Jailor,
+            Role.CovenTownInvestigative,
+            Role.CovenTownInvestigative,
+            Role.TownSupport,
+            Role.CovenTownProtective,
+            Role.TownKilling,
+            Role.CovenRandomTown,
+            Role.CovenRandomTown,
+            Role.CovenRandomTown,
+            Role.CovenLeader,
+            Role.Medusa,
+            Role.CovenRandomCoven,
+            Role.CovenRandomCoven,
+            Role.CovenNeutralKilling,
+            Role.NeutralEvil
         };
 
-        public static List<Roles> CovenMafiaReturns = new List<Roles>
+        public static readonly List<Role> CovenMafiaReturns = new List<Role>
         {
-            Roles.Sheriff,
-            Roles.Lookout,
-            Roles.Psychic,
-            Roles.Jailor,
-            Roles.TownProtectiveCoven,
-            Roles.Godfather,
-            Roles.Ambusher,
-            Roles.RandomMafiaCoven,
-            Roles.Hypnotist,
-            Roles.Executioner,
-            Roles.Plaguebearer,
-            Roles.Pirate,
-            Roles.RandomTownCoven,
-            Roles.RandomTownCoven,
-            Roles.RandomTownCoven
+            Role.Sheriff,
+            Role.Lookout,
+            Role.Psychic,
+            Role.Jailor,
+            Role.CovenTownProtective,
+            Role.Godfather,
+            Role.Ambusher,
+            Role.CovenRandomMafia,
+            Role.Hypnotist,
+            Role.Executioner,
+            Role.Plaguebearer,
+            Role.Pirate,
+            Role.CovenRandomTown,
+            Role.CovenRandomTown,
+            Role.CovenRandomTown
         };
 
-        public static List<Roles> CovenVIP = new List<Roles>
+        public static readonly List<Role> CovenVIP = new List<Role>
         {
-            Roles.Sheriff,
-            Roles.Crusader,
-            Roles.Psychic,
-            Roles.Vigilante,
-            Roles.Trapper,
-            Roles.CovenLeader,
-            Roles.PotionMaster,
-            Roles.GuardianAngel,
-            Roles.RandomCoven,
-            Roles.Medusa,
-            Roles.Tracker,
-            Roles.TownProtectiveCoven,
-            Roles.TownSupport,
-            Roles.Pirate,
-            Roles.TownProtectiveCoven
+            Role.Sheriff,
+            Role.Crusader,
+            Role.Psychic,
+            Role.Vigilante,
+            Role.Trapper,
+            Role.CovenLeader,
+            Role.PotionMaster,
+            Role.GuardianAngel,
+            Role.CovenRandomCoven,
+            Role.Medusa,
+            Role.Tracker,
+            Role.CovenTownProtective,
+            Role.TownSupport,
+            Role.Pirate,
+            Role.CovenTownProtective
         };
 
-        public static List<Roles> CovenLovers = new List<Roles>
+        public static readonly List<Role> CovenLovers = new List<Role>
         {
-            Roles.Sheriff,
-            Roles.Doctor,
-            Roles.Psychic,
-            Roles.Tracker,
-            Roles.TownProtectiveCoven,
-            Roles.TownProtectiveCoven,
-            Roles.TownSupport,
-            Roles.TownSupport,
-            Roles.Pirate,
-            Roles.Arsonist,
-            Roles.Werewolf,
-            Roles.SerialKiller,
-            Roles.Godfather,
-            Roles.Medusa,
-            Roles.Plaguebearer
+            Role.Sheriff,
+            Role.Doctor,
+            Role.Psychic,
+            Role.Tracker,
+            Role.CovenTownProtective,
+            Role.CovenTownProtective,
+            Role.TownSupport,
+            Role.TownSupport,
+            Role.Pirate,
+            Role.Arsonist,
+            Role.Werewolf,
+            Role.SerialKiller,
+            Role.Godfather,
+            Role.Medusa,
+            Role.Plaguebearer
         };
 
         static GameModes()
         {
             for (var i = 0; i < 15; i++)
             {
-                AllAny.Add(Roles.AllRandom);
+                AllAny.Add(Role.Any);
+                CovenAllAny.Add(Role.Any);
             }
         }
     }

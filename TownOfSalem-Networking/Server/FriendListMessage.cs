@@ -7,7 +7,7 @@ namespace TownOfSalem_Networking.Server
 {
     public class FriendListMessage : BaseMessage
     {
-        public List<Friend> Friends = new List<Friend>();
+        public List<Friend> Friends;
 
         public FriendListMessage(List<Friend> friends) : base(MessageType.FriendList)
         {
@@ -26,7 +26,7 @@ namespace TownOfSalem_Networking.Server
                 writer.Write(',');
                 writer.Write((byte)friend.Status);
                 writer.Write(',');
-                writer.Write((byte)(friend.OwnsCoven ? 3 : 0));
+                writer.Write((byte)(friend.OwnsCoven ? 2 : 1));
 
                 if (i < Friends.Count - 1)
                 {

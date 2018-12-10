@@ -11,7 +11,7 @@ namespace TownOfSalem_Networking.Client.Home
         {
             try
             {
-                var lines = BytesToString(data, 1).Split(new[] {','}, 10);
+                var lines = BytesToString(data, 1).Split(',');
                 Selections = new UserSelections
                 {
                     Character = Convert.ToInt32(lines[0]),

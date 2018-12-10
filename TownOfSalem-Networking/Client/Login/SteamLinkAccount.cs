@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace TownOfSalem_Networking.Client.Login
 {
@@ -16,10 +17,10 @@ namespace TownOfSalem_Networking.Client.Login
                 var usernameLength = data[index++];
                 var passwordLength = data[index++];
 
-                Username = BytesToString(data, index, usernameLength);
+                Username = Encoding.UTF8.GetString(data, index, usernameLength);
                 index += usernameLength;
 
-                Password = BytesToString(data, index, passwordLength);
+                Password = Encoding.UTF8.GetString(data, index, passwordLength);
                 index += passwordLength;
 
                 SteamId = BytesToString(data, index);

@@ -15,7 +15,7 @@
         public int CareerLeaves;
         public int CareerHighRating;
         public int SeasonNumber;
-        public bool IsOffseason;
+        public bool IsOffSeason;
         public int PlacementGamesRequired;
         public int SeasonWins;
         public int SeasonLosses;

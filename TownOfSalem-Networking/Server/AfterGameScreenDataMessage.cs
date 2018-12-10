@@ -35,7 +35,7 @@ namespace TownOfSalem_Networking.Server
             writer.Write(',');
             writer.Write((byte)GameMode);
             writer.Write((byte)WinningGroup);
-            writer.Write((byte)(GameResult == EndGameResult.Win ? 2 : 0));
+            writer.Write((byte)(GameResult == EndGameResult.Win ? 2 : 1));
             writer.Write((byte)(EloChange + 1));
             writer.Write((byte)(MeritPointsAwarded + 1));
 

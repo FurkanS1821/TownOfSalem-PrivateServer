@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -20,11 +21,16 @@ namespace TownOfSalem_Networking.Client
                 var jsonString = BytesToString(RawData, 1);
                 var message = JsonConvert.DeserializeObject<EncryptedMessage>(jsonString);
 
+                if (message == null)
+                {
+                    throw new JsonReaderException();
+                }
+
                 var key = Crypto.PrivateKeyDecrypt(message.Key);
                 var iv = Convert.FromBase64String(message.IV);
                 var decryptedArray = Crypto.AesDecrypt(
                     Encoding.UTF8.GetBytes(message.Payload),
-                    Encoding.UTF8.GetBytes(key),
+                    Convert.FromBase64String(key),
                     iv
                 );
 
@@ -32,9 +38,14 @@ namespace TownOfSalem_Networking.Client
                 list.AddRange(decryptedArray);
                 RawData = list.ToArray();
             }
-            catch
+            catch (JsonReaderException)
             {
                 // packet wasn't encrypted
+            }
+            catch (CryptographicException ex)
+            {
+                // interesting
+                Console.WriteLine(ex.StackTrace);
             }
         }
 
@@ -53,9 +64,9 @@ namespace TownOfSalem_Networking.Client
             return GetBoolValue(Convert.ToByte(c));
         }
 
-        protected string BytesToString(byte[] data, int offset = 0, int length = -1)
+        protected string BytesToString(byte[] data, int offset = 0)
         {
-            return Encoding.UTF8.GetString(data, offset, length == -1 ? data.Length - offset : length);
+            return Encoding.UTF8.GetString(data, offset, data.Length - offset);
         }
 
         protected void ThrowNetworkMessageFormatException(Exception e)
@@ -74,75 +85,4 @@ namespace TownOfSalem_Networking.Client
             public string Payload;
         }
     }
-
-    /*public abstract class BaseMessage
-    {
-        protected bool IsEncrypted;
-        public readonly MessageType MessageId;
-
-        public BaseMessage(MessageType messageId)
-        {
-            MessageId = messageId;
-        }
-
-        protected virtual void SerializeData(BinaryWriter writer)
-        {
-        }
-
-        public byte[] Serialize()
-        {
-            var memoryStream1 = new MemoryStream();
-            using (var writer1 = new BinaryWriter(memoryStream1))
-            {
-                writer1.Write((byte)MessageId);
-                if (IsEncrypted)
-                {
-                    var encryptedMessage = new EncryptedMessage();
-                    var memoryStream2 = new MemoryStream();
-                    using (var writer2 = new BinaryWriter(memoryStream2))
-                    {
-                        SerializeData(writer2);
-                    }
-
-                    Debug.Write($"Payload : {Encoding.UTF8.GetString(memoryStream2.ToArray())}");
-                    using (var aesManaged = new AesManaged())
-                    {
-                        aesManaged.KeySize = 256;
-                        aesManaged.GenerateKey();
-                        aesManaged.GenerateIV();
-                        encryptedMessage.Key = Crypto.PublicKeyEncrypt(aesManaged.Key);
-                        encryptedMessage.IV = Convert.ToBase64String(aesManaged.IV);
-                        encryptedMessage.Payload = Convert.ToBase64String(Crypto.AESEncrypt(
-                                memoryStream2.ToArray(),
-                                aesManaged.Key,
-                                aesManaged.IV
-                        ));
-                    }
-
-                    Debug.Write($"Envelope : {encryptedMessage.ToJson()}");
-                    writer1.Write(encryptedMessage.ToJson().ToCharArray());
-                }
-                else
-                {
-                    SerializeData(writer1);
-                }
-
-                writer1.Write((byte)0);
-            }
-
-            return memoryStream1.ToArray();
-        }
-
-        public override string ToString()
-        {
-            return BitConverter.ToString(Serialize()).Replace("-", string.Empty);
-        }
-
-        private class EncryptedMessage
-        {
-            public string Key;
-            public string IV;
-            public string Payload;
-        }
-    }*/
 }

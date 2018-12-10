@@ -24,7 +24,7 @@ namespace TownOfSalem_Networking.Server
             writer.Write('*');
             writer.Write((byte)Status);
             writer.Write('*');
-            writer.Write((byte)(OwnsCoven ? 2 : 0));
+            writer.Write((byte)(OwnsCoven ? 2 : 1));
         }
     }
 }

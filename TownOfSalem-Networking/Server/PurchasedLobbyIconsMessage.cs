@@ -1,25 +1,24 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
     public class PurchasedLobbyIconsMessage : BaseMessage
     {
-        public readonly List<int> LobbyIcons;
+        public readonly int[] LobbyIcons;
 
-        public PurchasedLobbyIconsMessage(List<int> lobbyIcons) : base(MessageType.PurchasedLobbyIcons)
+        public PurchasedLobbyIconsMessage(int[] lobbyIcons) : base(MessageType.PurchasedLobbyIcons)
         {
             LobbyIcons = lobbyIcons;
         }
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            for (var i = 0; i < LobbyIcons.Count; i++)
+            for (var i = 0; i < LobbyIcons.Length; i++)
             {
                 writer.Write(Encoding.UTF8.GetBytes(LobbyIcons[i].ToString()));
 
-                if (i < LobbyIcons.Count - 1)
+                if (i < LobbyIcons.Length - 1)
                 {
                     writer.Write(',');
                 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using TownOfSalem_Logic.Enums;
 
 namespace TownOfSalem_Logic
@@ -47,6 +49,53 @@ namespace TownOfSalem_Logic
         {
             var list = RandomNames.Where(x => x.Item1 == gender).ToArray();
             return list[_random.Next(0, list.Length)].Item2;
+        }
+
+        public static byte[] ByteStringToArray(string str)
+        {
+            return str.Split(' ').Select(x => byte.Parse(x, NumberStyles.HexNumber)).ToArray();
+        }
+
+        public static IEnumerable<Role> GetPossibleRolesForRoleId(Role role)
+        {
+            switch (role)
+            {
+                case Role.Any:
+                    return Roles.ClassicRoles;
+                case Role.CovenAny:
+                    return Roles.CovenRoles;
+                case Role.RandomTown:
+                case Role.TownInvestigative:
+                case Role.TownProtective:
+                case Role.TownKilling:
+                case Role.TownSupport:
+                case Role.RandomMafia:
+                case Role.MafiaSupport:
+                case Role.MafiaDeception:
+                case Role.RandomNeutral:
+                case Role.NeutralBenign:
+                case Role.NeutralEvil:
+                case Role.NeutralKilling:
+                case Role.CovenRandomCoven:
+                case Role.CovenRandomTown:
+                case Role.CovenTownInvestigative:
+                case Role.CovenTownProtective:
+                case Role.CovenTownKilling:
+                case Role.CovenTownSupport:
+                case Role.CovenRandomMafia:
+                case Role.CovenMafiaSupport:
+                case Role.CovenMafiaDeception:
+                case Role.CovenRandomNeutral:
+                case Role.CovenNeutralBenign:
+                case Role.CovenNeutralEvil:
+                case Role.CovenNeutralKilling:
+                case Role.CovenNeutralChaos:
+                    var field = typeof(Roles).GetField(role + "List", BindingFlags.Static | BindingFlags.Public);
+                    return field?.GetValue(null) as IEnumerable<Role>;
+
+                default:
+                    return new[] {role};
+            }
         }
     }
 }

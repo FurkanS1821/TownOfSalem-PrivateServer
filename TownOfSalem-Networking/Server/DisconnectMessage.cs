@@ -4,9 +4,9 @@ namespace TownOfSalem_Networking.Server
 {
     public class DisconnectMessage : BaseMessage
     {
-        public readonly int Reason;
+        public readonly DisconnectReason Reason;
 
-        public DisconnectMessage(int reason) : base(MessageType.Disconnected)
+        public DisconnectMessage(DisconnectReason reason) : base(MessageType.Disconnected)
         {
             Reason = reason;
         }
@@ -14,6 +14,12 @@ namespace TownOfSalem_Networking.Server
         protected override void SerializeData(BinaryWriter writer)
         {
             writer.Write((byte)(Reason + 1));
+        }
+
+        public enum DisconnectReason : byte
+        {
+            OldVersion = 1,
+            InvalidUsernameOrPassword = 2
         }
     }
 }

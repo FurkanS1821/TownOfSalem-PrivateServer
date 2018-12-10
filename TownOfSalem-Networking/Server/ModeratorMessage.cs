@@ -47,12 +47,12 @@ namespace TownOfSalem_Networking.Server
 
             if (MessageInfo.MessageId == 13)
             {
-                writer.Write((byte)(MessageInfo.IsDeveloperModeOnly ? 2 : 0));
+                writer.Write((byte)(MessageInfo.IsDeveloperModeOnly ? 2 : 1));
             }
 
             if (MessageInfo.MessageId == 24)
             {
-                writer.Write((byte)(MessageInfo.IsSuccess ? 2 : 0));
+                writer.Write((byte)(MessageInfo.IsSuccess ? 2 : 1));
             }
 
             if (MessageInfo.MessageId != 28 && MessageInfo.MessageId != 29 && MessageInfo.MessageId != 30)
@@ -60,7 +60,7 @@ namespace TownOfSalem_Networking.Server
                 return;
             }
 
-            writer.Write((byte)(MessageInfo.IsOn ? 2 : 0));
+            writer.Write((byte)(MessageInfo.IsOn ? 2 : 1));
         }
     }
 }
