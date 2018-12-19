@@ -12,9 +12,6 @@ namespace TownOfSalem_Logic
         public Dictionary<Client.MessageType, Action<INetworkService, Client.BaseMessage>> OnMessage =
             new Dictionary<Client.MessageType, Action<INetworkService, Client.BaseMessage>>();
 
-        public UserData.UserData UserData;
-        public ActivityStatus Status;
-
         public Action<Client.BaseMessage> OnAnyMessage = message => { };
         public event Action OnConnected = () => { };
 

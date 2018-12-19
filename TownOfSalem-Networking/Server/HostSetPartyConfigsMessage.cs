@@ -1,14 +1,15 @@
 ﻿using System.IO;
+using TownOfSalem_Networking.Enums;
 
 namespace TownOfSalem_Networking.Server
 {
     public class HostSetPartyConfigsMessage : BaseMessage
     {
-        public readonly int Brand;
-        public readonly int GameMode;
-        public readonly int Result;
+        public readonly GameBrand Brand;
+        public readonly GameMode GameMode;
+        public readonly PartyConfigChangeResult Result;
 
-        public HostSetPartyConfigsMessage(int brand, int gameMode, int result) : base(MessageType.HostSetPartyConfigs)
+        public HostSetPartyConfigsMessage(GameBrand brand, GameMode gameMode, PartyConfigChangeResult result) : base(MessageType.HostSetPartyConfigs)
         {
             Brand = brand;
             GameMode = gameMode;
@@ -20,6 +21,13 @@ namespace TownOfSalem_Networking.Server
             writer.Write((byte)(Brand + 1));
             writer.Write((byte)(GameMode + 1));
             writer.Write((byte)(Result + 1));
+        }
+
+        public enum PartyConfigChangeResult
+        {
+            Okay = 0,
+            SomeoneLacksCoven = 1,
+            InvalidGameMode = 2
         }
     }
 }

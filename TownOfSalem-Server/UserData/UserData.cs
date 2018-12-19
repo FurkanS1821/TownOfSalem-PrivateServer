@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
-using TownOfSalem_Logic.Annotations;
+using TownOfSalem_Logic.Properties;
 using TownOfSalem_Networking.Structs;
 
 namespace TownOfSalem_Logic.UserData
@@ -57,7 +57,7 @@ namespace TownOfSalem_Logic.UserData
 
         public void Save()
         {
-            File.WriteAllText($"Database/{UserId}.json", ToString());
+            File.WriteAllText($"Database/{UserId}-{UserName}.json", ToString());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

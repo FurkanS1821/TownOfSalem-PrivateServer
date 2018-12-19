@@ -1,68 +1,61 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TownOfSalem_Networking.Enums;
+using TownOfSalem_Networking.Server;
+using TownOfSalem_Networking.Structs;
 
 namespace TownOfSalem_Logic.UserData
 {
     public static class PlayerManager
     {
-        private static Dictionary<(int, string), UserData> AllJsons;
-
-        static PlayerManager()
+        public static void LoadAndResetAllData()
         {
+            Program.AllPlayers.Clear();
+
             if (!Directory.Exists("Database"))
             {
                 Directory.CreateDirectory("Database");
             }
 
-            AllJsons = new Dictionary<(int, string), UserData>();
             var path = Path.GetFullPath("Database");
-            foreach (var file in Directory.GetFiles(path))
+
+            foreach (var file in Directory.GetFiles(path, "*-*.json"))
             {
-                if (!file.EndsWith(".json"))
-                {
-                    continue;
-                }
+                var fileName = Path.GetFileNameWithoutExtension(file).Split('-');
 
-                var id = int.Parse(Path.GetFileNameWithoutExtension(file));
-                var data = JObject.Parse(File.ReadAllText($"Database/{id}.json"));
+                var id = int.Parse(fileName[0]);
+                var userName = fileName[1];
 
-                AllJsons.Add((id, data.Value<string>("UserName")), null);
+                Program.AllPlayers.Add(new Player {Data = GetUserData(id, userName)});
             }
         }
 
-        public static UserData GetUserData(int userId)
+        private static UserData GetUserData(int userId, string userName)
         {
-            if (AllJsons.All(x => x.Key.Item1 != userId))
-            {
-                return null;
-            }
-
-            var json = File.ReadAllText($"Database/{userId}.json");
-            var data = JObject.Parse(json);
-            var userName = data.Value<string>("userName");
-            return AllJsons[(userId, userName)] = JsonConvert.DeserializeObject<UserData>(json);
+            var json = File.ReadAllText($"Database/{userId}-{userName}.json");
+            return JsonConvert.DeserializeObject<UserData>(json);
         }
 
-        public static UserData GetUserData(string userName)
+        public static Player FindUser(string userName)
         {
-            var kvp = AllJsons.FirstOrDefault(x => x.Key.Item2 != null && x.Key.Item2.Equals(userName));
-            if (kvp.Key.Item2 == null || !kvp.Key.Item2.Equals(userName))
+            lock (Program.PlayersLock)
             {
-                return null;
+                return Program.AllPlayers.FirstOrDefault(
+                    x => x.Data.UserName.Equals(userName, StringComparison.InvariantCultureIgnoreCase)
+                );
             }
+        }
 
-            var userData = kvp.Value;
-            if (userData != null)
+        public static Player FindUser(int userId)
+        {
+            lock (Program.PlayersLock)
             {
-                return userData;
+                return Program.AllPlayers.FirstOrDefault(x => x.Data.UserId == userId);
             }
-
-            var userId = kvp.Key.Item1;
-            var json = File.ReadAllText($"Database/{userId}.json");
-            return AllJsons[(userId, userName)] = JsonConvert.DeserializeObject<UserData>(json);
         }
     }
 }

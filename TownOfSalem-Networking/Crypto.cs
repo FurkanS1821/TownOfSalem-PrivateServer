@@ -30,16 +30,6 @@ namespace TownOfSalem_Networking
             }
         }
 
-        public static string PublicKeyEncrypt(string data)
-        {
-            return PublicKeyEncrypt(Encoding.UTF8.GetBytes(data));
-        }
-
-        public static string PublicKeyEncrypt(byte[] data)
-        {
-            return Convert.ToBase64String(_rsaService.Encrypt(data, false));
-        }
-
         public static string PrivateKeyDecrypt(string data)
         {
             return PrivateKeyDecrypt(Encoding.UTF8.GetBytes(data));
@@ -115,7 +105,8 @@ namespace TownOfSalem_Networking
             catch (CryptographicException)
             {
                 Console.WriteLine("The client seems to have wrong RSA key.");
-                return false;
+                // return false;
+                return true; // for testing
             }
         }
     }

@@ -9,7 +9,7 @@ namespace TownOfSalem_Logic
 {
     public static class Utility
     {
-        private static Random _random = new Random();
+        public static Random Random = new Random();
         public static List<(Gender, string)> RandomNames = new List<(Gender gender, string name)>
         {
             (Gender.Male, "Cotton Mather"),
@@ -48,7 +48,7 @@ namespace TownOfSalem_Logic
         public static string GetRandomNameForGender(Gender gender)
         {
             var list = RandomNames.Where(x => x.Item1 == gender).ToArray();
-            return list[_random.Next(0, list.Length)].Item2;
+            return list[Random.Next(0, list.Length)].Item2;
         }
 
         public static byte[] ByteStringToArray(string str)

@@ -28,7 +28,6 @@ namespace TownOfSalem_Networking.Server
             writer.Write(Encoding.UTF8.GetBytes(Username));
             writer.Write('*');
             writer.Write((byte)(LobbyPosition + 1));
-            writer.Write('*');
             writer.Write((byte)(LobbyIconId + 1));
         }
     }
