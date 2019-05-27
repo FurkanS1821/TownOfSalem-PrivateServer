@@ -6,6 +6,14 @@ A private server for you and your friends to play Town of Salem on.
 
 ## How can I use it?
 
+Before we begin telling you *how*, let's say a few words.
+
+This project is still under development, and in the very early stages of it, thus, there is no playable game at the moment.
+
+The tutorial below is quite hard for the newbie, and because of the reason stated above, I will not help anyone with it, at least until there is a somewhat playable game. If you can't complete this, you're probably not a programmer, and you had better come back later.
+
+**ANY ISSUES CREATED ABOUT HELP WITH THIS TUTORIAL** (exceptions are if you are a *real* programmer and want to help) **WILL BE DELETED.**
+
 1. Compile the server.
 
 2. **Create an RSA key.**
