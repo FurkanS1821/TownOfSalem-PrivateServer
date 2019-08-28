@@ -6,6 +6,8 @@ A private server for you and your friends to play Town of Salem on.
 
 ## How can I use it?
 
+***PS: With the introduction of Unity, this tutorial is obsolete, and will be updated soon™️***
+
 Before we begin telling you *how*, let's say a few words.
 
 This project is still under development, and in the very early stages of it, thus, there is no playable game at the moment.
