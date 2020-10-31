@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using TownOfSalem_Networking.Enums;
-using TownOfSalem_Networking.Server;
-using TownOfSalem_Networking.Structs;
 
 namespace TownOfSalem_Logic.UserData
 {

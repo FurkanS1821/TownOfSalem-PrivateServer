@@ -7,7 +7,7 @@
         AS3 = 0x3,
         ANDROID = 0x4,
         IOS = 0x8,
-        MOBILE = 0xC,
+        MOBILE = 0xC, 
         ALL = 0xF
     }
 }

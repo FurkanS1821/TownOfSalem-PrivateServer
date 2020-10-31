@@ -6,7 +6,6 @@ namespace TownOfSalem_Networking.Client.Login
     {
         public LoginType LoginType;
         public string Username;
-        public string SteamId;
         public string PasswordEncrypted;
         public int Flags;
         public int BuildId;
@@ -20,16 +19,10 @@ namespace TownOfSalem_Networking.Client.Login
                 Flags = data[2] - 1;
                 Platform = (Platform)data[3];
 
-                var str = BytesToString(data, 4).Split('\u001E');
+                var str = BytesToString(data, 4).Split('\x1E');
                 var index = 0;
                 BuildId = Convert.ToInt32(str[index++]);
                 Username = str[index++];
-
-                if (Platform == Platform.STEAM)
-                {
-                    SteamId = str[index++];
-                }
-
                 PasswordEncrypted = str[index];
             }
             catch (Exception ex)

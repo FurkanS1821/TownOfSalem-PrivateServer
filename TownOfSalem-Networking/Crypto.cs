@@ -105,8 +105,7 @@ namespace TownOfSalem_Networking
             catch (CryptographicException)
             {
                 Console.WriteLine("The client seems to have wrong RSA key.");
-                // return false;
-                return true; // for testing
+                return false;
             }
         }
     }

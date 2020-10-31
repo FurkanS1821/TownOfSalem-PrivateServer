@@ -3,11 +3,11 @@ using Newtonsoft.Json;
 
 namespace TownOfSalem_Networking.Client.Login
 {
-    public class LoginMessage : BaseMessage
+    public class LoginSteamWithIDAndAuthTicket : BaseMessage
     {
         public InternalJson Data;
 
-        private LoginMessage(byte[] data) : base(data)
+        public LoginSteamWithIDAndAuthTicket(byte[] data) : base(data)
         {
             try
             {
@@ -22,11 +22,8 @@ namespace TownOfSalem_Networking.Client.Login
 
         public class InternalJson
         {
-            [JsonProperty("username")]
-            public string Username;
-
-            [JsonProperty("password")]
-            public string Password;
+            [JsonProperty("steam_id")]
+            public string SteamId;
 
             [JsonProperty("type")]
             public int Type;
@@ -34,11 +31,11 @@ namespace TownOfSalem_Networking.Client.Login
             [JsonProperty("platform")]
             public int Platform;
 
-            [JsonProperty("buildId")]
+            [JsonProperty("build_id")]
             public int BuildId;
 
-            [JsonProperty("steam_id")]
-            public string SteamId;
+            [JsonProperty("steam_auth_ticket")]
+            public string SteamAuthTicket;
         }
     }
 }

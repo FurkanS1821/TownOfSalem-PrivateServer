@@ -21,11 +21,14 @@ namespace TownOfSalem_Logic
         public static readonly object PendingConnectionsLock = new object();
         public static List<INetworkService> PendingConnections = new List<INetworkService>();
 
-        public static readonly object LobbiesLock = new object();
-        public static List<PartyLobby> LiveLobbies = new List<PartyLobby>();
+        public static readonly object PartyLobbiesLock = new object();
+        public static List<PartyLobby> PartyLobbies = new List<PartyLobby>();
+
+        public static readonly object PreGameLobbiesLock = new object();
+        public static List<PreGameLobby> PreGameLobbies = new List<PreGameLobby>();
 
         public static readonly object GamesLock = new object();
-        public static List<Game> LiveGames = new List<Game>();
+        public static List<Game> Games = new List<Game>();
 
         public static void Main()
         {
@@ -37,7 +40,7 @@ namespace TownOfSalem_Logic
             PlayerManager.LoadAndResetAllData();
 
             Console.WriteLine("done.");
-            Task.Run(() => PollAllClients());
+            Task.Run(PollAllClients);
 
             while (true)
             {
@@ -111,6 +114,8 @@ namespace TownOfSalem_Logic
             service.RegisterCallback(MessageType.PartyGiveInvitePrivileges, PacketHandler.HandlePartyGiveInvitePrivileges);
             service.RegisterCallback(MessageType.PartyKick, PacketHandler.HandlePartyKick);
             service.RegisterCallback(MessageType.PartyMessage, PacketHandler.HandlePartyMessage);
+            service.RegisterCallback(MessageType.PartyStart, PacketHandler.HandlePartyStart);
+            service.RegisterCallback(MessageType.ReturnHome, PacketHandler.HandleReturnHome);
         }
     }
 }

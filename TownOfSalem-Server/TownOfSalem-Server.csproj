@@ -55,7 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\GameModes.cs" />
+    <Compile Include="Constants\ConstantRoleLists.cs" />
     <Compile Include="Enums\DisconnectReason.cs" />
     <Compile Include="Enums\GamePhase.cs" />
     <Compile Include="Enums\Gender.cs" />
@@ -65,6 +65,7 @@
     <Compile Include="ISocketService.cs" />
     <Compile Include="PartyLobby.cs" />
     <Compile Include="PacketHandler.cs" />
+    <Compile Include="PreGameLobby.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UserData\Player.cs" />
     <Compile Include="UserData\PlayerManager.cs" />

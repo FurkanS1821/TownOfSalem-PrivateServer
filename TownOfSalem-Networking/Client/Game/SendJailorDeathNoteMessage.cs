@@ -10,7 +10,8 @@ namespace TownOfSalem_Networking.Client.Game
         {
             try
             {
-                DeathNote = Convert.ToString(data[1]);
+                // i may have failed to understand this part
+                DeathNote = Convert.ToString(data[1] - 1);
             }
             catch (Exception ex)
             {

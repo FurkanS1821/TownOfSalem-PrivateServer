@@ -23,9 +23,9 @@ namespace TownOfSalem_Networking.Client.Home
                     InGameName = lines[9]
                 };
 
-                for (var i = 6; i < 9; i++)
+                for (var i = 0; i < 3; i++)
                 {
-                    Selections.Scrolls[i] = Convert.ToInt32(lines[i]);
+                    Selections.Scrolls[i] = Convert.ToInt32(lines[6 + i]);
                 }
             }
             catch (Exception ex)

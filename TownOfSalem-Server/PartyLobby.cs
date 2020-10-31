@@ -112,24 +112,14 @@ namespace TownOfSalem_Logic
 
             if (ConnectedPlayers.Count <= 0)
             {
-                lock (Program.LobbiesLock)
+                lock (Program.PartyLobbiesLock)
                 {
-                    Program.LiveLobbies.Remove(this);
+                    Program.PartyLobbies.Remove(this);
                 }
             }
             else if (hostExited)
             {
                 TransferHost(player, ConnectedPlayers[0]);
-            }
-        }
-
-        public void StartGame()
-        {
-            // TODO
-
-            lock (Program.LobbiesLock)
-            {
-                Program.LiveLobbies.Remove(this);
             }
         }
 

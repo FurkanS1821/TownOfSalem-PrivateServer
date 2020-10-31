@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using TownOfSalem_Logic.Enums;
-using TownOfSalem_Networking.Enums;
 using Client = TownOfSalem_Networking.Client;
 using Server = TownOfSalem_Networking.Server;
 

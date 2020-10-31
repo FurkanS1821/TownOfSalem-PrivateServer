@@ -29,6 +29,8 @@ namespace TownOfSalem_Networking.Client.Global
             public string FacebookToken;
             [JsonProperty("steam_id")]
             public string SteamId;
+            [JsonProperty("unique_device_id")]
+            public string UniqueDeviceId;
         }
     }
 }

@@ -3,7 +3,7 @@ using TownOfSalem_Logic.Enums;
 
 namespace TownOfSalem_Logic.Constants
 {
-    public static class GameModes
+    public static class ConstantRoleLists
     {
         public static readonly List<Role> ClassicMode = new List<Role>
         {
@@ -179,7 +179,7 @@ namespace TownOfSalem_Logic.Constants
             Role.Plaguebearer
         };
 
-        static GameModes()
+        static ConstantRoleLists()
         {
             for (var i = 0; i < 15; i++)
             {
