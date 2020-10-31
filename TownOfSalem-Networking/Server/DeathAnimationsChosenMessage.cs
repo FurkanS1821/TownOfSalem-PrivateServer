@@ -5,11 +5,11 @@ namespace TownOfSalem_Networking.Server
 {
     public class DeathAnimationsChosenMessage : BaseMessage
     {
-        public readonly Dictionary<int, int> DeathAnimations;
+        public readonly Dictionary<int, int> DeathAnimations = new Dictionary<int, int>();
 
-        public DeathAnimationsChosenMessage(Dictionary<int, int> deathAnims) : base(MessageType.DeathAnimationsChosen)
+        public DeathAnimationsChosenMessage(Dictionary<int, int> deathAnimations) : base(MessageType.DeathAnimationsChosen)
         {
-            DeathAnimations = deathAnims;
+            DeathAnimations = deathAnimations;
         }
 
         protected override void SerializeData(BinaryWriter writer)

@@ -1,12 +1,13 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
     public class ActiveGameModesMessage : BaseMessage
     {
-        public int[] ActiveModes;
+        public List<int> ActiveModes = new List<int>();
 
-        public ActiveGameModesMessage(int[] activeModes) : base(MessageType.ActiveGameModes)
+        public ActiveGameModesMessage(List<int> activeModes) : base(MessageType.ActiveGameModes)
         {
             ActiveModes = activeModes;
         }

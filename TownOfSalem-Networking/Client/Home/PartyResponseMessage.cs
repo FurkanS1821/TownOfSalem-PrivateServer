@@ -15,9 +15,9 @@ namespace TownOfSalem_Networking.Client.Home
                 Response = (PartyResponse)data[1];
                 PartyId = Convert.ToInt32(BytesToString(data, 2));
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

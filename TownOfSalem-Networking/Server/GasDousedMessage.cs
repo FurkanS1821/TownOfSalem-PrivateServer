@@ -2,17 +2,20 @@
 
 namespace TownOfSalem_Networking.Server
 {
-    public class ResurrectionSetAliveMessage : BaseMessage
+    public class GasDousedMessage : BaseMessage
     {
+        public readonly int DouseType;
         public readonly int Position;
 
-        public ResurrectionSetAliveMessage(int position) : base(MessageType.ResurrectionSetAlive)
+        public GasDousedMessage(int douseType, int position) : base(MessageType.GasDoused)
         {
+            DouseType = douseType;
             Position = position;
         }
 
         protected override void SerializeData(BinaryWriter writer)
         {
+            writer.Write((byte)(DouseType + 1));
             writer.Write((byte)(Position + 1));
         }
     }

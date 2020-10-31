@@ -16,9 +16,9 @@ namespace TownOfSalem_Networking.Client.Game
                 Reason = data[2] - 2;
                 Description = BytesToString(data, 3);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

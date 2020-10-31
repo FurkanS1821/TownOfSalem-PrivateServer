@@ -8,22 +8,21 @@ namespace TownOfSalem_Networking.Server
         public readonly string Username;
         public readonly int TownPoints;
         public readonly int MeritPoints;
+        public readonly int AccountId;
 
-        public UserInformationMessage(string username, int townPoints, int meritPoints)
+        public UserInformationMessage(string username, int townPoints, int meritPoints, int accountId)
             : base(MessageType.UserInformation)
         {
             Username = username;
             TownPoints = townPoints;
             MeritPoints = meritPoints;
+            AccountId = accountId;
         }
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(Encoding.UTF8.GetBytes(Username));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(TownPoints.ToString()));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(MeritPoints.ToString()));
+            var data = $"{Username}*{TownPoints}*{MeritPoints}*{AccountId}";
+            writer.Write(Encoding.UTF8.GetBytes(data));
         }
     }
 }

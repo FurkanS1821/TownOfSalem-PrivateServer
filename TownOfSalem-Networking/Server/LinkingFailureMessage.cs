@@ -3,11 +3,11 @@ using TownOfSalem_Networking.Enums;
 
 namespace TownOfSalem_Networking.Server
 {
-    public class RegistrationFailureMessage : BaseMessage
+    public class LinkingFailureMessage : BaseMessage
     {
-        public readonly RegistrationFailure Reason;
+        public readonly LinkingFailure Reason;
 
-        public RegistrationFailureMessage(RegistrationFailure reason) : base(MessageType.RegistrationFailure)
+        public LinkingFailureMessage(LinkingFailure reason) : base(MessageType.LinkingFailure)
         {
             Reason = reason;
         }

@@ -12,9 +12,9 @@ namespace TownOfSalem_Networking.Client.Lobby
             {
                 Username = BytesToString(data, 1);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

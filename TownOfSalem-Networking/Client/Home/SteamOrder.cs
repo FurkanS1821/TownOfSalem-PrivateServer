@@ -16,9 +16,9 @@ namespace TownOfSalem_Networking.Client.Home
                 ProductId = data[1];
                 SteamId = BytesToString(data, 2);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

@@ -16,23 +16,13 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            for (var i = 0; i < SpecialEvents.Count; i++)
+            var packetContents = new List<string>();
+            foreach (var @event in SpecialEvents)
             {
-                var specialEvent = SpecialEvents[i];
-
-                writer.Write(Encoding.UTF8.GetBytes(specialEvent.Type.ToString()));
-                writer.Write(',');
-                writer.Write(Encoding.UTF8.GetBytes(specialEvent.Data));
-                writer.Write(',');
-                writer.Write(Encoding.UTF8.GetBytes(specialEvent.StartTime.ToString()));
-                writer.Write(',');
-                writer.Write(Encoding.UTF8.GetBytes(specialEvent.EndTime.ToString()));
-
-                if (i < SpecialEvents.Count - 1)
-                {
-                    writer.Write('*');
-                }
+                packetContents.Add($"{@event.Type},{@event.Data},{@event.StartTime},{@event.EndTime}");
             }
+
+            writer.Write(Encoding.UTF8.GetBytes(string.Join("*", packetContents)));
         }
     }
 }

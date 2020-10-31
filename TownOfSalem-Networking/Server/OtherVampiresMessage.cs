@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using TownOfSalem_Networking.Structs;
 
 namespace TownOfSalem_Networking.Server
 {
     public class OtherVampiresMessage : BaseMessage
     {
-        public readonly List<VampireInfo> Vampires = new List<VampireInfo>();
+        public readonly List<VampireInfo> Vampires;
 
         public OtherVampiresMessage(List<VampireInfo> vampires) : base(MessageType.OtherVampires)
         {

@@ -3,11 +3,11 @@ using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
-    public class PayPalSaleShowApprovalPageMessage : BaseMessage
+    public class PaymentWallShowExternalPageMessage : BaseMessage
     {
         public readonly string Url;
 
-        public PayPalSaleShowApprovalPageMessage(string url) : base(0) // todo
+        public PaymentWallShowExternalPageMessage(string url) : base(MessageType.ExternalPurchase)
         {
             Url = url;
         }

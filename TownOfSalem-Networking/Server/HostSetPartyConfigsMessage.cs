@@ -9,7 +9,8 @@ namespace TownOfSalem_Networking.Server
         public readonly GameMode GameMode;
         public readonly PartyConfigChangeResult Result;
 
-        public HostSetPartyConfigsMessage(GameBrand brand, GameMode gameMode, PartyConfigChangeResult result) : base(MessageType.HostSetPartyConfigs)
+        public HostSetPartyConfigsMessage(GameBrand brand, GameMode gameMode, PartyConfigChangeResult result)
+            : base(MessageType.HostSetPartyConfigs)
         {
             Brand = brand;
             GameMode = gameMode;

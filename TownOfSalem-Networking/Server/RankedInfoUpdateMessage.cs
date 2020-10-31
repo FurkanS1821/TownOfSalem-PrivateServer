@@ -6,7 +6,7 @@ namespace TownOfSalem_Networking.Server
 {
     public class RankedInfoUpdateMessage : BaseMessage
     {
-        public RankedInformation RankedInfo;
+        public RankedInformation RankedInfo = new RankedInformation();
 
         public RankedInfoUpdateMessage(RankedInformation rankedInfo) : base(MessageType.RankedInfo)
         {
@@ -15,37 +15,14 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.GameMode.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.PracticeGamesPlayed.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.CareerWin.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.CareerLoss.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.CareerDraw.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.CareerLeaves.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.CareerHighRating.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.SeasonNumber.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.IsOffSeason ? "1" : "0"));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.PlacementGamesRequired.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.SeasonWins.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.SeasonLosses.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.SeasonDraws.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.SeasonLeaves.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.SeasonHighRating.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(RankedInfo.SeasonRating.ToString()));
+            var data = $"{RankedInfo.GameMode},{RankedInfo.PracticeGamesPlayed},{RankedInfo.CareerWins},";
+            data += $"{RankedInfo.CareerLosses},{RankedInfo.CareerDraws},{RankedInfo.CareerLeaves},";
+            data += $"{RankedInfo.CareerHighRating},{RankedInfo.SeasonNumber},{(RankedInfo.IsOffSeason ? 1 : 0)},";
+            data += $"{RankedInfo.PlacementGamesRequired},{RankedInfo.SeasonWins},{RankedInfo.SeasonLosses},";
+            data += $"{RankedInfo.SeasonDraws},{RankedInfo.SeasonLeaves},{RankedInfo.SeasonHighRating},";
+            data += RankedInfo.SeasonRating.ToString();
+
+            writer.Write(Encoding.UTF8.GetBytes(data));
         }
     }
 }

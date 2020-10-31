@@ -12,9 +12,9 @@ namespace TownOfSalem_Networking.Client.Lobby
             {
                 RoleIndex = data[1] - 1;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

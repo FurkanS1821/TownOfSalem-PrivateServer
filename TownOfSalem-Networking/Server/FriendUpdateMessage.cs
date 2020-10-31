@@ -20,8 +20,7 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(Encoding.UTF8.GetBytes(AccountId.ToString()));
-            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes($"{AccountId}*"));
             writer.Write((byte)Status);
             writer.Write('*');
             writer.Write((byte)(OwnsCoven ? 2 : 1));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TownOfSalem_Networking.Client.Global
 {
@@ -11,16 +12,12 @@ namespace TownOfSalem_Networking.Client.Global
         {
             try
             {
-                Tips = new List<int>();
-                var lines = BytesToString(data, 1).Split('*');
-                foreach (var line in lines)
-                {
-                    Tips.Add(Convert.ToInt32(line));
-                }
+                var packet = BytesToString(data, 1).Split('*');
+                Tips = packet.Select(x => Convert.ToInt32(x)).ToList();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

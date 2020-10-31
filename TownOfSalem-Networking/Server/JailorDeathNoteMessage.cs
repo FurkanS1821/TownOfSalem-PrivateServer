@@ -8,7 +8,8 @@ namespace TownOfSalem_Networking.Server
         public readonly bool HasLastWill;
         public readonly int Choice;
 
-        public JailorDeathNoteMessage(int position, bool hasLastWill, int choice) : base(MessageType.JailorDeathNote)
+        public JailorDeathNoteMessage(int position, bool hasLastWill, int choice)
+            : base(MessageType.JailorDeathNote)
         {
             Position = position;
             HasLastWill = hasLastWill;

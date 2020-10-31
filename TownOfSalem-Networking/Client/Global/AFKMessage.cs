@@ -13,9 +13,9 @@ namespace TownOfSalem_Networking.Client.Global
             {
                 Status = (AFKStatus)data[1];
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

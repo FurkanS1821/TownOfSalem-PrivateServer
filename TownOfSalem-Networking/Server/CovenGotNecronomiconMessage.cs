@@ -18,17 +18,14 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(IsFirstPossession ? 1 : 2);
+            writer.Write((byte)(IsFirstPossession ? 1 : 2));
 
-            if (IsFirstPossession)
-            {
-                writer.Write((byte)(GainedPosition + 1));
-            }
-            else
+            if (!IsFirstPossession)
             {
                 writer.Write((byte)(LostPosition + 1));
-                writer.Write((byte)(GainedPosition + 1));
             }
+
+            writer.Write((byte)(GainedPosition + 1));
         }
     }
 }

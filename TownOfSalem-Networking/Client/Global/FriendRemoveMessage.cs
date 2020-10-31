@@ -11,13 +11,13 @@ namespace TownOfSalem_Networking.Client.Global
         {
             try
             {
-                var lines = BytesToString(data, 1).Split('*');
-                AccountId = Convert.ToInt32(lines[0]);
-                Name = lines[1];
+                var packet = BytesToString(data, 1).Split('*');
+                AccountId = Convert.ToInt32(packet[1]);
+                Name = packet[0];
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

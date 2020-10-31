@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace TownOfSalem_Networking.Client.Global
 {
@@ -8,15 +9,22 @@ namespace TownOfSalem_Networking.Client.Global
 
         public RegisterAccountMessage(byte[] data) : base(data)
         {
-            var jsonString = BytesToString(data, 1);
-            Data = JsonConvert.DeserializeObject<InternalJson>(jsonString);
+            try
+            {
+                var jsonString = BytesToString(data, 1);
+                Data = JsonConvert.DeserializeObject<InternalJson>(jsonString);
+            }
+            catch (Exception e)
+            {
+                ThrowNetworkMessageFormatException(e);
+            }
         }
 
         [JsonObject]
         public class InternalJson
         {
             [JsonProperty("username")]
-            public string UserName;
+            public string Username;
             [JsonProperty("password")]
             public string Password;
             [JsonProperty("email")]
@@ -29,8 +37,8 @@ namespace TownOfSalem_Networking.Client.Global
             public string FacebookToken;
             [JsonProperty("steam_id")]
             public string SteamId;
-            [JsonProperty("unique_device_id")]
-            public string UniqueDeviceId;
+            [JsonProperty("steam_auth_ticket")]
+            public string SteamAuthTicket;
         }
     }
 }

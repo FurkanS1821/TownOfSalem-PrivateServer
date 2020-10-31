@@ -24,15 +24,9 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(Encoding.UTF8.GetBytes(PromotionId.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(PromotionInstanceId.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Discount.ToString(CultureInfo.InvariantCulture)));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(DurationSeconds.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(ProductId));
+            var data = $"{PromotionId},{PromotionInstanceId},{Discount.ToString(CultureInfo.InvariantCulture)},";
+            data += $"{DurationSeconds},{ProductId}";
+            writer.Write(Encoding.UTF8.GetBytes(data));
         }
     }
 }

@@ -4,18 +4,17 @@ namespace TownOfSalem_Networking.Client.Game
 {
     public class SendJailorDeathNoteMessage : BaseMessage
     {
-        public string DeathNote;
+        public int DeathNote;
 
         public SendJailorDeathNoteMessage(byte[] data) : base(data)
         {
             try
             {
-                // i may have failed to understand this part
-                DeathNote = Convert.ToString(data[1] - 1);
+                DeathNote = data[1] - 1;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

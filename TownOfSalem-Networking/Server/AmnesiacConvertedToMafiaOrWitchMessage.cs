@@ -2,12 +2,13 @@
 
 namespace TownOfSalem_Networking.Server
 {
-    public class AmnesiacConvertedToMafiaOrWitch : BaseMessage
+    public class AmnesiacConvertedToMafiaOrWitchMessage : BaseMessage
     {
         public readonly int Position;
         public readonly int RoleId;
 
-        public AmnesiacConvertedToMafiaOrWitch(int position, int roleId) : base(MessageType.AmnesiacConvertedToMafiaOrWitch)
+        public AmnesiacConvertedToMafiaOrWitchMessage(int position, int roleId)
+            : base(MessageType.AmnesiacConvertedToMafiaOrWitch)
         {
             Position = position;
             RoleId = roleId;

@@ -19,10 +19,9 @@ namespace TownOfSalem_Networking.Server
         {
             writer.Write((byte)(RoleId + 1));
             writer.Write((byte)(Position + 1));
-
             if (TargetPosition.HasValue)
             {
-                writer.Write((byte)(TargetPosition + 1));
+                writer.Write((byte)(TargetPosition.Value + 1));
             }
         }
     }

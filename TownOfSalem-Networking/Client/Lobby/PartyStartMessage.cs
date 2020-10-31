@@ -12,9 +12,9 @@ namespace TownOfSalem_Networking.Client.Lobby
             {
                 GameMode = data[1];
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

@@ -16,9 +16,9 @@ namespace TownOfSalem_Networking.Client.Game
                 SubTarget = data[2] - 1;
                 TauntId = data[3] - 1;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

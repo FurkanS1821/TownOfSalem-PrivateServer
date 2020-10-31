@@ -22,7 +22,7 @@ namespace TownOfSalem_Networking.Client
 
                 if (message == null)
                 {
-                    throw new JsonReaderException();
+                    return;
                 }
 
                 var key = Crypto.PrivateKeyDecrypt(message.Key);
@@ -40,6 +40,7 @@ namespace TownOfSalem_Networking.Client
             catch (Exception)
             {
                 // packet wasn't encrypted
+                // or client public key does not match with our private key.
             }
         }
 

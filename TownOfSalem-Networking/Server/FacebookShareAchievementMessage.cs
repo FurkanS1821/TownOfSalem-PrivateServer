@@ -13,7 +13,7 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write((byte)AchievementId);
+            writer.Write((byte)(AchievementId + 1));
         }
     }
 }

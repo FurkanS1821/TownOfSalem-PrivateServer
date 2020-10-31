@@ -14,31 +14,13 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            byte flag = 0;
-            if (Flags.OwnsSteam)
-            {
-                flag |= 1;
-            }
-
-            if (Flags.OwnsCoven)
-            {
-                flag |= 2;
-            }
-
-            if (Flags.OwnsWebPremium)
-            {
-                flag |= 4;
-            }
-
-            if (Flags.OwnsMobilePremium)
-            {
-                flag |= 8;
-            }
-
-            if (Flags.IsRestricted)
-            {
-                flag |= 16;
-            }
+            int flag = 0;
+            flag |= Flags.OwnsSteam ? 1 << 0 : 0;
+            flag |= Flags.OwnsCoven ? 1 << 1 : 0;
+            flag |= Flags.OwnsWebPremium ? 1 << 2 : 0;
+            flag |= Flags.OwnsMobilePremium ? 1 << 3 : 0;
+            flag |= Flags.IsRestricted ? 1 << 4 : 0;
+            flag |= Flags.IsTrial ? 1 << 5 : 0;
 
             writer.Write((byte)(flag + 1));
         }

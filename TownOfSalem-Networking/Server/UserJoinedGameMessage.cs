@@ -25,9 +25,9 @@ namespace TownOfSalem_Networking.Server
         {
             writer.Write((byte)(IsHost ? 2 : 1));
             writer.Write((byte)(IsMe ? 2 : 1));
-            writer.Write(Encoding.UTF8.GetBytes(Username));
-            writer.Write('*');
+            writer.Write(Encoding.UTF8.GetBytes(Username + "*"));
             writer.Write((byte)(LobbyPosition + 1));
+            writer.Write('*');
             writer.Write((byte)(LobbyIconId + 1));
         }
     }

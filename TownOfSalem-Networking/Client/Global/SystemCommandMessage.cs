@@ -13,11 +13,11 @@ namespace TownOfSalem_Networking.Client.Global
             {
                 Command = data[1];
                 Arguments = new byte[data.Length - 2];
-                Array.Copy(data, 2, Arguments, 0, data.Length - 2);
+                Buffer.BlockCopy(data, 2, Arguments, 0, data.Length - 2);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

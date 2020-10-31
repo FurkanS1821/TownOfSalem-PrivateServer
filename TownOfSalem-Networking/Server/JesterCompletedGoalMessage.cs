@@ -5,18 +5,18 @@ namespace TownOfSalem_Networking.Server
 {
     public class JesterCompletedGoalMessage : BaseMessage
     {
-        public readonly List<int> GuiltyVotePositions;
+        public readonly List<int> NonInnocentPositions;
 
-        public JesterCompletedGoalMessage(List<int> guiltyVotePositions) : base(MessageType.JesterCompletedGoal)
+        public JesterCompletedGoalMessage(List<int> nonInnocentPositions) : base(MessageType.JesterCompletedGoal)
         {
-            GuiltyVotePositions = guiltyVotePositions;
+            NonInnocentPositions = nonInnocentPositions;
         }
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            foreach (var guiltyVote in GuiltyVotePositions)
+            foreach (var position in NonInnocentPositions)
             {
-                writer.Write((byte)(guiltyVote + 1));
+                writer.Write((byte)(position + 1));
             }
         }
     }

@@ -13,9 +13,9 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            foreach (var messageId in SpyMessageIds)
+            foreach (var id in SpyMessageIds)
             {
-                writer.Write((byte)(messageId + 1));
+                writer.Write((byte)(id + 1));
             }
         }
     }
