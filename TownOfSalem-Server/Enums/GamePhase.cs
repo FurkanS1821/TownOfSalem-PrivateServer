@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TownOfSalem_Logic.Enums
+﻿namespace TownOfSalem_Logic.Enums
 {
     public enum GamePhase
     {
-        PreGameLobby,
         PickNames,
         RoleInfo,
         FirstDayTransition,

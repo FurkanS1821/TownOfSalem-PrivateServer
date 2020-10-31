@@ -7,15 +7,15 @@ namespace TownOfSalem_Networking.Client.Login
     {
         public string Username;
         public string Password;
-        public string SteamId;
+        public string SteamAuthTicket;
 
         public SteamLinkAccount(byte[] data) : base(data)
         {
             try
             {
                 var index = 1;
-                var usernameLength = data[index++];
-                var passwordLength = data[index++];
+                var usernameLength = data[index++] - 1;
+                var passwordLength = data[index++] - 1;
 
                 Username = Encoding.UTF8.GetString(data, index, usernameLength);
                 index += usernameLength;
@@ -23,7 +23,7 @@ namespace TownOfSalem_Networking.Client.Login
                 Password = Encoding.UTF8.GetString(data, index, passwordLength);
                 index += passwordLength;
 
-                SteamId = BytesToString(data, index);
+                SteamAuthTicket = BytesToString(data, index);
             }
             catch (Exception ex)
             {

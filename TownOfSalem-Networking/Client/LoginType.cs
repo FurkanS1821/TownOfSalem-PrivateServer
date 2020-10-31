@@ -3,8 +3,10 @@
     public enum LoginType
     {
         FBWeb = 1,
-        Web = 2,
+        Web,
+        SteamUsernamePassword,
+        SteamIdAndAuthTicket,
         Mobile = 6,
-        FBMobile = 7
+        FBMobile
     }
 }

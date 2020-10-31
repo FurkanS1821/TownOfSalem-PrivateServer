@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -38,14 +37,9 @@ namespace TownOfSalem_Networking.Client
                 list.AddRange(decryptedArray);
                 RawData = list.ToArray();
             }
-            catch (JsonReaderException)
+            catch (Exception)
             {
                 // packet wasn't encrypted
-            }
-            catch (CryptographicException ex)
-            {
-                // interesting
-                Console.WriteLine(ex.StackTrace);
             }
         }
 

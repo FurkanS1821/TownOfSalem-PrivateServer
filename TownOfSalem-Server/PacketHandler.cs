@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using TownOfSalem_Logic.UserData;
 using TownOfSalem_Networking;
 using TownOfSalem_Networking.Client.Friend;
@@ -39,6 +38,7 @@ namespace TownOfSalem_Logic
             }
 
             player.Client = service;
+            player.LastAction = DateTime.Now; // so that we don't log in as AFK
             lock (Program.PendingConnectionsLock)
             {
                 Program.PendingConnections.Remove(service);
@@ -120,7 +120,7 @@ namespace TownOfSalem_Logic
                 purchasedScrolls, tutorialStatus, activeGameModes, serverFlags, accountFlags, rankedInfo,
                 cauldronStatus, friendListPacket);
 
-            NotifyAllFriendsOfStatusUpdate(service);
+            NotifyAllFriendsOfStatusUpdate(player);
         }
 
         public static void HandleSendAccountSetting(INetworkService service, Client.BaseMessage message)
@@ -165,17 +165,24 @@ namespace TownOfSalem_Logic
             var data = (JoinGameMessage)message;
             var player = Program.GetPlayer(service);
 
-            if (player.CurrentPartyLobby != null)
+            var mode = (GameMode)data.GameMode;
+
+            PreGameLobby lobbyToJoin;
+            lock (Program.PreGameLobbiesLock)
             {
-                // todo: solo start logic
-                NotifyAllFriendsOfStatusUpdate(service);
-                return;
+                lobbyToJoin = Program.PreGameLobbies.FirstOrDefault(x =>
+                    x.ConnectedPlayers.Count < 15 &&
+                    x.GameMode == mode
+                );
+
+                if (lobbyToJoin == null)
+                {
+                    lobbyToJoin = new PreGameLobby(mode);
+                    Program.PreGameLobbies.Add(lobbyToJoin);
+                }
             }
 
-            var brand = ((GameMode)data.GameMode).ToString().StartsWith("Coven") ? GameBrand.Coven : GameBrand.Normal;
-            player.CurrentPartyLobby.SetGameMode(brand, (GameMode)data.GameMode);
-            player.CurrentPartyLobby.StartGame();
-            NotifyAllFriendsOfStatusUpdate(service);
+            lobbyToJoin.JoinPlayer(player);
         }
 
         public static void HandlePartyCreate(INetworkService service, Client.BaseMessage message)
@@ -183,15 +190,15 @@ namespace TownOfSalem_Logic
             var data = (PartyCreateMessage)message;
             var player = Program.GetPlayer(service);
 
-            lock (Program.LobbiesLock)
+            lock (Program.PartyLobbiesLock)
             {
                 var gameMode = data.GameBrand == (int)GameBrand.Coven ? GameMode.CovenClassic : GameMode.Classic;
                 var lobby = new PartyLobby((GameBrand)data.GameBrand, gameMode, player);
-                Program.LiveLobbies.Add(lobby);
+                Program.PartyLobbies.Add(lobby);
                 player.CurrentPartyLobby = lobby;
             }
 
-            NotifyAllFriendsOfStatusUpdate(service);
+            NotifyAllFriendsOfStatusUpdate(player);
         }
 
         public static void HandlePartyLeave(INetworkService service, Client.BaseMessage message)
@@ -199,13 +206,11 @@ namespace TownOfSalem_Logic
             var player = Program.GetPlayer(service);
 
             player.CurrentPartyLobby?.LeaveLobby(player);
-            NotifyAllFriendsOfStatusUpdate(service);
+            NotifyAllFriendsOfStatusUpdate(player);
         }
 
-        private static void NotifyAllFriendsOfStatusUpdate(INetworkService service)
+        public static void NotifyAllFriendsOfStatusUpdate(Player player)
         {
-            var player = Program.GetPlayer(service);
-
             foreach (var friend in player.FriendList)
             {
                 if (friend.Client == null)
@@ -246,9 +251,9 @@ namespace TownOfSalem_Logic
 
             PartyLobby lobby;
             PendingPartyInviteStatusMessage update;
-            lock (Program.LobbiesLock)
+            lock (Program.PartyLobbiesLock)
             {
-                lobby = Program.LiveLobbies.Find(x => x.Id == data.PartyId);
+                lobby = Program.PartyLobbies.Find(x => x.Id == data.PartyId);
             }
 
             PartyMemberInviteStatus inviteStatus;
@@ -329,6 +334,54 @@ namespace TownOfSalem_Logic
             var player = Program.GetPlayer(service);
 
             player.CurrentPartyLobby.SendChatMessage(player, data.Message);
+        }
+
+        public static void HandlePartyStart(INetworkService service, Client.BaseMessage message)
+        {
+            var data = (PartyStartMessage)message;
+            var player = Program.GetPlayer(service);
+
+            var partyMemberCount = player.CurrentPartyLobby.ConnectedPlayers.Count;
+            var brand = ((GameMode)data.GameMode).ToString().StartsWith("Coven") ? GameBrand.Coven : GameBrand.Normal;
+            player.CurrentPartyLobby.SetGameMode(brand, (GameMode)data.GameMode);
+
+            PreGameLobby lobbyToJoin;
+            lock (Program.PreGameLobbiesLock)
+            {
+                lobbyToJoin = Program.PreGameLobbies.FirstOrDefault(x =>
+                    15 - x.ConnectedPlayers.Count >= partyMemberCount &&
+                    x.GameMode == player.CurrentPartyLobby.Mode
+                );
+
+                if (lobbyToJoin == null)
+                {
+                    lobbyToJoin = new PreGameLobby(player.CurrentPartyLobby.Mode);
+                }
+            }
+
+            var partyLobby = player.CurrentPartyLobby;
+
+            foreach (var partyMember in player.CurrentPartyLobby.ConnectedPlayers)
+            {
+                partyMember.CurrentPartyLobby = null;
+                partyMember.IsPartyHost = false;
+                partyMember.HasPartyInvitePrivileges = false;
+                lobbyToJoin.JoinPlayer(partyMember);
+            }
+
+            partyLobby.ConnectedPlayers.Clear();
+            lock (Program.PartyLobbiesLock)
+            {
+                Program.PartyLobbies.Remove(partyLobby);
+            }
+        }
+
+        public static void HandleReturnHome(INetworkService service, Client.BaseMessage message)
+        {
+            var player = Program.GetPlayer(service);
+
+            // todo make sure this is the only usage
+            player.CurrentPreGameLobby?.LeavePlayer(player);
         }
     }
 }

@@ -2,11 +2,13 @@
 
 namespace TownOfSalem_Networking.Client.Home
 {
+    [Obsolete("Please use PurchaseProduct instead.")]
     public class SteamOrder : BaseMessage
     {
         public int ProductId;
         public string SteamId;
 
+        [Obsolete("Please use PurchaseProduct instead.", true)]
         public SteamOrder(byte[] data) : base(data)
         {
             try

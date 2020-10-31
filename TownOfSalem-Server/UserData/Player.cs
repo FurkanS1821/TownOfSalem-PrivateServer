@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 using TownOfSalem_Networking.Enums;
 
 namespace TownOfSalem_Logic.UserData
@@ -11,13 +10,35 @@ namespace TownOfSalem_Logic.UserData
     {
         public INetworkService Client;
         public UserData Data;
-        public DateTime LastAction;
+        private Timer _afkTimer;
+        private DateTime _lastAction;
+        public DateTime LastAction
+        {
+            get { return _lastAction; }
+            set
+            {
+                _lastAction = value;
+
+                if (_afkTimer == null)
+                {
+                    _afkTimer = new Timer {AutoReset = false, Enabled = true, Interval = 300000}; // 5 mins
+                    _afkTimer.Elapsed += delegate
+                    {
+                        PacketHandler.NotifyAllFriendsOfStatusUpdate(this);
+                    };
+                }
+
+                _afkTimer.Stop();
+                _afkTimer.Start();
+            }
+        }
 
         public PartyLobby CurrentPartyLobby;
         public bool IsPartyHost;
         public bool HasPartyInvitePrivileges;
 
-        //public PreGameLobby CurrentPreGameLobby;
+        public PreGameLobby CurrentPreGameLobby;
+        public bool IsGameHost;
 
         public Game CurrentGame;
 

@@ -18,7 +18,7 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(IsFirstPossession);
+            writer.Write(IsFirstPossession ? 1 : 2);
 
             if (IsFirstPossession)
             {

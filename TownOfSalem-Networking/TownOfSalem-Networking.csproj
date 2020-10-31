@@ -44,6 +44,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\Home\RequestCodesMessage.cs" />
+    <Compile Include="Client\Home\SendReferralCodeMessage.cs" />
+    <Compile Include="Client\Home\SteamHomeLinkAccountMessage.cs" />
+    <Compile Include="Client\Home\VerifyAccountFlagMessage.cs" />
+    <Compile Include="Client\Login\LoginSteamWithIDAndAuthTicket.cs" />
+    <Compile Include="Client\Login\LoginSteamWithUsernameMessage.cs" />
     <Compile Include="Enums\ActivityStatus.cs" />
     <Compile Include="Enums\AFKStatus.cs" />
     <Compile Include="Client\BaseMessage.cs" />
@@ -165,7 +171,6 @@
     <Compile Include="Server\AmbusherNightAbilityMessage.cs" />
     <Compile Include="Server\AmnesiacChangedRoleMessage.cs" />
     <Compile Include="Server\AmnesiacConvertedToMafiaOrWitch.cs" />
-    <Compile Include="Server\AmnesiacPromotedToMafiaMessage.cs" />
     <Compile Include="Server\AssignNewHostMessage.cs" />
     <Compile Include="Server\BaseMessage.cs" />
     <Compile Include="Server\BeingJailedMessage.cs" />
