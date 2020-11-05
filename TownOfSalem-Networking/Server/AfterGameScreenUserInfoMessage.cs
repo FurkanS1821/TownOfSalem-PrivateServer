@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using TownOfSalem_Networking.Enums;
 
 namespace TownOfSalem_Networking.Server
@@ -18,17 +16,12 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            for (var i = 0; i < UserStates.Count; i++)
+            foreach (var userState in UserStates)
             {
-                var userState = UserStates.ElementAt(i);
                 writer.Write((byte)(userState.Key + 1));
                 writer.Write(',');
                 writer.Write((byte)userState.Value);
-
-                if (i < UserStates.Count - 1)
-                {
-                    writer.Write(Encoding.UTF8.GetBytes("**"));
-                }
+                writer.Write(';');
             }
         }
     }

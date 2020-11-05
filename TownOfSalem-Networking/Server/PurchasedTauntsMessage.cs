@@ -16,19 +16,7 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            for (var i = 0; i < Taunts.Count; i++)
-            {
-                var taunt = Taunts.ElementAt(i);
-
-                writer.Write(Encoding.UTF8.GetBytes(taunt.Key.ToString()));
-                writer.Write('*');
-                writer.Write(Encoding.UTF8.GetBytes(taunt.Value.ToString()));
-
-                if (i < Taunts.Count - 1)
-                {
-                    writer.Write(',');
-                }
-            }
+            writer.Write(Encoding.UTF8.GetBytes(string.Join(",", Taunts.Select(x => $"{x.Key}*{x.Value}"))));
         }
     }
 }

@@ -17,9 +17,9 @@ namespace TownOfSalem_Networking.Server
             writer.Write((byte)(TargetInfo.Position + 1));
             writer.Write((byte)(TargetInfo.Role + 1));
             writer.Write((byte)(TargetInfo.Target + 1));
-            writer.Write((byte)TargetInfo.TargetBehavior);
-            writer.Write((byte)TargetInfo.Info);
-            writer.Write((byte)TargetInfo.AdditionalInfo);
+            writer.Write((byte)(TargetInfo.TargetBehavior + 1));
+            writer.Write((byte)(TargetInfo.Info + 1));
+            writer.Write((byte)(TargetInfo.AdditionalInfo + 1));
         }
     }
 }

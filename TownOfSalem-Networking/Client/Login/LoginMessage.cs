@@ -7,36 +7,32 @@ namespace TownOfSalem_Networking.Client.Login
     {
         public InternalJson Data;
 
-        private LoginMessage(byte[] data) : base(data)
+        public LoginMessage(byte[] data) : base(data)
         {
             try
             {
                 var jsonString = BytesToString(data, 1);
                 Data = JsonConvert.DeserializeObject<InternalJson>(jsonString);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
 
+        [JsonObject]
         public class InternalJson
         {
             [JsonProperty("username")]
             public string Username;
-
             [JsonProperty("password")]
             public string Password;
-
             [JsonProperty("type")]
             public int Type;
-
             [JsonProperty("platform")]
             public int Platform;
-
-            [JsonProperty("buildId")]
+            [JsonProperty("build_id")]
             public int BuildId;
-
             [JsonProperty("steam_id")]
             public string SteamId;
         }

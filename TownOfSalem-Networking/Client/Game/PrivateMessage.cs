@@ -14,9 +14,9 @@ namespace TownOfSalem_Networking.Client.Game
                 ToPosition = data[1] - 1;
                 Message = BytesToString(data, 2);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

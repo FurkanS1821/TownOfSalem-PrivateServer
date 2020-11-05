@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using TownOfSalem_Networking.Structs;
 
@@ -29,44 +30,13 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(Encoding.UTF8.GetBytes(CauldronType.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Progress.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(ProgressTarget.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(IsCompleted ? "1" : "0"));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(CooldownSeconds.ToString()));
-            writer.Write(',');
+            var packetContent = $"{CauldronType},{Progress},{ProgressTarget},{(IsCompleted ? 2 : 1)},{CooldownSeconds},";
+            packetContent += string.Join("*", AvailablePotions) + ",";
 
-            for (var i = 0; i < AvailablePotions.Count; i++)
-            {
-                writer.Write(Encoding.UTF8.GetBytes(AvailablePotions[i].ToString()));
+            var awardList = Awards.Select(x => $"{x.Type}|{x.Id}|{x.Quantity}");
 
-                if (i < AvailablePotions.Count - 1)
-                {
-                    writer.Write('*');
-                }
-            }
-
-            writer.Write(',');
-
-            for (var i = 0; i < Awards.Count; i++)
-            {
-                var award = Awards[i];
-
-                writer.Write(Encoding.UTF8.GetBytes(award.Type.ToString()));
-                writer.Write('|');
-                writer.Write(Encoding.UTF8.GetBytes(award.Id.ToString()));
-                writer.Write('|');
-                writer.Write(Encoding.UTF8.GetBytes(award.Quantity.ToString()));
-
-                if (i < Awards.Count - 1)
-                {
-                    writer.Write('*');
-                }
-            }
+            packetContent += string.Join("*", awardList);
+            writer.Write(Encoding.UTF8.GetBytes(packetContent));
         }
     }
 }

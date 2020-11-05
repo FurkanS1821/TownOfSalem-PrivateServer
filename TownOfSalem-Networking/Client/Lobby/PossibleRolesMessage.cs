@@ -14,9 +14,9 @@ namespace TownOfSalem_Networking.Client.Lobby
                 TargetIndex = data[1] - 1;
                 ScrollIndex = data[2] - 1;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

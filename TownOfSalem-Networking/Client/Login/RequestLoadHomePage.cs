@@ -1,4 +1,5 @@
 ﻿using System;
+using TownOfSalem_Networking.Enums;
 
 namespace TownOfSalem_Networking.Client.Login
 {
@@ -18,16 +19,14 @@ namespace TownOfSalem_Networking.Client.Login
                 LoginType = (LoginType)data[1];
                 Flags = data[2] - 1;
                 Platform = (Platform)data[3];
-
-                var str = BytesToString(data, 4).Split('\x1E');
-                var index = 0;
-                BuildId = Convert.ToInt32(str[index++]);
-                Username = str[index++];
-                PasswordEncrypted = str[index];
+                var packet = BytesToString(data, 4).Split('\x1E');
+                BuildId = Convert.ToInt32(packet[0]);
+                Username = packet[1];
+                PasswordEncrypted = packet[2];
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

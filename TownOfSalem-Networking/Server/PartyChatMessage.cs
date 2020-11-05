@@ -16,9 +16,7 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(Encoding.UTF8.GetBytes(From));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(Message));
+            writer.Write(Encoding.UTF8.GetBytes($"{From}*{Message}"));
         }
     }
 }

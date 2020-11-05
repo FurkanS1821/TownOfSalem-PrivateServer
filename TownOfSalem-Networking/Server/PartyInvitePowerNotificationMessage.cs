@@ -7,7 +7,8 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly string Username;
 
-        public PartyInvitePowerNotificationMessage(string username) : base(MessageType.PartyInvitePowerNotification)
+        public PartyInvitePowerNotificationMessage(string username)
+            : base(MessageType.PartyInvitePowerNotification)
         {
             Username = username;
         }

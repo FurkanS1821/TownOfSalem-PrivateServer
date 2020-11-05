@@ -17,13 +17,10 @@ namespace TownOfSalem_Networking.Server
         protected override void SerializeData(BinaryWriter writer)
         {
             writer.Write((byte)AwardType);
-
-            if (AwardType >= 5)
+            if (AwardType < 5 && TownPointsAwarded > 0)
             {
-                return;
+                writer.Write(Encoding.UTF8.GetBytes(TownPointsAwarded.ToString()));
             }
-
-            writer.Write(Encoding.UTF8.GetBytes(TownPointsAwarded.ToString()));
         }
     }
 }

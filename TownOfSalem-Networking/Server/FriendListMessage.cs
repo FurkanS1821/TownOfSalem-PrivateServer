@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using TownOfSalem_Networking.Structs;
@@ -16,23 +17,15 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            for (var i = 0; i < Friends.Count; i++)
+            var packetData = new List<string>();
+            foreach (var friend in Friends)
             {
-                var friend = Friends[i];
-
-                writer.Write(Encoding.UTF8.GetBytes(friend.UserName));
-                writer.Write(',');
-                writer.Write(Encoding.UTF8.GetBytes(friend.AccountId.ToString()));
-                writer.Write(',');
-                writer.Write((byte)friend.Status);
-                writer.Write(',');
-                writer.Write((byte)(friend.OwnsCoven ? 2 : 1));
-
-                if (i < Friends.Count - 1)
-                {
-                    writer.Write('*');
-                }
+                var friendData = $"{friend.UserName},{friend.AccountId},";
+                friendData += (char)(byte)friend.Status + "," + (Convert.ToByte(friend.OwnsCoven) + 1);
+                packetData.Add(friendData);
             }
+
+            writer.Write(Encoding.UTF8.GetBytes(string.Join("*", packetData)));
         }
     }
 }

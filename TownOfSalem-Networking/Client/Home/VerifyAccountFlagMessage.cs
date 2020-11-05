@@ -1,4 +1,6 @@
-﻿namespace TownOfSalem_Networking.Client.Home
+﻿using System;
+
+namespace TownOfSalem_Networking.Client.Home
 {
     public class VerifyAccountFlagMessage : BaseMessage
     {
@@ -6,7 +8,14 @@
 
         public VerifyAccountFlagMessage(byte[] data) : base(data)
         {
-            Flag = data[1];
+            try
+            {
+                Flag = data[1];
+            }
+            catch (Exception e)
+            {
+                ThrowNetworkMessageFormatException(e);
+            }
         }
     }
 }

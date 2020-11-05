@@ -15,26 +15,11 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(Encoding.UTF8.GetBytes(Selections.Character.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Selections.House.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Selections.Background.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Selections.Pet.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Selections.LobbyIcon.ToString()));
-            writer.Write(',');
-            writer.Write(Encoding.UTF8.GetBytes(Selections.DeathAnimation.ToString()));
-            writer.Write(',');
+            var data = $"{Selections.Character},{Selections.House},{Selections.Background},{Selections.Pet},";
+            data += $"{Selections.LobbyIcon},{Selections.DeathAnimation},{string.Join(",", Selections.Scrolls)},";
+            data += Selections.InGameName;
 
-            for (var i = 0; i < 3; i++)
-            {
-                writer.Write(Encoding.UTF8.GetBytes(Selections.Scrolls[i].ToString()));
-                writer.Write(',');
-            }
-
-            writer.Write(Encoding.UTF8.GetBytes(Selections.InGameName));
+            writer.Write(Encoding.UTF8.GetBytes(data));
         }
     }
 }

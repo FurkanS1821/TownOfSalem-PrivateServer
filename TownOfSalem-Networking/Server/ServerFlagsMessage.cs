@@ -1,12 +1,13 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
     public class ServerFlagsMessage : BaseMessage
     {
-        public bool[] Flags;
+        public List<bool> Flags;
 
-        public ServerFlagsMessage(params bool[] flags) : base(MessageType.ServerFlags)
+        public ServerFlagsMessage(List<bool> flags) : base(MessageType.ServerFlags)
         {
             Flags = flags;
         }

@@ -2,7 +2,7 @@
 {
     public class UserJoinTooFastMessage : BaseMessage
     {
-        public UserJoinTooFastMessage() : base(MessageType.UserJoinTooFast)
+        public UserJoinTooFastMessage() : base(MessageType.UserRejoinedLobbyTooQuickly)
         {
         }
     }

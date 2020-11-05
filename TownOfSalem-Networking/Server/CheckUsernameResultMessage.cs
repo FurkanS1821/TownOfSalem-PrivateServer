@@ -5,8 +5,8 @@ namespace TownOfSalem_Networking.Server
     public class CheckUsernameResultMessage : BaseMessage
     {
         public readonly bool IsAvailable;
-        private const byte NAME_AVAILABLE = 1;
-        private const byte NAME_UNAVAILABLE = 2;
+        public const byte NAME_AVAILABLE = 1;
+        public const byte NAME_UNAVAILABLE = 2;
 
         public CheckUsernameResultMessage(bool isAvailable) : base(MessageType.CheckUsernameResult)
         {
@@ -15,7 +15,7 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(IsAvailable ? NAME_AVAILABLE : NAME_UNAVAILABLE);
+            writer.Write((byte)(IsAvailable ? NAME_AVAILABLE : NAME_UNAVAILABLE));
         }
     }
 }

@@ -16,10 +16,10 @@ namespace TownOfSalem_Networking.Server
             writer.Write((byte)(Reason + 1));
         }
 
-        public enum DisconnectReason : byte
-        {
-            OldVersion = 1,
-            InvalidUsernameOrPassword = 2
+        public enum DisconnectReason : byte	
+        {	
+            OldVersion = 1,	
+            InvalidUsernameOrPassword = 2	
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using TownOfSalem_Networking.Enums;
 using TownOfSalem_Networking.Structs;
@@ -8,7 +9,7 @@ namespace TownOfSalem_Networking.Server
 {
     public class AfterGameScreenDataMessage : BaseMessage
     {
-        public readonly List<EndGamePartyMemberInfo> PlayerList = new List<EndGamePartyMemberInfo>();
+        public readonly List<EndGamePartyMemberInfo> PlayerList;
         public readonly int EndGameTimeSeconds;
         public readonly int GameMode;
         public readonly int WinningGroup;
@@ -36,37 +37,19 @@ namespace TownOfSalem_Networking.Server
             writer.Write((byte)GameMode);
             writer.Write((byte)WinningGroup);
             writer.Write((byte)(GameResult == EndGameResult.Win ? 2 : 1));
-            writer.Write((byte)(EloChange + 1));
+            writer.Write((byte)(EloChange + 1)); // this will be multiplied by -1 client side if game is lost
             writer.Write((byte)(MeritPointsAwarded + 1));
 
-            for (var i = 0; i < PlayerList.Count; i++)
+            var packetContents = new List<string>();
+            foreach (var player in PlayerList)
             {
-                var partyMemberInfo = PlayerList[i];
-                writer.Write('(');
-                writer.Write(Encoding.UTF8.GetBytes(partyMemberInfo.OriginalName));
-                writer.Write(',');
-                writer.Write(Encoding.UTF8.GetBytes(partyMemberInfo.AccountName));
-                writer.Write(',');
-                writer.Write((byte)(partyMemberInfo.Position + 1));
-                writer.Write(',');
-
-                for (var j = 0; j < partyMemberInfo.Roles.Count; j++)
-                {
-                    writer.Write((byte)(partyMemberInfo.Roles[i] + 1));
-
-                    if (j < partyMemberInfo.Roles.Count - 1)
-                    {
-                        writer.Write(',');
-                    }
-                }
-
-                writer.Write(')');
-
-                if (i < PlayerList.Count - 1)
-                {
-                    writer.Write(',');
-                }
+                var data = $"({player.OriginalName},{player.AccountName},{(char)(byte)(player.Position + 1)},";
+                var roles = player.Roles.Select(x => (char)(byte)(x + 1));
+                data += string.Join(",", roles) + ")";
+                packetContents.Add(data);
             }
+
+            writer.Write(Encoding.UTF8.GetBytes(string.Join(",", packetContents)));
         }
     }
 }

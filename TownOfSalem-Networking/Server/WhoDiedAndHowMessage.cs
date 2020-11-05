@@ -5,7 +5,7 @@ namespace TownOfSalem_Networking.Server
 {
     public class WhoDiedAndHowMessage : BaseMessage
     {
-        public readonly List<int> How;
+        public readonly List<int> How = new List<int>();
         public readonly int Position;
         public readonly int Role;
         public readonly bool WasLynched;
@@ -24,7 +24,6 @@ namespace TownOfSalem_Networking.Server
             writer.Write((byte)(Position + 1));
             writer.Write((byte)(Role + 1));
             writer.Write((byte)(WasLynched ? 2 : 1));
-
             foreach (var how in How)
             {
                 writer.Write((byte)how);

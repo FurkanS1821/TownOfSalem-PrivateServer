@@ -4,17 +4,24 @@ namespace TownOfSalem_Networking.Client.Game
 {
     public class SendForgedWillMessage : BaseMessage
     {
+        public int RoleId;
         public string Will;
 
         public SendForgedWillMessage(byte[] data) : base(data)
         {
             try
             {
-                Will = BytesToString(data, 1);
+                RoleId = data[1] + 1;
+                if (data.Length < 3)
+                {
+                    return;
+                }
+
+                Will = BytesToString(data, 2);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
     }

@@ -6,7 +6,8 @@ namespace TownOfSalem_Networking.Server
     {
         public readonly int NewHostPosition;
 
-        public AssignNewHostMessage(int newHostPosition) : base(MessageType.AssignNewHost)
+        public AssignNewHostMessage(int newHostPosition)
+            : base(MessageType.AssignNewHost)
         {
             NewHostPosition = newHostPosition;
         }

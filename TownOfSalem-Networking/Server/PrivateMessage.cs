@@ -23,12 +23,10 @@ namespace TownOfSalem_Networking.Server
         {
             writer.Write((byte)SourceType);
             writer.Write((byte)(Position + 1));
-
             if (SourceType == 3)
             {
                 writer.Write((byte)(Position2 + 1));
             }
-
             writer.Write(Encoding.UTF8.GetBytes(Message));
         }
     }

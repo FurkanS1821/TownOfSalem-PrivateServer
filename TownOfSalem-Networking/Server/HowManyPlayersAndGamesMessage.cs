@@ -16,9 +16,7 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(Encoding.UTF8.GetBytes(PlayerCount.ToString()));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(GameCount.ToString()));
+            writer.Write(Encoding.UTF8.GetBytes($"{PlayerCount}*{GameCount}"));
         }
     }
 }

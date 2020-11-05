@@ -15,15 +15,10 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            writer.Write(Encoding.UTF8.GetBytes(Statistics.GamesPlayed.ToString()));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(Statistics.GamesWon.ToString()));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(Statistics.GamesDrawn.ToString()));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(Statistics.GamesDisconnected.ToString()));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(Statistics.FriendsReferred.ToString()));
+            var data = $"{Statistics.GamesPlayed}*{Statistics.GamesWon}*{Statistics.GamesDrawn}*";
+            data += $"{Statistics.GamesDisconnected}*{Statistics.FriendsReferred}";
+
+            writer.Write(Encoding.UTF8.GetBytes(data));
         }
     }
 }

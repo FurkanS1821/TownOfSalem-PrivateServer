@@ -9,9 +9,9 @@
         public const int TOTAL_GAMES_REQUIRED = 50;
         public int GameMode;
         public int PracticeGamesPlayed;
-        public int CareerWin;
-        public int CareerLoss;
-        public int CareerDraw;
+        public int CareerWins;
+        public int CareerLosses;
+        public int CareerDraws;
         public int CareerLeaves;
         public int CareerHighRating;
         public int SeasonNumber;
@@ -23,19 +23,24 @@
         public int SeasonLeaves;
         public int SeasonHighRating;
 
-        public int RankedGamesPlayed()
+        public int RankedGamesSeasonPlayed()
         {
             return SeasonWins + SeasonLosses + SeasonDraws;
         }
 
+        public int RankedGamesCareerPlayed()
+        {
+            return CareerWins + CareerLosses + CareerDraws;
+        }
+
         public bool InPlacementMatches()
         {
-            return RankedGamesPlayed() < PlacementGamesRequired;
+            return RankedGamesSeasonPlayed() < PlacementGamesRequired;
         }
 
         public bool FinishedPlacementMatchesThisGame()
         {
-            return RankedGamesPlayed() == PlacementGamesRequired;
+            return RankedGamesSeasonPlayed() == PlacementGamesRequired;
         }
 
         public bool IsRankedPlayQualified(uint totalGamesPlayed)

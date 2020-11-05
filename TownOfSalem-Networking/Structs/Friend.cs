@@ -8,5 +8,13 @@ namespace TownOfSalem_Networking.Structs
         public int AccountId;
         public ActivityStatus Status;
         public bool OwnsCoven;
+
+        public Friend(string userName, int accountId, ActivityStatus status, bool ownsCoven)
+        {
+            UserName = userName;
+            AccountId = accountId;
+            Status = status;
+            OwnsCoven = ownsCoven;
+        }
     }
 }

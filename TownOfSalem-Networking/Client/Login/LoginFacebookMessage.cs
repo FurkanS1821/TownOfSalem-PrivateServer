@@ -14,12 +14,13 @@ namespace TownOfSalem_Networking.Client.Login
                 var jsonString = BytesToString(data, 1);
                 Data = JsonConvert.DeserializeObject<InternalJson>(jsonString);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ThrowNetworkMessageFormatException(ex);
+                ThrowNetworkMessageFormatException(e);
             }
         }
 
+        [JsonObject]
         public class InternalJson
         {
             [JsonProperty("facebook_id")]

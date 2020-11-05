@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 
 namespace TownOfSalem_Networking.Server
 {
+    [Obsolete("This message is no longer used as we don't use PayPal anymore.")]
     public class PayPalCCSaleFailedMessage : BaseMessage
     {
         public readonly string Message;

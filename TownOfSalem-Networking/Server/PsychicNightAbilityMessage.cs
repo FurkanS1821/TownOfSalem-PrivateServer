@@ -17,7 +17,6 @@ namespace TownOfSalem_Networking.Server
         protected override void SerializeData(BinaryWriter writer)
         {
             writer.Write((byte)Type);
-
             foreach (var position in Positions)
             {
                 writer.Write((byte)(position + 1));

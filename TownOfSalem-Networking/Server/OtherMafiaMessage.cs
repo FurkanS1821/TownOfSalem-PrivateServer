@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace TownOfSalem_Networking.Server
 {
@@ -15,6 +16,11 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
+            if (Positions.Length != Roles.Length)
+            {
+                throw new ArgumentException();
+            }
+
             for (var i = 0; i < Positions.Length; i++)
             {
                 writer.Write((byte)(Positions[i] + 1));

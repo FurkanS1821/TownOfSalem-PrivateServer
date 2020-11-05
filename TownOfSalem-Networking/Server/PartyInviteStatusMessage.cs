@@ -9,7 +9,8 @@ namespace TownOfSalem_Networking.Server
         public readonly PartyMemberInviteStatus Status;
         public readonly string Username;
 
-        public PartyInviteStatusMessage(PartyMemberInviteStatus status, string username) : base(0) // todo
+        public PartyInviteStatusMessage(PartyMemberInviteStatus status, string username)
+            : base(MessageType.PendingPartyInviteStatus)
         {
             Status = status;
             Username = username;
@@ -18,8 +19,10 @@ namespace TownOfSalem_Networking.Server
         protected override void SerializeData(BinaryWriter writer)
         {
             writer.Write(Encoding.UTF8.GetBytes(Username));
-            writer.Write('*');
-            writer.Write(Encoding.UTF8.GetBytes(((byte)Status).ToString()));
+            if (Status != 0)
+            {
+                writer.Write(Encoding.UTF8.GetBytes($"*{(byte)Status}"));
+            }
         }
     }
 }

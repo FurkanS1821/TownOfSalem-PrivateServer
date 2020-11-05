@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using TownOfSalem_Networking.Structs;
 
@@ -17,19 +18,8 @@ namespace TownOfSalem_Networking.Server
 
         protected override void SerializeData(BinaryWriter writer)
         {
-            for (var i = 0; i < Notifications.Count; i++)
-            {
-                var notification = Notifications[i];
-
-                writer.Write(Encoding.UTF8.GetBytes(notification.UserName));
-                writer.Write(',');
-                writer.Write(Encoding.UTF8.GetBytes(notification.AccountId.ToString()));
-
-                if (i < Notifications.Count - 1)
-                {
-                    writer.Write('*');
-                }
-            }
+            var list = Notifications.Select(x => $"{x.UserName},{x.AccountId}");
+            writer.Write(Encoding.UTF8.GetBytes(string.Join("*", list)));
         }
     }
 }

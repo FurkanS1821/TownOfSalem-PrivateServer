@@ -55,7 +55,8 @@ namespace TownOfSalem_Logic
             var userInformation = new UserInformationMessage(
                 player.Data.UserName,
                 player.Data.TownPoints,
-                player.Data.MeritPoints
+                player.Data.MeritPoints,
+                player.Data.UserId
             );
 
             var currencyMultiplier = new CurrencyMultiplierMessage(
@@ -67,27 +68,27 @@ namespace TownOfSalem_Logic
 
             var lastBonusWinTime = new LastBonusWinTimeMessage(player.Data.LastBonusWinTime);
 
-            var earnedAchievements = new EarnedAchievementsMessage(player.Data.EarnedAchievements);
+            var earnedAchievements = new EarnedAchievementsMessage(player.Data.EarnedAchievements.ToList());
 
-            var purchasedCharacters = new PurchasedCharactersMessage(player.Data.PurchasedCharacters);
+            var purchasedCharacters = new PurchasedCharactersMessage(player.Data.PurchasedCharacters.ToList());
 
-            var purchasedHouses = new PurchasedHousesMessage(player.Data.PurchasedHouses);
+            var purchasedHouses = new PurchasedHousesMessage(player.Data.PurchasedHouses.ToList());
 
-            var purchasedBackgrounds = new PurchasedBackgroundsMessage(player.Data.PurchasedBackgrounds);
+            var purchasedBackgrounds = new PurchasedBackgroundsMessage(player.Data.PurchasedBackgrounds.ToList());
 
-            var purchasedPets = new PurchasedPetsMessage(player.Data.PurchasedPets);
+            var purchasedPets = new PurchasedPetsMessage(player.Data.PurchasedPets.ToList());
 
-            var purchasedLobbyIcons = new PurchasedLobbyIconsMessage(player.Data.PurchasedLobbyIcons);
+            var purchasedLobbyIcons = new PurchasedLobbyIconsMessage(player.Data.PurchasedLobbyIcons.ToList());
 
-            var purchasedDeathAnimations = new PurchasedDeathAnimationsMessage(player.Data.PurchasedDeathAnimations);
+            var purchasedDeathAnimations = new PurchasedDeathAnimationsMessage(player.Data.PurchasedDeathAnimations.ToList());
 
             var purchasedScrolls = new PurchasedScrollsMessage(player.Data.PurchasedScrolls);
 
-            var tutorialStatus = new TutorialStatusMessage(player.Data.TutorialStatus);
+            var tutorialStatus = new TutorialStatusMessage(player.Data.TutorialStatus.ToList());
 
-            var activeGameModes = new ActiveGameModesMessage(new[] {1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 19});
+            var activeGameModes = new ActiveGameModesMessage(new List<int> {1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 19});
 
-            var serverFlags = new ServerFlagsMessage(true);
+            var serverFlags = new ServerFlagsMessage(new List<bool> {true});
 
             var accountFlags = new AccountFlagsMessage(player.Data.UserAccountFlags);
 
@@ -100,13 +101,8 @@ namespace TownOfSalem_Logic
             var friendList = new List<Friend>();
             foreach (var friendData in player.FriendList)
             {
-                var friend = new Friend
-                {
-                    AccountId = friendData.Data.UserId,
-                    OwnsCoven = friendData.Data.UserAccountFlags.OwnsCoven,
-                    Status = friendData.Status,
-                    UserName = friendData.Data.UserName
-                };
+                var friend = new Friend(friendData.Data.UserName, friendData.Data.UserId,
+                    friendData.Status, friendData.Data.UserAccountFlags.OwnsCoven);
                 friendList.Add(friend);
             }
 
@@ -139,8 +135,6 @@ namespace TownOfSalem_Logic
                     typeof(UserSettings).GetProperty(data.SettingType.ToString())?.SetValue(
                         player.Data.UserSettings, data.SettingValue == 2
                     );
-                    break;
-                case UserSettings.Type.DisplaySteamPopup:
                     break;
                 case UserSettings.Type.SoundEffectsVolume:
                 case UserSettings.Type.MusicVolume:

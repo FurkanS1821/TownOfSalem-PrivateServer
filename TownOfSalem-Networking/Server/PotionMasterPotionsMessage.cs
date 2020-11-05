@@ -8,12 +8,12 @@ namespace TownOfSalem_Networking.Server
         public readonly int NightsUntilAttackAvailable;
         public readonly int NightsUntilInvestigateAvailable;
 
-        public PotionMasterPotionsMessage(int nightsUntilHealAvailable, int nightsUntilAttackAvailable,
-            int nightsUntilInvestigateAvailable) : base(MessageType.PotionMasterPotions)
+        public PotionMasterPotionsMessage(int nightsTillHeal, int nightsTillAttack, int nightsTillInvestigate)
+            : base(MessageType.PotionMasterPotions)
         {
-            NightsUntilHealAvailable = nightsUntilHealAvailable;
-            NightsUntilAttackAvailable = nightsUntilAttackAvailable;
-            NightsUntilInvestigateAvailable = nightsUntilInvestigateAvailable;
+            NightsUntilHealAvailable = nightsTillHeal;
+            NightsUntilAttackAvailable = nightsTillAttack;
+            NightsUntilInvestigateAvailable = nightsTillInvestigate;
         }
 
         protected override void SerializeData(BinaryWriter writer)
