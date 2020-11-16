@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using TownOfSalem_Logic.Enums;
@@ -61,31 +62,29 @@ namespace TownOfSalem_Logic
             switch (role)
             {
                 case Role.Any:
-                    return Roles.ClassicRoles;
                 case Role.CovenAny:
-                    return Roles.CovenRoles;
-                case Role.RandomTown:
+                case Role.TownAny:
                 case Role.TownInvestigative:
                 case Role.TownProtective:
                 case Role.TownKilling:
                 case Role.TownSupport:
-                case Role.RandomMafia:
+                case Role.MafiaAny:
                 case Role.MafiaSupport:
                 case Role.MafiaDeception:
-                case Role.RandomNeutral:
+                case Role.NeutralAny:
                 case Role.NeutralBenign:
                 case Role.NeutralEvil:
                 case Role.NeutralKilling:
-                case Role.CovenRandomCoven:
-                case Role.CovenRandomTown:
+                case Role.CovenEvil:
+                case Role.CovenTownAny:
                 case Role.CovenTownInvestigative:
                 case Role.CovenTownProtective:
                 case Role.CovenTownKilling:
                 case Role.CovenTownSupport:
-                case Role.CovenRandomMafia:
+                case Role.CovenMafiaAny:
                 case Role.CovenMafiaSupport:
                 case Role.CovenMafiaDeception:
-                case Role.CovenRandomNeutral:
+                case Role.CovenNeutralAny:
                 case Role.CovenNeutralBenign:
                 case Role.CovenNeutralEvil:
                 case Role.CovenNeutralKilling:

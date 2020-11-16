@@ -45,7 +45,7 @@
 
         public bool IsRankedPlayQualified(uint totalGamesPlayed)
         {
-            return totalGamesPlayed >= 50U && PracticeGamesPlayed >= 10;
+            return totalGamesPlayed >= TOTAL_GAMES_REQUIRED && PracticeGamesPlayed >= PRACTICE_GAMES_REQUIRED;
         }
     }
 }

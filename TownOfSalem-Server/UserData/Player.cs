@@ -14,7 +14,7 @@ namespace TownOfSalem_Logic.UserData
         private DateTime _lastAction;
         public DateTime LastAction
         {
-            get { return _lastAction; }
+            get => _lastAction;
             set
             {
                 _lastAction = value;
@@ -32,15 +32,6 @@ namespace TownOfSalem_Logic.UserData
                 _afkTimer.Start();
             }
         }
-
-        public PartyLobby CurrentPartyLobby;
-        public bool IsPartyHost;
-        public bool HasPartyInvitePrivileges;
-
-        public PreGameLobby CurrentPreGameLobby;
-        public bool IsGameHost;
-
-        public Game CurrentGame;
 
         public List<Player> FriendList
         {
@@ -69,7 +60,12 @@ namespace TownOfSalem_Logic.UserData
         {
             get
             {
-                if (CurrentGame != null)
+                if (Client == null)
+                {
+                    return ActivityStatus.Offline;
+                }
+
+                /*if (CurrentGame != null)
                 {
                     return ActivityStatus.InGame;
                 }
@@ -82,12 +78,7 @@ namespace TownOfSalem_Logic.UserData
                 if (CurrentPartyLobby != null)
                 {
                     return ActivityStatus.InLobby;
-                }
-
-                if (Client == null)
-                {
-                    return ActivityStatus.Offline;
-                }
+                }*/
 
                 if (DateTime.Now - LastAction > TimeSpan.FromMinutes(5))
                 {

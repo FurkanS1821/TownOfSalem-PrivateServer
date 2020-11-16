@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using BCrypt.Net;
 using PemUtils;
 
 namespace TownOfSalem_Networking
@@ -40,67 +40,52 @@ namespace TownOfSalem_Networking
             return Convert.ToBase64String(_rsaService.Decrypt(data, false));
         }
 
-        public static byte[] AesDecrypt(byte[] toDecrypt, byte[] key, byte[] iv)
+        public static string AesDecrypt(byte[] cipherText, byte[] key, byte[] iv)
         {
-            if (toDecrypt == null || toDecrypt.Length <= 0)
+            if (cipherText == null || cipherText.Length == 0)
             {
-                throw new ArgumentNullException(nameof(toDecrypt));
+                throw new ArgumentNullException(nameof(cipherText));
             }
 
-            if (key == null || key.Length <= 0)
+            if (key == null || key.Length == 0)
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            if (iv == null || iv.Length <= 0)
+            if (iv == null || iv.Length == 0)
             {
                 throw new ArgumentNullException(nameof(iv));
             }
 
+            string result;
             using (var aesManaged = new AesManaged())
             {
                 aesManaged.Key = key;
                 aesManaged.IV = iv;
                 aesManaged.Mode = CipherMode.CBC;
                 var decryptor = aesManaged.CreateDecryptor(aesManaged.Key, aesManaged.IV);
-                using (var memoryStream = new MemoryStream())
+                using (var memoryStream = new MemoryStream(cipherText))
                 {
-                    using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
+                    using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                     {
-                        using (var binaryWriter = new BinaryWriter(cryptoStream))
+                        using (var streamReader = new StreamReader(cryptoStream))
                         {
-                            binaryWriter.Write(toDecrypt);
+                            result = streamReader.ReadToEnd();
                         }
-
-                        return memoryStream.ToArray();
                     }
                 }
             }
+
+            return result;
         }
 
-        public static string CreateMd5(string input)
-        {
-            using (var md5 = MD5.Create())
-            {
-                var inputBytes = Encoding.ASCII.GetBytes(input);
-                var hashBytes = md5.ComputeHash(inputBytes);
-
-                var str = hashBytes.Aggregate("", (current, t) => current + t.ToString("X2"));
-                return str;
-            }
-        }
-
-        /// <param name="passwordStored">md5(pw)</param>
-        /// <param name="passwordSent">base64(rsa(pw))</param>
-        public static bool VerifyPassword(string passwordStored, string passwordSent)
+        /// <param name="passwordStored">bcrypt(pw)</param>
+		/// <param name="passwordSent">base64(rsa(pw))</param>
+		public static bool VerifyPassword(string passwordStored, string passwordSent)
         {
             try
             {
-                var passwordSentDecrypted = PrivateKeyDecrypt(Convert.FromBase64String(passwordSent)); // base64(pw)
-                var passwordSentString = Encoding.UTF8.GetString(Convert.FromBase64String(passwordSentDecrypted)); // raw(pw)
-                var passwordSentMd5 = CreateMd5(passwordSentString); // md5(pw)
-
-                return passwordStored.Equals(passwordSentMd5, StringComparison.InvariantCultureIgnoreCase);
+                return BCrypt.Net.BCrypt.EnhancedVerify(passwordSent, passwordStored, HashType.SHA512);
             }
             catch (CryptographicException)
             {

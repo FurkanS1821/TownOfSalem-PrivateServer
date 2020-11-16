@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace TownOfSalem_Networking.Client.Login
 {
@@ -6,10 +7,18 @@ namespace TownOfSalem_Networking.Client.Login
     {
         public InternalJson Data;
 
-        public SteamLinkAccount(byte[] data) : base(data)
+        public SteamLinkAccount(byte[] data) : base(data, true)
         {
-            var jsonString = BytesToString(data, 1);
-            Data = JsonConvert.DeserializeObject<InternalJson>(jsonString);
+            IsEncrypted = true;
+            try
+            {
+                var jsonString = BytesToString(RawData, 1);
+                Data = JsonConvert.DeserializeObject<InternalJson>(jsonString);
+            }
+            catch (Exception e)
+            {
+                ThrowNetworkMessageFormatException(e);
+            }
         }
 
         [JsonObject]

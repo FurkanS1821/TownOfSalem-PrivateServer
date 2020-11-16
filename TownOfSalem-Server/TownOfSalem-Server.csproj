@@ -33,20 +33,36 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BCrypt.Net-Next, Version=4.0.0.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt.Net-Next.4.0.0\lib\net472\BCrypt.Net-Next.dll</HintPath>
+    </Reference>
     <Reference Include="CSharp-easy-RSA-PEM">
       <HintPath>..\..\CSharp-easy-RSA-PEM\CSharp-easy-RSA-PEM\CSharp-easy-RSA-PEM\bin\Release\CSharp-easy-RSA-PEM.dll</HintPath>
     </Reference>
-    <Reference Include="DerConverter, Version=3.0.0.81, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DerConverter.3.0.0.81\lib\net471\DerConverter.dll</HintPath>
+    <Reference Include="DerConverter, Version=3.0.0.82, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DerConverter.3.0.0.82\lib\net471\DerConverter.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PemUtils, Version=3.0.0.81, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PemUtils.3.0.0.81\lib\net471\PemUtils.dll</HintPath>
+    <Reference Include="PemUtils, Version=3.0.0.82, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PemUtils.3.0.0.82\lib\net471\PemUtils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,17 +72,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ConstantRoleLists.cs" />
+    <Compile Include="Enums\Achievements.cs" />
     <Compile Include="Enums\DisconnectReason.cs" />
     <Compile Include="Enums\GamePhase.cs" />
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\Role.cs" />
-    <Compile Include="Game.cs" />
     <Compile Include="INetworkService.cs" />
     <Compile Include="ISocketService.cs" />
-    <Compile Include="PartyLobby.cs" />
     <Compile Include="PacketHandler.cs" />
-    <Compile Include="PreGameLobby.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="StringUtils.cs" />
     <Compile Include="UserData\Player.cs" />
     <Compile Include="UserData\PlayerManager.cs" />
     <Compile Include="Program.cs" />

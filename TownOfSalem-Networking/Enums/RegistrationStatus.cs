@@ -12,6 +12,13 @@
         InvalidSteamId,
         ValidatingFacebookId,
         ValidatingSteamId,
-        Failed
+        Failed,
+        RegistrationDisabled,
+        UsernameTaken,
+        SteamHasLinkedAccount,
+        LinkedAccountBanned,
+        InvalidUsernameAlphanumericsOnly,
+        InvalidUsernameNotJustNumbers,
+        InvalidUsernameBannedWords
     }
 }

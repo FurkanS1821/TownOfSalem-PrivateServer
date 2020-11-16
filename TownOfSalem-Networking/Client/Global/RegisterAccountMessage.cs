@@ -7,11 +7,11 @@ namespace TownOfSalem_Networking.Client.Global
     {
         public InternalJson Data;
 
-        public RegisterAccountMessage(byte[] data) : base(data)
+        public RegisterAccountMessage(byte[] data) : base(data, true)
         {
             try
             {
-                var jsonString = BytesToString(data, 1);
+                var jsonString = BytesToString(RawData, 1);
                 Data = JsonConvert.DeserializeObject<InternalJson>(jsonString);
             }
             catch (Exception e)

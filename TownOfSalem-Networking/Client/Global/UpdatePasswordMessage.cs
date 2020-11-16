@@ -7,11 +7,12 @@ namespace TownOfSalem_Networking.Client.Global
     {
         public InternalJson Data;
 
-        public UpdatePasswordMessage(byte[] data) : base(data)
+        public UpdatePasswordMessage(byte[] data) : base(data, true)
         {
+            IsEncrypted = true;
             try
             {
-                var jsonString = BytesToString(data, 1);
+                var jsonString = BytesToString(RawData, 1);
                 Data = JsonConvert.DeserializeObject<InternalJson>(jsonString);
             }
             catch (Exception e)

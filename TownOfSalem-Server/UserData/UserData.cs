@@ -16,34 +16,51 @@ namespace TownOfSalem_Logic.UserData
         [JsonProperty(Required = Required.Always)]
         public string UserName { get; set; }
 
-        [JsonProperty(Required = Required.Always)]
-        public string PasswordMd5 { get; set; }
-
         [JsonProperty(Required = Required.AllowNull)]
-        public UserStatistics UserStatistics { get; set; }
+        public string PasswordBcrypt { get; set; }
 
-        [JsonProperty(Required = Required.AllowNull)]
-        public UserSettings UserSettings { get; set; }
+        [JsonProperty(Required = Required.DisallowNull)]
+        public UserStatistics UserStatistics { get; set; } = new UserStatistics();
 
-        [JsonProperty(Required = Required.AllowNull)]
-        public UserSelections UserSelections { get; set; }
+        [JsonProperty(Required = Required.DisallowNull)]
+        public UserSettings UserSettings { get; set; } = new UserSettings();
+
+        [JsonProperty(Required = Required.DisallowNull)]
+        public UserSelections UserSelections { get; set; } = new UserSelections();
+
         public int TownPoints { get; set; }
+
         public int MeritPoints { get; set; }
-        public float TownPointsMultiplier { get; set; }
-        public float MeritPointsMultiplier { get; set; }
+
+        public float TownPointsMultiplier { get; set; } = 1;
+
+        public float MeritPointsMultiplier { get; set; } = 1;
+
         public int LastBonusWinTime { get; set; }
-        public int[] EarnedAchievements { get; set; }
-        public int[] PurchasedCharacters { get; set; }
-        public int[] PurchasedHouses { get; set; }
-        public int[] PurchasedBackgrounds { get; set; }
-        public int[] PurchasedPets { get; set; }
-        public int[] FriendIds { get; set; }
-        public int[] PurchasedLobbyIcons { get; set; }
-        public int[] PurchasedDeathAnimations { get; set; }
-        public Dictionary<int, int> PurchasedScrolls { get; set; }
-        public int[] TutorialStatus { get; set; }
-        public UserAccountFlags UserAccountFlags { get; set; }
-        public RankedInformation RankedInformation { get; set; }
+
+        public int[] EarnedAchievements { get; set; } = new int[0];
+
+        public int[] PurchasedCharacters { get; set; } = new int[0];
+
+        public int[] PurchasedHouses { get; set; } = new int[0];
+
+        public int[] PurchasedBackgrounds { get; set; } = new int[0];
+
+        public int[] PurchasedPets { get; set; } = new int[0];
+
+        public int[] FriendIds { get; set; } = new int[0];
+
+        public int[] PurchasedLobbyIcons { get; set; } = new int[0];
+
+        public int[] PurchasedDeathAnimations { get; set; } = new int[0];
+
+        public Dictionary<int, int> PurchasedScrolls { get; set; } = new Dictionary<int, int>();
+
+        public int[] TutorialStatus { get; set; } = new int[0];
+
+        public UserAccountFlags UserAccountFlags { get; set; } = new UserAccountFlags();
+
+        public RankedInformation RankedInformation { get; set; } = new RankedInformation();
 
         public UserData()
         {

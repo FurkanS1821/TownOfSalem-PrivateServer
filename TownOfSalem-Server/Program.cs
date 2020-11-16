@@ -13,22 +13,14 @@ namespace TownOfSalem_Logic
     class Program
     {
         public const int PORT = 3600;
-        public const int BUILD_ID = 10655;
+        public const int BUILD_ID = 14073;
+        public const bool REGISTRATION_ENABLED = true;
 
         public static readonly object PlayersLock = new object();
         public static List<Player> AllPlayers = new List<Player>();
 
         public static readonly object PendingConnectionsLock = new object();
         public static List<INetworkService> PendingConnections = new List<INetworkService>();
-
-        public static readonly object PartyLobbiesLock = new object();
-        public static List<PartyLobby> PartyLobbies = new List<PartyLobby>();
-
-        public static readonly object PreGameLobbiesLock = new object();
-        public static List<PreGameLobby> PreGameLobbies = new List<PreGameLobby>();
-
-        public static readonly object GamesLock = new object();
-        public static List<Game> Games = new List<Game>();
 
         public static void Main()
         {
@@ -37,11 +29,12 @@ namespace TownOfSalem_Logic
 
             var server = new TcpListener(IPAddress.Any, PORT);
             server.Start();
-            PlayerManager.LoadAndResetAllData();
+            PlayerManager.ReloadAllData();
 
             Console.WriteLine("done.");
             Task.Run(PollAllClients);
 
+            Console.WriteLine("Ready for connections now.");
             while (true)
             {
                 var client = server.AcceptTcpClient();
@@ -102,9 +95,10 @@ namespace TownOfSalem_Logic
 
         private static void RegisterEverythingForService(TOSNetworkService service)
         {
-            service.RegisterCallback(MessageType.RequestLoadHomepage, PacketHandler.HandleRequestLoadHomePage);
+            service.RegisterCallback(MessageType.Login, PacketHandler.HandleLogin);
+            service.RegisterCallback(MessageType.RegisterAccount, PacketHandler.HandleRegisterAccount);
             service.RegisterCallback(MessageType.SendAccountSetting, PacketHandler.HandleSendAccountSetting);
-            service.RegisterCallback(MessageType.JoinGame, PacketHandler.HandleJoinGame);
+            /*service.RegisterCallback(MessageType.JoinGame, PacketHandler.HandleJoinGame);
             service.RegisterCallback(MessageType.PartyCreate, PacketHandler.HandlePartyCreate);
             service.RegisterCallback(MessageType.PartyLeave, PacketHandler.HandlePartyLeave);
             service.RegisterCallback(MessageType.HostSetPartyConfig, PacketHandler.HandleHostSetPartyConfig);
@@ -115,7 +109,7 @@ namespace TownOfSalem_Logic
             service.RegisterCallback(MessageType.PartyKick, PacketHandler.HandlePartyKick);
             service.RegisterCallback(MessageType.PartyMessage, PacketHandler.HandlePartyMessage);
             service.RegisterCallback(MessageType.PartyStart, PacketHandler.HandlePartyStart);
-            service.RegisterCallback(MessageType.ReturnHome, PacketHandler.HandleReturnHome);
+            service.RegisterCallback(MessageType.ReturnHome, PacketHandler.HandleReturnHome);*/
         }
     }
 }

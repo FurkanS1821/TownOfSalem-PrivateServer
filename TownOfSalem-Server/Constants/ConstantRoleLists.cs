@@ -21,7 +21,7 @@ namespace TownOfSalem_Logic.Constants
             Role.SerialKiller,
             Role.TownKilling,
             Role.Jester,
-            Role.RandomTown
+            Role.TownAny
         };
 
         public static readonly List<Role> Ranked = new List<Role>
@@ -32,13 +32,13 @@ namespace TownOfSalem_Logic.Constants
             Role.TownProtective,
             Role.TownKilling,
             Role.TownSupport,
-            Role.RandomTown,
-            Role.RandomTown,
-            Role.RandomTown,
+            Role.TownAny,
+            Role.TownAny,
+            Role.TownAny,
             Role.Godfather,
             Role.Mafioso,
-            Role.RandomMafia,
-            Role.RandomMafia,
+            Role.MafiaAny,
+            Role.MafiaAny,
             Role.NeutralEvil,
             Role.NeutralKilling
         };
@@ -94,13 +94,13 @@ namespace TownOfSalem_Logic.Constants
             Role.CovenLeader,
             Role.PotionMaster,
             Role.Executioner,
-            Role.CovenRandomCoven,
+            Role.CovenEvil,
             Role.Medusa,
-            Role.CovenRandomTown,
+            Role.CovenTownAny,
             Role.Plaguebearer,
-            Role.CovenRandomTown,
+            Role.CovenTownAny,
             Role.Pirate,
-            Role.CovenRandomTown
+            Role.CovenTownAny
         };
 
         public static readonly List<Role> CovenRanked = new List<Role>
@@ -111,13 +111,13 @@ namespace TownOfSalem_Logic.Constants
             Role.TownSupport,
             Role.CovenTownProtective,
             Role.TownKilling,
-            Role.CovenRandomTown,
-            Role.CovenRandomTown,
-            Role.CovenRandomTown,
+            Role.CovenTownAny,
+            Role.CovenTownAny,
+            Role.CovenTownAny,
             Role.CovenLeader,
             Role.Medusa,
-            Role.CovenRandomCoven,
-            Role.CovenRandomCoven,
+            Role.CovenEvil,
+            Role.CovenEvil,
             Role.CovenNeutralKilling,
             Role.NeutralEvil
         };
@@ -131,14 +131,14 @@ namespace TownOfSalem_Logic.Constants
             Role.CovenTownProtective,
             Role.Godfather,
             Role.Ambusher,
-            Role.CovenRandomMafia,
+            Role.CovenMafiaAny,
             Role.Hypnotist,
             Role.Executioner,
             Role.Plaguebearer,
             Role.Pirate,
-            Role.CovenRandomTown,
-            Role.CovenRandomTown,
-            Role.CovenRandomTown
+            Role.CovenTownAny,
+            Role.CovenTownAny,
+            Role.CovenTownAny
         };
 
         public static readonly List<Role> CovenVIP = new List<Role>
@@ -151,7 +151,7 @@ namespace TownOfSalem_Logic.Constants
             Role.CovenLeader,
             Role.PotionMaster,
             Role.GuardianAngel,
-            Role.CovenRandomCoven,
+            Role.CovenEvil,
             Role.Medusa,
             Role.Tracker,
             Role.CovenTownProtective,

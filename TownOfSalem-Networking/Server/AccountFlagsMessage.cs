@@ -5,7 +5,7 @@ namespace TownOfSalem_Networking.Server
 {
     public class AccountFlagsMessage : BaseMessage
     {
-        public UserAccountFlags Flags = new UserAccountFlags();
+        public UserAccountFlags Flags;
 
         public AccountFlagsMessage(UserAccountFlags flags) : base(MessageType.AccountFlags)
         {

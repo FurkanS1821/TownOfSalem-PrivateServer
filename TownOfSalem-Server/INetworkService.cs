@@ -35,7 +35,7 @@ namespace TownOfSalem_Logic
 
         public abstract void SendMessage(Server.BaseMessage msg);
 
-        public abstract void SendMultipleMessages(params Server.BaseMessage[] msgs);
+        public abstract void SendMultipleMessages(params Server.BaseMessage[] messages);
 
         public abstract void Connect();
 

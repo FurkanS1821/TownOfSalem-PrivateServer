@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -9,11 +10,18 @@ namespace TownOfSalem_Networking.Client
     {
         public byte[] RawData;
         public readonly int MessageType;
+        protected bool IsEncrypted;
 
-        public BaseMessage(byte[] data)
+        public BaseMessage(byte[] data, bool isEncrypted = false)
         {
             RawData = data;
             MessageType = data[0];
+            IsEncrypted = isEncrypted;
+
+            if (!IsEncrypted)
+            {
+                return;
+            }
 
             try
             {
@@ -25,22 +33,23 @@ namespace TownOfSalem_Networking.Client
                     return;
                 }
 
-                var key = Crypto.PrivateKeyDecrypt(message.Key);
+                var cipherText = Convert.FromBase64String(message.Payload);
+                var key = Convert.FromBase64String(Crypto.PrivateKeyDecrypt(Convert.FromBase64String(message.Key)));
                 var iv = Convert.FromBase64String(message.IV);
                 var decryptedArray = Crypto.AesDecrypt(
-                    Encoding.UTF8.GetBytes(message.Payload),
-                    Convert.FromBase64String(key),
+                    cipherText,
+                    key,
                     iv
                 );
 
                 var list = new List<byte> {RawData[0]};
-                list.AddRange(decryptedArray);
+                list.AddRange(Encoding.UTF8.GetBytes(decryptedArray));
                 RawData = list.ToArray();
             }
-            catch (Exception)
+            catch (CryptographicException e)
             {
-                // packet wasn't encrypted
-                // or client public key does not match with our private key.
+                Console.WriteLine($"CryptographicException while decrypting {GetType().Name} packet: {e.Message}");
+                // client public key probably does not match with our private key
             }
         }
 
